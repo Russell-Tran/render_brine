@@ -5,6 +5,9 @@
 // the functions that query the hardware, so the tests can check them with
 // made-up inputs.
 
+// Build with -framework CoreGraphics (the Makefile does). Apple's docs say
+// command-line tools must link it for MTLCreateSystemDefaultDevice() to
+// return a GPU; without it, that call returned nil on an M3 Max.
 import Foundation
 import Metal
 
@@ -37,7 +40,8 @@ enum ReportError: Error, CustomStringConvertible {
 
     var description: String {
         switch self {
-        case .noMetalDevice: return "no Metal GPU found"
+        case .noMetalDevice:
+            return "no Metal GPU found (MTLCreateSystemDefaultDevice and MTLCopyAllDevices returned nothing)"
         case .kernelCompile(let detail): return "could not compile the probe kernel: \(detail)"
         }
     }
@@ -167,8 +171,16 @@ func readGPURegistry() -> String? {
     return String(data: data, encoding: .utf8)
 }
 
+/// The GPU to report on: the system default, or else the first GPU Metal lists.
+func findDevice() throws -> MTLDevice {
+    if let device = MTLCreateSystemDefaultDevice() ?? MTLCopyAllDevices().first {
+        return device
+    }
+    throw ReportError.noMetalDevice
+}
+
 func gatherReport() throws -> GPUReport {
-    guard let device = MTLCreateSystemDefaultDevice() else { throw ReportError.noMetalDevice }
+    let device = try findDevice()
     let pipeline = try compileKernel(probeKernelSource, named: "probe", on: device)
     let t = device.maxThreadsPerThreadgroup
     return GPUReport(

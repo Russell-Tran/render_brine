@@ -102,11 +102,15 @@ test("unknown values say unknown") {
 }
 
 section("hardware (this Mac)")
-test("a Metal GPU is present") {
-    expect(MTLCreateSystemDefaultDevice() != nil)
+test("the system default Metal GPU is available") {
+    // Needs CoreGraphics linked; see the import in GPUReport.swift.
+    expect(MTLCreateSystemDefaultDevice() != nil, "MTLCreateSystemDefaultDevice() returned nil")
+}
+test("findDevice returns a GPU") {
+    expect((try? findDevice()) != nil)
 }
 test("a bad kernel reports a compile error") {
-    guard let device = MTLCreateSystemDefaultDevice() else { return expect(false, "no GPU") }
+    let device = try findDevice()
     expectThrows { _ = try compileKernel("not metal", named: "probe", on: device) }
     expectThrows { _ = try compileKernel(probeKernelSource, named: "missing", on: device) }
 }
