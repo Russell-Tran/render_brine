@@ -23,7 +23,10 @@ func worstDifference(_ image: GPUImage, waves: [Wave]) -> (diff: Int, at: String
         for x in 0..<image.width {
             let cpu = RGBA(shadePixel(px: x, py: y, width: image.width, height: image.height, waves: waves))
             let gpu = image.pixel(x: x, y: y)
-            let d = max(abs(Int(cpu.r) - Int(gpu.r)), abs(Int(cpu.g) - Int(gpu.g)), abs(Int(cpu.b) - Int(gpu.b)))
+            let dr: Int = abs(Int(cpu.r) - Int(gpu.r))
+            let dg: Int = abs(Int(cpu.g) - Int(gpu.g))
+            let db: Int = abs(Int(cpu.b) - Int(gpu.b))
+            let d = max(dr, dg, db)
             if d > worst.diff { worst = (d, "(\(x), \(y)): CPU \(cpu), GPU \(gpu)") }
         }
     }
@@ -48,14 +51,19 @@ test("a flat sea's normal points straight up") {
 test("the normal matches the slope measured numerically") {
     let (x, z, e): (Float, Float, Float) = (1.3, 2.7, 1e-3)
     let n = waveNormal(x: x, z: z, waves: defaultWaves)
-    let dx = (waveHeight(x: x + e, z: z, waves: defaultWaves) - waveHeight(x: x - e, z: z, waves: defaultWaves)) / (2 * e)
-    let dz = (waveHeight(x: x, z: z + e, waves: defaultWaves) - waveHeight(x: x, z: z - e, waves: defaultWaves)) / (2 * e)
+    let east: Float = waveHeight(x: x + e, z: z, waves: defaultWaves)
+    let west: Float = waveHeight(x: x - e, z: z, waves: defaultWaves)
+    let north: Float = waveHeight(x: x, z: z + e, waves: defaultWaves)
+    let south: Float = waveHeight(x: x, z: z - e, waves: defaultWaves)
+    let dx: Float = (east - west) / (2 * e)
+    let dz: Float = (north - south) / (2 * e)
     let numeric = simd_normalize(SIMD3<Float>(-dx, 1, -dz))
     expect(simd_distance(n, numeric) < 1e-2, "analytic \(n) vs numeric \(numeric)")
 }
 test("a wave built from an angle has a unit direction") {
     let w = Wave(angleDegrees: 37, wavelength: 3, amplitude: 1)
-    expect(near(w.directionX * w.directionX + w.directionZ * w.directionZ, 1))
+    let lengthSquared: Float = w.directionX * w.directionX + w.directionZ * w.directionZ
+    expect(near(lengthSquared, 1))
     expect(near(w.wavenumber, 2 * .pi / 3))
 }
 
@@ -67,10 +75,16 @@ test("the top of the image is sky and the bottom is water") {
     expect(bottom.z > bottom.x, "water should be more blue than red, got \(bottom)")
 }
 test("the horizon sits about 37% of the way down") {
+    // The ray through row y points up by (1 - 2v) * tanHalfFOV - tilt, with v
+    // the row's position from 0 (top) to 1 (bottom). Water starts where that
+    // turns negative. (Split into steps so older Swift compilers can type-check it.)
     let h = 1000
-    let firstWater = (0..<h).first { y in
-        (1 - 2 * (Float(y) + 0.5) / Float(h)) * tanHalfFOV - tilt < 0
-    }!
+    var firstWater = -1
+    for y in 0..<h {
+        let v: Float = (Float(y) + 0.5) / Float(h)
+        let up: Float = (1 - 2 * v) * tanHalfFOV - tilt
+        if up < 0 { firstWater = y; break }
+    }
     expect(abs(firstWater - 370) <= 1, "first water row \(firstWater)")
 }
 test("a flat sea looks the same on the left and right") {
@@ -134,7 +148,10 @@ test("the wave buffer reaches the kernel") {
     let device = try findDevice()
     let flat = try renderWater(width: 64, height: 36, waves: [], on: device)
     let wavy = try renderWater(width: 64, height: 36, on: device)
-    let differ = (0..<36).contains { y in (0..<64).contains { x in flat.pixel(x: x, y: y) != wavy.pixel(x: x, y: y) } }
+    var differ = false
+    for y in 0..<36 {
+        for x in 0..<64 where flat.pixel(x: x, y: y) != wavy.pixel(x: x, y: y) { differ = true }
+    }
     expect(differ, "the image didn't change when waves were added")
 }
 test("a saved PNG reads back with the same size") {
