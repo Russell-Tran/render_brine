@@ -236,7 +236,8 @@ func renderWater(width: Int, height: Int, waves: [Wave] = defaultWaves, on devic
     do {
         let options = MTLCompileOptions()
         // Precise math, so the GPU's sin/cos/pow stay close to the CPU reference.
-        options.mathMode = .safe
+        // (Newer SDKs call this mathMode = .safe; this older name works on every SDK.)
+        options.fastMathEnabled = false
         let library = try device.makeLibrary(source: waterKernelSource, options: options)
         guard let function = library.makeFunction(name: "water") else {
             throw WaterError.kernelCompile("no kernel named water")
