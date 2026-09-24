@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 300" width="640" height="300" font-family="Menlo, Consolas, monospace">
+<rect width="640" height="300" fill="#ffffff"/>
+<text x="48" y="20" font-size="14" font-weight="600" fill="#0e2a33" font-family="-apple-system, Segoe UI, sans-serif">4K frame time from a cold start (M4 mini)</text>
+<text x="48" y="37" font-size="11" fill="#54707a">GPU time per frame, rendering continuously after 5 s idle</text>
+<line x1="48" x2="620" y1="260.0" y2="260.0" stroke="#e1e9e9" stroke-width="1"/>
+<text x="40" y="264.0" font-size="11" fill="#54707a" text-anchor="end">0 ms</text>
+<line x1="48" x2="620" y1="217.6" y2="217.6" stroke="#e1e9e9" stroke-width="1"/>
+<text x="40" y="221.6" font-size="11" fill="#54707a" text-anchor="end">1 ms</text>
+<line x1="48" x2="620" y1="175.2" y2="175.2" stroke="#e1e9e9" stroke-width="1"/>
+<text x="40" y="179.2" font-size="11" fill="#54707a" text-anchor="end">2 ms</text>
+<line x1="48" x2="620" y1="132.8" y2="132.8" stroke="#e1e9e9" stroke-width="1"/>
+<text x="40" y="136.8" font-size="11" fill="#54707a" text-anchor="end">3 ms</text>
+<line x1="48" x2="620" y1="90.4" y2="90.4" stroke="#e1e9e9" stroke-width="1"/>
+<text x="40" y="94.4" font-size="11" fill="#54707a" text-anchor="end">4 ms</text>
+<line x1="48" x2="620" y1="48.0" y2="48.0" stroke="#e1e9e9" stroke-width="1"/>
+<text x="40" y="52.0" font-size="11" fill="#54707a" text-anchor="end">5 ms</text>
+<text x="48.0" y="278" font-size="11" fill="#54707a" text-anchor="middle">0 ms</text>
+<text x="162.4" y="278" font-size="11" fill="#54707a" text-anchor="middle">200 ms</text>
+<text x="276.8" y="278" font-size="11" fill="#54707a" text-anchor="middle">400 ms</text>
+<text x="391.2" y="278" font-size="11" fill="#54707a" text-anchor="middle">600 ms</text>
+<text x="505.6" y="278" font-size="11" fill="#54707a" text-anchor="middle">800 ms</text>
+<text x="620.0" y="278" font-size="11" fill="#54707a" text-anchor="middle">1000 ms</text>
+<rect x="48.0" y="48" width="286.0" height="212" fill="rgba(0,119,182,0.10)"/>
+<text x="328.0" y="252" font-size="11" fill="#0e2a33" text-anchor="end">warm-up before timing (500 ms)</text>
+<polyline points="54.3,101.4 57.2,92.9 59.4,101.8 62.3,68.4 65.2,104.4 67.4,98.9 69.7,120.9 72.0,101.4 73.7,124.3 76.0,117.5 97.8,152.3 128.7,166.7 154.4,180.3 180.1,168.0 205.9,178.6 231.0,179.4 256.2,179.9 281.9,179.4 307.1,179.4 333.4,175.2 359.2,175.6 384.3,179.9 410.6,178.6 435.8,179.0 462.1,179.9 487.9,174.8 514.2,174.8 540.5,178.6 565.7,180.3" fill="none" stroke="#0077b6" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="565.7" cy="180.3" r="4" fill="#0077b6" stroke="#ffffff" stroke-width="2"/>
+<text x="563.7" y="168.3" font-size="11" fill="#0e2a33" text-anchor="end">1.9 ms at full speed</text>
+<text x="72.3" y="72.4" font-size="11" fill="#0e2a33">~3.7–4.5 ms from idle</text>
+</svg>
