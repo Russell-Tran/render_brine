@@ -2,15 +2,7 @@
 
 Learning to render water on Apple silicon GPUs with Metal, one small step at a time.
 
-Two Macs take part: an **M4 Mac mini** (10 GPU cores, 16 GB), where the code is written and first run, and an **M3 Max laptop** (40 GPU cores, 48 GB). Each step is meant to run on both. This table shows where each one has actually been run so far:
-
-| Step | M4 Mac mini | M3 Max laptop |
-|---|---|---|
-| 1. What the two GPUs report | ✅ run | ✅ run |
-| 2. Gradient painted on the GPU | ✅ run | ✅ run, pixel-identical to the mini |
-| 3. Sine-wave ocean with sun | ✅ run | ✅ run, 73 of 2 million pixels differ by 1 level |
-| 4. How fast the water renders | ✅ run | ✅ run |
-| 5. The sea mirrors the sky | ✅ run | ✅ run |
+Two Macs take part: an **M4 Mac mini** (10 GPU cores, 16 GB), where the code is written and first run, and an **M3 Max laptop** (40 GPU cores, 48 GB). Steps 1–5 ran on both.
 
 ## Showcase
 
@@ -77,4 +69,4 @@ Each water pixel now bounces its ray off the waves and looks up the sky in that 
 
 On both Macs, 16 samples per pixel took only 12× the time of 1 sample, because part of each pixel's cost doesn't grow with its sample count.
 
-> **From step 6 on, steps run on the M4 Mac mini only.** Steps 1–5 showed the two Macs behave the same, and the M3 Max is about 3.3× faster. So new steps stay on the mini until a render gets slow enough in real time (the "practical ceiling") that pulling and running it on the M3 Max laptop is genuinely worth it. The table at the top will mark those steps "M4 Mac mini only".
+> **From step 6 on, steps run on the M4 Mac mini only.** Steps 1–5 showed the two Macs behave the same, and the M3 Max is about 3.3× faster. So new steps stay on the mini until a render gets slow enough in real time (the "practical ceiling") that pulling and running it on the M3 Max laptop is genuinely worth it.
