@@ -139,13 +139,16 @@ func renderOne(_ state: MoleculeState, camera: Camera, width: Int = 96, height: 
     let px = frame.contents().bindMemory(to: UInt8.self, capacity: width * height * 4)
     return { x, y in (0..<3).map { Int(px[(y * width + x) * 4 + $0]) } }
 }
-test("a lone oxygen shows up red in the middle, with dark background around it") {
+test("a lone oxygen shows up red in the middle, over step 2's gradient") {
     let oxygen = MoleculeState(atoms: [Atom(element: .oxygen, position: .zero)], bonds: [])
     let pixel = try renderOne(oxygen, camera: Camera.orbit(target: .zero, distance: 4, yaw: 0, pitch: 0, fov: 30))
     let center = pixel(48, 32)
     expect(center[0] > 120 && center[0] > center[1] * 2, "center should be red, got \(center)")
-    let corner = pixel(2, 2)
-    expect(corner.max()! < 60, "corner should be dark background, got \(corner)")
+    let top = pixel(2, 0), bottom = pixel(2, 63)
+    expect(abs(top[0] - 140) <= 3 && abs(top[1] - 200) <= 3 && abs(top[2] - 235) <= 3,
+           "top should be step 2's sky blue (140, 200, 235), got \(top)")
+    expect(abs(bottom[0] - 8) <= 3 && abs(bottom[1] - 40) <= 3 && abs(bottom[2] - 90) <= 3,
+           "bottom should be step 2's deep blue (8, 40, 90), got \(bottom)")
 }
 test("the nearer atom hides the farther one") {
     let pair = MoleculeState(atoms: [Atom(element: .hydrogen, position: SIMD3(0, 0, 1)),

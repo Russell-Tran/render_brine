@@ -72,7 +72,11 @@ func drawOverlay(state: MoleculeState, camera: Camera, stage: String, progress: 
             let x = CGFloat(spot.x) - 11
             let top = CGFloat(spot.y) - 11
             if x > 0 && x < CGFloat(layout.width) - 30 && top > 0 && top < CGFloat(layout.viewHeight) - 20 {
+                // A soft dark shadow keeps the label readable on the light blue gradient.
+                ctx.saveGState()
+                ctx.setShadow(offset: .zero, blur: 5, color: CGColor(srgbRed: 0, green: 0.05, blue: 0.12, alpha: 0.9 * CGFloat(s)))
                 text(label.text, ctx, x: x, top: top, size: 18, bold: true, color: cg(label.color, alpha: s), height: h)
+                ctx.restoreGState()
             }
         }
     }

@@ -127,6 +127,9 @@ let raytraceKernelSource = """
     // Unit vectors (Metal constants can't call normalize).
     constant float3 KEY = float3(-0.4256, 0.5959, 0.681);
     constant float3 FILL = float3(0.7926, -0.2265, 0.5661);
+    // Step 2's gradient colors, (140, 200, 235) and (8, 40, 90) out of 255.
+    constant float3 SKY_BLUE = float3(140.0, 200.0, 235.0) / 255.0;
+    constant float3 DEEP_BLUE = float3(8.0, 40.0, 90.0) / 255.0;
 
     // Nearest hit along the ray. Returns the distance (or a huge number), the
     // surface normal and the color.
@@ -177,7 +180,8 @@ let raytraceKernelSource = """
         float t = trace(ro, rd, spheres, cylinders, cam, n, base);
         float3 color;
         if (t > 1e29) {
-            color = mix(float3(0.07, 0.10, 0.15), float3(0.02, 0.04, 0.07), backgroundY);
+            // The step 2 gradient: sky blue at the top to deep blue at the bottom.
+            color = mix(SKY_BLUE, DEEP_BLUE, backgroundY);
         } else {
             float key = max(dot(n, KEY), 0.0);
             float fill = max(dot(n, FILL), 0.0);
