@@ -9,7 +9,7 @@ Two Macs take part: an **M4 Mac mini** (10 GPU cores, 16 GB), where the code is 
 | 1. What the two GPUs report | ✅ run | ✅ run |
 | 2. Gradient painted on the GPU | ✅ run | ✅ run, pixel-identical to the mini |
 | 3. Sine-wave ocean with sun | ✅ run | ✅ run, 73 of 2 million pixels differ by 1 level |
-| 4. How fast the water renders | ✅ run | ⏳ not run yet |
+| 4. How fast the water renders | ✅ run | ✅ run |
 | 5. The sea mirrors the sky | ✅ run | ⏳ not run yet |
 
 ## Showcase
@@ -43,15 +43,15 @@ Both images are 1920 × 1080. The ones shown were rendered on the M4 Mac mini; t
 
 ### Step 4: How fast the water renders
 
-> **Run on:** M4 Mac mini only so far. The M3 Max laptop's timings are still to come.
+The step 3 water render, timed on the GPU's own clock (median of 20 runs) on both Macs. Code: [`step4_timing/`](step4_timing/)
 
-The step 3 water render, timed on the GPU's own clock (median of 20 runs). Code: [`step4_timing/`](step4_timing/)
+| Size | Pixels | M4 Mac mini (10 GPU cores) | M3 Max laptop (40 GPU cores) | Speedup |
+|---|---|---|---|---|
+| 256 × 144 | 36,864 | 0.013 ms | 0.010 ms | 1.3× |
+| 1080p | 2,073,600 | 0.49 ms | 0.151 ms | 3.2× |
+| 4K | 8,294,400 | 1.9 ms | 0.563 ms | 3.4× |
 
-| Size | Pixels | M4 mini | M3 Max |
-|---|---|---|---|
-| 256 × 144 | 36,864 | 0.013 ms | not run yet |
-| 1080p | 2,073,600 | 0.49 ms | not run yet |
-| 4K | 8,294,400 | 1.9 ms | not run yet |
+**4× the cores gave about 3.3×, not 4×.** The chips also differ in GPU clock speed and core generation, so core count alone doesn't set the speed. Small jobs barely speed up at all: a tiny image can't keep either GPU busy.
 
 On the mini, 4K has 4× the pixels of 1080p and took 4× the time. Getting steady numbers first required warming the GPU up, because it runs slowly until it's been kept busy for about 200 ms:
 
