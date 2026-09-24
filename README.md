@@ -80,3 +80,9 @@ H₂CO₃ → H⁺ + HCO₃⁻, ray-traced on the GPU with real bond lengths. Co
 ![Ball-and-stick animation: one glucose molecule and six O₂ molecules rearrange into six CO₂ and six H₂O](showcase/respiration.gif)
 
 C₆H₁₂O₆ + 6 O₂ → 6 CO₂ + 6 H₂O, the overall accounting of cellular respiration: 24 electrons move from carbon to oxygen. Code: [`step7_respiration/`](step7_respiration/)
+
+### Step 8: The carbonic acid journey
+
+![Looping ball-and-stick animation: CO₂ and water become carbonic acid with a helper water relaying the proton, then bicarbonate and hydronium, while fresh molecules keep arriving](showcase/journey.gif)
+
+CO₂ + H₂O → H₂CO₃ → HCO₃⁻ + H₃O⁺, one molecule at a time. Code: [`step8_carbonic_journey/`](step8_carbonic_journey/)
