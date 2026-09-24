@@ -37,6 +37,8 @@ private func text(_ s: String, _ ctx: CGContext, x: CGFloat, top: CGFloat, size:
     CTLineDraw(line, ctx)
 }
 
+let ballAndStickLegend = "Stick thickness = bond order · gold = + charge, cyan = − charge · not to time scale"
+
 /// "1.22 Å"
 func angstroms(_ x: Float) -> String { String(format: "%.2f Å", x) }
 
@@ -48,7 +50,7 @@ func bondReadout(_ state: MoleculeState) -> String {
 }
 
 /// Draws the charge labels next to atoms and the caption bar.
-func drawOverlay(state: MoleculeState, camera: Camera, stage: String, progress: Float,
+func drawOverlay(state: MoleculeState, camera: Camera, stage: String, legend: String, progress: Float,
                  into frame: MTLBuffer, layout: FrameLayout) {
     guard let ctx = CGContext(data: frame.contents(), width: layout.width, height: layout.height,
                               bitsPerComponent: 8, bytesPerRow: layout.width * 4,
@@ -56,6 +58,7 @@ func drawOverlay(state: MoleculeState, camera: Camera, stage: String, progress: 
                               bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue) else { return }
     let h = CGFloat(layout.height)
     let s = smoothstep01(progress)
+    let k = CGFloat(layout.width) / 640   // everything was laid out for a 640-pixel-wide frame
 
     // Charge labels, fading in as the proton leaves.
     if s > 0.02 {
@@ -68,14 +71,14 @@ func drawOverlay(state: MoleculeState, camera: Camera, stage: String, progress: 
             // Put the label just beyond the atom, on the side away from carbon,
             // so it never sits on a bond.
             let away = simd_normalize(p - carbon)
-            let spot = p + away * 34
-            let x = CGFloat(spot.x) - 11
-            let top = CGFloat(spot.y) - 11
-            if x > 0 && x < CGFloat(layout.width) - 30 && top > 0 && top < CGFloat(layout.viewHeight) - 20 {
+            let spot = p + away * Float(34 * k)
+            let x = CGFloat(spot.x) - 11 * k
+            let top = CGFloat(spot.y) - 11 * k
+            if x > 0 && x < CGFloat(layout.width) - 30 * k && top > 0 && top < CGFloat(layout.viewHeight) - 20 * k {
                 // A soft dark shadow keeps the label readable on the light blue gradient.
                 ctx.saveGState()
-                ctx.setShadow(offset: .zero, blur: 5, color: CGColor(srgbRed: 0, green: 0.05, blue: 0.12, alpha: 0.9 * CGFloat(s)))
-                text(label.text, ctx, x: x, top: top, size: 18, bold: true, color: cg(label.color, alpha: s), height: h)
+                ctx.setShadow(offset: .zero, blur: 5 * k, color: CGColor(srgbRed: 0, green: 0.05, blue: 0.12, alpha: 0.9 * CGFloat(s)))
+                text(label.text, ctx, x: x, top: top, size: 18 * k, bold: true, color: cg(label.color, alpha: s), height: h)
                 ctx.restoreGState()
             }
         }
@@ -85,10 +88,9 @@ func drawOverlay(state: MoleculeState, camera: Camera, stage: String, progress: 
     let barTop = CGFloat(layout.viewHeight)
     ctx.setFillColor(captionBackground)
     ctx.fill(CGRect(x: 0, y: 0, width: CGFloat(layout.width), height: CGFloat(layout.captionHeight)))
-    text(stage, ctx, x: 18, top: barTop + 12, size: 17, bold: true, height: h)
-    text(bondReadout(state), ctx, x: 18, top: barTop + 38, size: 12.5, color: muted, height: h)
-    text("Stick thickness = bond order · gold = + charge, cyan = − charge · not to time scale",
-         ctx, x: 18, top: barTop + 58, size: 11, color: muted, height: h)
+    text(stage, ctx, x: 18 * k, top: barTop + 12 * k, size: 17 * k, bold: true, height: h)
+    text(bondReadout(state), ctx, x: 18 * k, top: barTop + 38 * k, size: 12.5 * k, color: muted, height: h)
+    text(legend, ctx, x: 18 * k, top: barTop + 58 * k, size: 11 * k, color: muted, height: h)
 }
 
 /// Collects frames into an animated GIF that loops forever.

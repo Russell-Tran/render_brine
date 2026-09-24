@@ -176,9 +176,9 @@ func valence(_ state: MoleculeState, of i: Int) -> Float {
 
 /// Where the story is at `seconds` into the animation.
 struct Timeline {
-    let calm: Double = 1.6         // carbonic acid, intact
-    let split: Double = 2.0        // proton leaves, bonds rearrange
-    let after: Double = 2.4        // bicarbonate settles, H⁺ drifts off
+    let calm: Double = 2.5         // carbonic acid, intact
+    let split: Double = 3.5        // proton leaves, bonds rearrange
+    let after: Double = 3.5        // bicarbonate settles, H⁺ drifts off
     var total: Double { calm + split + after }
 
     /// 0 → 1 across the split.
@@ -195,7 +195,7 @@ struct Timeline {
         let p: Float = progress(at: t)
         let pulled: Float = rest + 1.4 * p * p
         let afterSplit: Double = max(t - calm - split, 0)
-        let drift: Float = 1.3 * Float(1 - exp(-afterSplit / 0.8))
+        let drift: Float = 1.3 * Float(1 - exp(-afterSplit / 1.2))
         return pulled + drift
     }
 

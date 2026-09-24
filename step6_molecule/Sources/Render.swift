@@ -79,11 +79,11 @@ func sceneGeometry(_ state: MoleculeState) -> (spheres: [GPUSphere], cylinders: 
         let c = atom.element.color
         var glow = SIMD4<Float>(0, 0, 0, 0)
         if atom.charge > 0.01 {
-            let g = positiveGlow * atom.charge * 1.1
-            glow = SIMD4(g.x, g.y, g.z, 0.45)
+            let g = positiveGlow * atom.charge * 0.8
+            glow = SIMD4(g.x, g.y, g.z, 0.32)
         } else if atom.charge < -0.01 {
-            let g = negativeGlow * (-atom.charge) * 1.3
-            glow = SIMD4(g.x, g.y, g.z, 0.40)
+            let g = negativeGlow * (-atom.charge) * 1.0
+            glow = SIMD4(g.x, g.y, g.z, 0.36)
         }
         spheres.append(GPUSphere(centerRadius: SIMD4(p.x, p.y, p.z, atom.element.ballRadius),
                                  color: SIMD4(c.x, c.y, c.z, 1), glow: glow))
@@ -130,6 +130,19 @@ let raytraceKernelSource = """
     // Step 2's gradient colors, (140, 200, 235) and (8, 40, 90) out of 255.
     constant float3 SKY_BLUE = float3(140.0, 200.0, 235.0) / 255.0;
     constant float3 DEEP_BLUE = float3(8.0, 40.0, 90.0) / 255.0;
+
+    uint hash(uint x) {
+        x ^= x >> 16; x *= 0x7feb352du;
+        x ^= x >> 15; x *= 0x846ca68bu;
+        x ^= x >> 16;
+        return x;
+    }
+    // A faint, fixed per-pixel noise. GIFs only have 256 colors per frame, so
+    // smooth gradients turn into visible bands; this breaks the bands up.
+    float3 dither(uint2 gid) {
+        float n = float(hash(gid.x * 1973u + gid.y * 9277u + 1u) & 1023u) / 1023.0 - 0.5;
+        return float3(n * 3.0 / 255.0);
+    }
 
     // Nearest hit along the ray. Returns the distance (or a huge number), the
     // surface normal and the color.
@@ -191,6 +204,8 @@ let raytraceKernelSource = """
             color = base * (0.22 + 0.85 * key + 0.25 * fill) + 0.45 * spec + 0.12 * rim;
         }
         // Glows around charged atoms, from how close the ray passes to them.
+        // Only in the background, so atoms keep their true colors.
+        if (t < 1e29) return color;
         for (uint i = 0; i < cam.sphereCount; i++) {
             float4 g = spheres[i].glow;
             if (g.w <= 0) continue;
@@ -223,7 +238,7 @@ let raytraceKernelSource = """
                 sum += shadeRay(cam.origin.xyz, rd, sy / float(cam.height), spheres, cylinders, cam);
             }
         }
-        float3 color = clamp(sum / float(k * k), 0.0, 1.0);
+        float3 color = clamp(sum / float(k * k) + dither(gid), 0.0, 1.0);
         pixels[gid.y * cam.width + gid.x] = uchar4(uchar3(round(color * 255)), 255);
     }
     """
