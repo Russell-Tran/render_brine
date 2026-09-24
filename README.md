@@ -73,4 +73,4 @@ On both Macs, 16 samples per pixel took only 12× the time of 1 sample, because 
 
 ![Ball-and-stick animation: carbonic acid loses a proton (gold, H⁺) and becomes bicarbonate, whose two free oxygens end up with equal bonds and share the negative charge](showcase/molecule.gif)
 
-H₂CO₃ → H⁺ + HCO₃⁻, ray-traced on the GPU with real bond lengths. Code: [`step6_molecule/`](step6_molecule/)
+H₂CO₃ → H⁺ + HCO₃⁻, ray-traced on the GPU with real bond lengths. Code: [`step6_carbonic_acid/molecule/`](step6_carbonic_acid/molecule/)
