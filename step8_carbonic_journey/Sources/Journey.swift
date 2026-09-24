@@ -326,7 +326,7 @@ struct Timeline {
     let act2: Double = 4.0      // hydration with the relayed proton
     let act3: Double = 1.5      // carbonic acid; OH turns cis; helper moves round
     let act4: Double = 3.0      // proton to the helper: HCO₃⁻ + H₃O⁺
-    let act5: Double = 2.5      // products fall away, the next CO₂ arrives
+    let act5: Double = 2.5      // products fall away
     var total: Double { act1 + act2 + act3 + act4 + act5 }
 
     var act2Start: Double { act1 }
@@ -343,7 +343,7 @@ struct Timeline {
         if t < act3Start { return "CO₂ + H₂O → H₂CO₃  (a helper water relays the proton)" }
         if t < act4Start { return "Carbonic acid, H₂CO₃" }
         if t < act5Start { return "H₂CO₃ + H₂O → HCO₃⁻ + H₃O⁺" }
-        return "Bicarbonate and hydronium drift off · the next CO₂ arrives"
+        return "Bicarbonate and hydronium drift off"
     }
 }
 
