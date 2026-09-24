@@ -11,9 +11,12 @@ and 16 samples per pixel (median of 10 runs after a 500 ms warm-up).
 
 | Samples per pixel | M4 mini GPU time | vs 1 sample | M3 Max GPU time | vs 1 sample |
 |---|---|---|---|---|
-| 1 | 0.55 ms | 1.0× | | |
-| 4 | 1.78 ms | 3.2× | | |
-| 16 | 6.61 ms | 11.9× | | |
+| 1 | 0.55 ms | 1.0× | 0.169 ms | 1.0× |
+| 4 | 1.78 ms | 3.2× | 0.545 ms | 3.2× |
+| 16 | 6.61 ms | 11.9× | 2.038 ms | 12.0× |
+
+The M3 Max was 3.2–3.3× faster at every sample count (M4 mini 2026-09-24,
+M3 Max 2026-09-24).
 
 M4 mini, 2026-09-24. For comparison, step 3's render (no reflections, one
 sample) took 0.49 ms at 1080p, so reflections cost about 13% more.
@@ -25,6 +28,9 @@ sample) took 0.49 ms at 1080p, so reflections cost about 13% more.
   1.78 ms as 1080p × 4 samples, but 2.17 ms as 4K × 1 sample (4× the pixels).
   Likely causes: starting each thread, and writing each finished pixel to
   memory (4K writes 33 MB of pixels to 1080p's 8 MB).
+- **Both chips show the same 12×.** The fixed per-pixel cost scaled down with
+  the rest of the work on the M3 Max, so it belongs to how this kernel runs,
+  not to one particular chip.
 - **Why more samples matter:** at 1 sample per pixel, waves smaller than a
   pixel near the horizon turn into scattered sparkles. At 16 they average into
   smooth ripples.

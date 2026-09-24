@@ -10,7 +10,7 @@ Two Macs take part: an **M4 Mac mini** (10 GPU cores, 16 GB), where the code is 
 | 2. Gradient painted on the GPU | ✅ run | ✅ run, pixel-identical to the mini |
 | 3. Sine-wave ocean with sun | ✅ run | ✅ run, 73 of 2 million pixels differ by 1 level |
 | 4. How fast the water renders | ✅ run | ✅ run |
-| 5. The sea mirrors the sky | ✅ run | ⏳ not run yet |
+| 5. The sea mirrors the sky | ✅ run | ✅ run |
 
 ## Showcase
 
@@ -59,7 +59,7 @@ On the mini, 4K has 4× the pixels of 1080p and took 4× the time. Getting stead
 
 ### Step 5: The sea mirrors the sky
 
-> **Run on:** M4 Mac mini only so far. The image and timings below are from the mini; the M3 Max laptop hasn't run this step yet.
+> **Run on:** both Macs. The image below is the M4 Mac mini's render.
 
 ![The same sea as step 3, now reflecting the pale sky, brighter toward the horizon, with sharp glints from the sun's reflection](showcase/reflections.png)
 
@@ -69,4 +69,12 @@ Each water pixel now bounces its ray off the waves and looks up the sky in that 
 |---|---|
 | ![Close-up with sparkly, noisy ripples near the horizon](showcase/reflections_crop_1spp.png) | ![The same close-up with smooth ripples](showcase/reflections_crop_16spp.png) |
 
-On the M4 mini at 1080p, 16 samples per pixel took 6.6 ms, only 12× the time of 1 sample, because part of each pixel's cost doesn't grow with its sample count.
+1080p, median GPU time of 10 runs:
+
+| Samples per pixel | M4 Mac mini | M3 Max laptop | Speedup |
+|---|---|---|---|
+| 1 | 0.55 ms | 0.169 ms | 3.3× |
+| 4 | 1.78 ms | 0.545 ms | 3.3× |
+| 16 | 6.61 ms | 2.038 ms | 3.2× |
+
+On both Macs, 16 samples per pixel took only 12× the time of 1 sample, because part of each pixel's cost doesn't grow with its sample count.
