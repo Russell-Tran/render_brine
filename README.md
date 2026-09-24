@@ -76,3 +76,5 @@ Each water pixel now bounces its ray off the waves and looks up the sky in that 
 | 16 | 6.61 ms | 2.038 ms | 3.2× |
 
 On both Macs, 16 samples per pixel took only 12× the time of 1 sample, because part of each pixel's cost doesn't grow with its sample count.
+
+> **From step 6 on, steps run on the M4 Mac mini only.** Steps 1–5 showed the two Macs behave the same, and the M3 Max is about 3.3× faster. So new steps stay on the mini until a render gets slow enough in real time (the "practical ceiling") that pulling and running it on the M3 Max laptop is genuinely worth it. The table at the top will mark those steps "M4 Mac mini only".
