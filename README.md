@@ -59,8 +59,6 @@ On the mini, 4K has 4× the pixels of 1080p and took 4× the time. Getting stead
 
 ### Step 5: The sea mirrors the sky
 
-> **Run on:** both Macs. The image below is the M4 Mac mini's render.
-
 ![The same sea as step 3, now reflecting the pale sky, brighter toward the horizon, with sharp glints from the sun's reflection](showcase/reflections.png)
 
 Each water pixel now bounces its ray off the waves and looks up the sky in that direction. How much it reflects depends on the angle (the Fresnel effect): about 2% looking straight down, nearly everything at a glancing angle. Each pixel also averages 16 samples, which turns the sparkly noise near the horizon into smooth ripples. Code: [`step5_reflections/`](step5_reflections/)
