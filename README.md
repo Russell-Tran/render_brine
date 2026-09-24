@@ -2,6 +2,16 @@
 
 Learning to render water on Apple silicon GPUs with Metal, one small step at a time.
 
+Two Macs take part: an **M4 Mac mini** (10 GPU cores, 16 GB), where the code is written and first run, and an **M3 Max laptop** (40 GPU cores, 48 GB). Each step is meant to run on both. This table shows where each one has actually been run so far:
+
+| Step | M4 Mac mini | M3 Max laptop |
+|---|---|---|
+| 1. What the two GPUs report | ✅ run | ✅ run |
+| 2. Gradient painted on the GPU | ✅ run | ✅ run, pixel-identical to the mini |
+| 3. Sine-wave ocean with sun | ✅ run | ✅ run, 73 of 2 million pixels differ by 1 level |
+| 4. How fast the water renders | ✅ run | ⏳ not run yet |
+| 5. The sea mirrors the sky | ✅ run | ⏳ not run yet |
+
 ## Showcase
 
 ### Step 1: What the two GPUs report
@@ -29,9 +39,11 @@ The first image painted on the GPU: one thread per pixel, written into memory th
 
 Each of the 2,073,600 pixels gets its own GPU thread. The thread adds up five sine waves to find which way the sea's surface tilts at that spot, then shades it toward the sun, from deep blue to turquoise with white glints. Code: [`step3_water/`](step3_water/)
 
-Both images are 1920 × 1080, rendered on an Apple M4 Mac mini.
+Both images are 1920 × 1080. The ones shown were rendered on the M4 Mac mini; the M3 Max laptop produced the same gradient exactly and a water image differing in 73 of 2 million pixels, each by 1 level out of 255.
 
 ### Step 4: How fast the water renders
+
+> **Run on:** M4 Mac mini only so far. The M3 Max laptop's timings are still to come.
 
 The step 3 water render, timed on the GPU's own clock (median of 20 runs). Code: [`step4_timing/`](step4_timing/)
 
@@ -46,6 +58,8 @@ On the mini, 4K has 4× the pixels of 1080p and took 4× the time. Getting stead
 ![Line chart: a 4K frame takes about 3.7 to 4.5 ms right after the GPU has been idle, then drops to about 1.9 ms after roughly 200 ms of continuous rendering](showcase/warmup.svg)
 
 ### Step 5: The sea mirrors the sky
+
+> **Run on:** M4 Mac mini only so far. The image and timings below are from the mini; the M3 Max laptop hasn't run this step yet.
 
 ![The same sea as step 3, now reflecting the pale sky, brighter toward the horizon, with sharp glints from the sun's reflection](showcase/reflections.png)
 
