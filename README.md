@@ -74,3 +74,9 @@ On both Macs, 16 samples per pixel took only 12× the time of 1 sample, because 
 ![Ball-and-stick animation: carbonic acid loses a proton (gold, H⁺) and becomes bicarbonate, whose two free oxygens end up with equal bonds and share the negative charge](showcase/molecule.gif)
 
 H₂CO₃ → H⁺ + HCO₃⁻, ray-traced on the GPU with real bond lengths. Code: [`step6_carbonic_acid/molecule/`](step6_carbonic_acid/molecule/)
+
+### Step 7: Glucose meets oxygen
+
+![Ball-and-stick animation: one glucose molecule and six O₂ molecules rearrange into six CO₂ and six H₂O](showcase/respiration.gif)
+
+C₆H₁₂O₆ + 6 O₂ → 6 CO₂ + 6 H₂O, the overall accounting of cellular respiration: 24 electrons move from carbon to oxygen. Code: [`step7_respiration/`](step7_respiration/)
