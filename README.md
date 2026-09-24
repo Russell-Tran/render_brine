@@ -44,3 +44,15 @@ The step 3 water render, timed on the GPU's own clock (median of 20 runs). Code:
 On the mini, 4K has 4× the pixels of 1080p and took 4× the time. Getting steady numbers first required warming the GPU up, because it runs slowly until it's been kept busy for about 200 ms:
 
 ![Line chart: a 4K frame takes about 3.7 to 4.5 ms right after the GPU has been idle, then drops to about 1.9 ms after roughly 200 ms of continuous rendering](showcase/warmup.svg)
+
+### Step 5: The sea mirrors the sky
+
+![The same sea as step 3, now reflecting the pale sky, brighter toward the horizon, with sharp glints from the sun's reflection](showcase/reflections.png)
+
+Each water pixel now bounces its ray off the waves and looks up the sky in that direction. How much it reflects depends on the angle (the Fresnel effect): about 2% looking straight down, nearly everything at a glancing angle. Each pixel also averages 16 samples, which turns the sparkly noise near the horizon into smooth ripples. Code: [`step5_reflections/`](step5_reflections/)
+
+| 1 sample per pixel | 16 samples per pixel |
+|---|---|
+| ![Close-up with sparkly, noisy ripples near the horizon](showcase/reflections_crop_1spp.png) | ![The same close-up with smooth ripples](showcase/reflections_crop_16spp.png) |
+
+On the M4 mini at 1080p, 16 samples per pixel took 6.6 ms, only 12× the time of 1 sample, because part of each pixel's cost doesn't grow with its sample count.
