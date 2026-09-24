@@ -68,3 +68,9 @@ Each water pixel now bounces its ray off the waves and looks up the sky in that 
 | 16 | 6.61 ms | 2.038 ms | 3.2× |
 
 On both Macs, 16 samples per pixel took only 12× the time of 1 sample, because part of each pixel's cost doesn't grow with its sample count.
+
+### Step 6: One carbonic acid molecule splits
+
+![Ball-and-stick animation: carbonic acid loses a proton (gold, H⁺) and becomes bicarbonate, whose two free oxygens end up with equal bonds and share the negative charge](showcase/molecule.gif)
+
+H₂CO₃ → H⁺ + HCO₃⁻, ray-traced on the GPU with real bond lengths. Code: [`step6_molecule/`](step6_molecule/)
