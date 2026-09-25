@@ -829,7 +829,7 @@ let artemiaConstants: [Constant] = countedConstants + modelConstants + derivedCo
 // that overflows the frame is a bug like any other.
 
 func swimCaption() -> Caption {
-    Caption(title: "Rendered model of one brine shrimp swimming",
+    Caption(title: "Rendered model of a brine shrimp swimming",
             subtitle: "Artemia franciscana, adult female · transmitted light",
             facts: "11 thoracic segments · 22 phyllopods · wave runs tail → head",
             aside: "")

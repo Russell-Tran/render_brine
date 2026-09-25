@@ -90,7 +90,7 @@ func drawLightText(_ s: String, _ ctx: CGContext, x: CGFloat, top: CGFloat, size
 /// pose's own anchors, so a label cannot drift from the thing it names.
 func labelPlacements(_ pose: MysisPose) -> [(String, CGPoint, CGPoint)] {
     let order: [(String, String, CGFloat, CGFloat)] = [
-        ("statocyst", "statocyst (1 of 2)", -150, 44),
+        ("statocyst", "statocyst", -150, 44),
         ("marsupium", "marsupium", -96, 96),
         ("hepatopancreas", "hepatopancreas", 92, -40),
     ]

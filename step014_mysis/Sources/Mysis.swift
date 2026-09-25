@@ -1014,7 +1014,7 @@ let mysisConstants: [MConstant] = measuredConstants + modelConstants + derivedCo
 // MARK: - What the caption bar says
 
 func mysisCaption() -> Caption {
-    Caption(title: "Rendered model of one mysis shrimp swimming",
+    Caption(title: "Rendered model of a mysis shrimp swimming",
             subtitle: "Mysis diluviana, adult female \u{00B7} darkfield "
                     + "\u{00B7} right dorsolateral",
             facts: "8 thoracopod pairs \u{00B7} 2 statocysts in the uropod endopods "
