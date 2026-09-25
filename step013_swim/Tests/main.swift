@@ -259,14 +259,23 @@ test("the food groove runs between the gnathobase rows, with the mouth at its fr
     }
 }
 
-test("it swims ventral side up, and the camera is ventro-lateral") {
+test("it swims ventral side up, and the camera is very nearly ventral") {
     let axes = posture.axes()
     let ventral: SIMD3<Float> = -axes.dorsal
-    // "Up" in the world is +Y; the ventral light reaction turns the animal
-    // over so its limbs face the lamp.
-    expect(ventral.y > 0.2, "the ventral surface points down: \(ventral)")
-    // And it is turned toward the camera, which looks along −Z.
-    expect(ventral.z > 0.2, "the ventral surface is turned away from the camera: \(ventral)")
+    // The ventral light reaction turns the animal over so its limbs face the
+    // lamp — and the lamp, in a brightfield micrograph, is behind the camera's
+    // subject on the camera's own axis. So "ventral side up" and "ventral side
+    // toward the camera" are not two separate claims here, they are the same
+    // one: the camera looks along −Z, and up is +Y, and a shot taken from
+    // above a belly-up animal has those coincide.
+    //
+    // An earlier version demanded ventral.y > 0.2 AND ventral.z > 0.2, which
+    // over-constrained it: a genuinely ventral camera spends nearly all of the
+    // vector on z and cannot then have much y left. That forced a compromise
+    // ventro-LATERAL angle, which hid one of the two limb series.
+    expect(ventral.z > 0.8, "the camera is not on the ventral side: \(ventral)")
+    // What still has to hold is that the animal is not belly-DOWN.
+    expect(ventral.y > -0.1, "the animal has rolled belly-down: \(ventral)")
     expect(axes.anterior.x > 0.5 && axes.anterior.y > 0.3,
            "the head should be up and to the right: \(axes.anterior)")
 }
@@ -570,31 +579,95 @@ test("mailboxing: a primitive is met once per ray, whatever it straddles") {
     // and a list that overflows drops real tissue. So this is the test that
     // watches the count, and the overflow test below watches the consequence.
     let p = poseArtemia(frame: 7, posture: posture, mutations: mutations)
-    let centre: SIMD3<Float> = posture.rotation() * SIMD3<Float>(1500, -500, 0)
-    _ = try probeTau(p.prims, at: centre, sigma: sigma, useGrid: true)
-    // Take the busiest ray in the probe frame — the one that crosses the most
-    // tissue is the one with the most to double-count.
-    var bx = 0
-    var by = 0
-    var met = 0
-    for y in 0..<probeSize {
-        for x in 0..<probeSize {
-            let n: Int = renderer.intervalsMet(atX: x, y: y, width: probeSize)
-            if n > met { met = n; bx = x; by = y }
+    // WHERE to point the probe used to be a guess — first a hardcoded point in
+    // space, then one named exopodite — and both times the guess went stale the
+    // moment the limbs were rebuilt, leaving a test that failed a threshold
+    // rather than failing a mailbox. So stop guessing. Walk the probe over
+    // every lobe of every limb and keep the frame whose busiest ray meets the
+    // most primitives: the animal is allowed to say where its own thickest
+    // part is, and a rebuild of the limbs moves the probe with it.
+    var bestMet = 0
+    var bestCentre = SIMD3<Float>()
+    for lobes in p.limbLobes {
+        for lobe in lobes {
+            let c = p.prims[lobe].c
+            let centre = SIMD3<Float>(c.x, c.y, c.z)
+            _ = try probeTau(p.prims, at: centre, sigma: sigma, useGrid: true)
+            for y in 0..<probeSize {
+                for x in 0..<probeSize {
+                    let n: Int = renderer.intervalsMet(atX: x, y: y, width: probeSize)
+                    if n > bestMet { bestMet = n; bestCentre = centre }
+                }
+            }
         }
     }
-    let cam = Camera(centre: centre, micronsPerPixel: 20, width: probeSize, height: probeSize,
-                     standOff: 100_000)
-    let (o, d) = cam.ray(sx: Float(bx) + 0.5, sy: Float(by) + 0.5,
-                         width: probeSize, height: probeSize)
-    let truth = cpuOpticalDepth(origin: o, direction: d, prims: p.prims, sigma: sigma,
-                                mutations: mutations)
-    expect(truth.intervals > 5, "the busiest probe ray crossed only \(truth.intervals) primitives")
+    // Then check that whole frame, not the one ray that happened to win it.
+    // Every one of the 65 × 65 rays has to meet exactly the primitives the CPU
+    // reference meets, so the mutation has four thousand chances to show
+    // instead of one, and none of it rests on a magic number.
+    _ = try probeTau(p.prims, at: bestCentre, sigma: sigma, useGrid: true)
+    let cam = Camera(centre: bestCentre, micronsPerPixel: 20, width: probeSize,
+                     height: probeSize, standOff: 100_000)
+    // A ray that only grazes a primitive is not evidence about mailboxing: the
+    // GPU and this reference solve the same quadratic in the same float32 and
+    // still land either side of a tangent, and at 1,300 µm across a 65-pixel
+    // probe some ray always finds one. So those rays are counted and set aside
+    // rather than quietly rounded into agreement. "Grazing" is a chord under
+    // half a micron — a sixth of the thinnest thing in the scene, a 3 µm seta.
+    let grazingChord: Float = 0.5
+    func shortestChord(_ o: SIMD3<Float>, _ d: SIMD3<Float>) -> Float {
+        var shortest: Float = .greatestFiniteMagnitude
+        for prim in p.prims {
+            guard let (a, b) = cpuInterval(origin: o, direction: d, prim: prim) else { continue }
+            if b <= 0 { continue }
+            let s: Float = max(a, 0)
+            if b <= s { continue }
+            shortest = min(shortest, b - s)
+        }
+        return shortest
+    }
+    var mismatches = 0
+    var grazed = 0
+    var firstBad = ""
+    var busiest = 0
+    for y in 0..<probeSize {
+        for x in 0..<probeSize {
+            let met: Int = renderer.intervalsMet(atX: x, y: y, width: probeSize)
+            let (o, d) = cam.ray(sx: Float(x) + 0.5, sy: Float(y) + 0.5,
+                                 width: probeSize, height: probeSize)
+            let truth = cpuOpticalDepth(origin: o, direction: d, prims: p.prims, sigma: sigma,
+                                        mutations: mutations)
+            busiest = max(busiest, truth.intervals)
+            if met == truth.intervals { continue }
+            if shortestChord(o, d) < grazingChord { grazed += 1; continue }
+            mismatches += 1
+            if firstBad.isEmpty {
+                firstBad = "ray (\(x), \(y)) met \(met) primitives, the CPU meets"
+                    + " \(truth.intervals)"
+            }
+        }
+    }
+    // Tangents have to stay rare, or setting them aside would be a way of
+    // setting the test aside.
+    expect(grazed * 100 < probeSize * probeSize,
+           "\(grazed) of \(probeSize * probeSize) rays were tangential, too many to discount")
+    expectEqual(mismatches, 0)
+    expect(mismatches == 0, "\(mismatches) of \(probeSize * probeSize) rays disagree: \(firstBad)")
+    // And the premise the whole thing rests on: the frame really is thick, and
+    // the grid really does file primitives in more than one box. The bar for
+    // "thick" is not a number picked to pass — it is one whole phyllopod's
+    // worth of lobes, which is the least a ray can cross and still be looking
+    // through a limb rather than past one.
+    expect(busiest >= p.limbLobes[0].count,
+           "the busiest of \(probeSize * probeSize) rays crossed \(busiest) primitives, fewer"
+           + " than the \(p.limbLobes[0].count) lobes of a single phyllopod")
     guard let g = renderer.grid else { expect(false, "no grid"); return }
     let boxesPer: Double = Double(g.items.count) / Double(p.prims.count)
     expect(boxesPer > 1.5,
            "the grid files each primitive in only \(boxesPer) boxes, so there is nothing to mail")
-    expectEqual(met, truth.intervals)
+    print(String(format: "        busiest of %d rays crossed %d primitives; %d rays grazed;"
+                 + " each primitive is filed in %.1f boxes",
+                 probeSize * probeSize, busiest, grazed, boxesPer))
 }
 
 test("a straddling primitive gives the same τ as one inside a box") {
@@ -797,7 +870,7 @@ test("the clamp is what stops the setal fringe flickering") {
     // An exactly rendered absorber has a total absorbance that does not depend
     // on where it sits inside a pixel: slide the whole fringe sideways by a
     // fraction of a pixel and the ink on the page is the same ink. Any change
-    // is aliasing and nothing else. So: render only the 546 setae, slide the
+    // is aliasing and nothing else. So: render the setae and nothing else, slide the
     // camera across one whole pixel in eighths, and watch the total.
     let w = 512
     let h = 384

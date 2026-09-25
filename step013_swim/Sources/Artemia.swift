@@ -78,7 +78,7 @@ let abdominalSegments = 6
 let genitalSegments = 2
 let compoundEyes = 2
 let naupliarEyeCups = 3
-let setaePerLimb = 24
+let setaePerLimb = 28
 let setaePerFurcalRamus = 9
 let gutSegments = 14
 
@@ -114,11 +114,24 @@ let loopDisplayedSeconds: Double = displayedSecondsPerFrame * Double(swimFrameCo
 let phaseLagFraction: Float = 1.0 / 11.0
 let brokenPhaseLagFraction: Float = 1.0 / 10.0      // the mutation
 
-let limbSweepAmplitude: Float = radians(26)
+/// The fore-aft half-amplitude of the beat. Twenty-one degrees is a 42° arc,
+/// and it is the largest arc that leaves a neighbouring phyllopod room to be a
+/// leaf rather than a sliver: see `limbHalfChord` below, which is where the
+/// arithmetic is, and the interpenetration test, which is where it is checked.
+let limbSweepAmplitude: Float = radians(21)
 let limbSweepMean: Float = radians(-4)
 /// The power stroke is quicker than the recovery. A periodic warp of the phase
 /// does that without breaking the loop.
 let strokeAsymmetry: Float = 0.18
+/// The out-of-plane half-amplitude of the stroke: how far the limb rises on the
+/// recovery and drops on the power stroke. It is the MINOR axis of the stroke
+/// ellipse — a rowing limb mostly goes fore and aft — so it is smaller than the
+/// sweep, and at a ventral camera it is also what decides how square-on a blade
+/// is seen: a limb drooped 60° points at the lens and reads as a sliver however
+/// broad it is.
+///
+/// It is NOT what keeps neighbouring limbs apart. `limbHalfChord` has the proof.
+let limbFeatherAmplitude: Float = radians(15)
 
 // MARK: - Reynolds numbers, derived here and nowhere else
 
@@ -135,7 +148,8 @@ struct ReynoldsNumbers {
         body = u * l / kinematicViscosity
 
         // The limb's own Reynolds number uses its tip speed, not the animal's:
-        // a limb 1.21 mm long sweeping ±34° twice a cycle at 5 Hz.
+        // a limb 1.21 mm long sweeping through `limbSweepAmplitude` twice a
+        // cycle at 5 Hz.
         let limbLength: Double = Double(limbReach) * 1e-6
         let arc: Double = limbLength * Double(2 * limbSweepAmplitude)
         let tipSpeed: Double = arc * 2 * Double(beatFrequencyHz)
@@ -157,6 +171,93 @@ let abdomenFrontX: Float = -1180
 let abdomenPitch: Float = 375
 let telsonX: Float = -3390
 let limbReach: Float = 1210
+
+// MARK: - How broad a phyllopod may be, and why it is a leaf
+//
+// This is the piece of arithmetic the first two versions of this file were
+// missing, and it is worth spelling out, because it says what shape a
+// phyllopod has to be before anything is drawn.
+//
+// Two neighbouring phyllopods hinge `thoraxPitch` = 350 µm apart, but they are
+// 1/11 of a cycle apart in the beat, so their sweep angles differ by as much
+// as 2·limbSweepAmplitude·sin(π/11). A point r µm out along a limb slides
+// fore-aft by r·sin(angle), so the two limbs' AXES converge as you go out:
+//
+//     clearance(r) ≈ thoraxPitch − r · limbConvergence
+//
+// Measured over all 120 frames, both sides and all ten adjacent pairs, that is
+// a straight line: at a 26° sweep it ran 322 µm at the hinge down to 42 µm at
+// r = 1200, which is this formula to within 9%. So a limb has a WEDGE of space
+// to live in, not a slot — and a blade of constant chord cannot fit a wedge.
+// That is the whole reason the earlier versions could only pass the
+// interpenetration test by shaving the phyllopods down to slivers.
+//
+// A blade that TAPERS fits the wedge exactly. And a real phyllopod is broad at
+// its base and narrow at its tip, so the shape the packing demands is the
+// shape Fox describes. That is a pleasant thing to be able to say.
+//
+// Nothing about the out-of-plane part of the stroke can stand in for this, and
+// it is worth knowing why, because raising `limbFeatherAmplitude` is the
+// obvious thing to try and it does nothing. With sweep s and droop d a quarter
+// cycle apart and neighbours δ = 2π/11 of phase apart,
+//
+//     Δd = 2B·sin(δ/2)·cos(θ − δ/2),      Δs = −2A·sin(δ/2)·sin(θ − δ/2)
+//
+// so the instants when two neighbours are at the SAME droop — coplanar, with
+// nothing but 26 µm of blade thickness between them — are exactly the instants
+// when their sweeps differ by the full 2A·sin(δ/2). Raising the feather from
+// 17° to 30° moved the worst intrusion from 0.405 to 0.42, and the algebra
+// says it never could have done better: quadrature is what a rowing stroke IS,
+// and quadrature puts the worst sweep offset at the worst droop offset.
+
+/// How fast two neighbouring limb axes close on each other, in microns of
+/// fore-aft gap lost per micron travelled out along the limb.
+let limbConvergence: Float = 2 * sin(Float.pi * phaseLagFraction) * limbSweepAmplitude
+
+/// The gap left between one limb's axis and its neighbour's, `r` µm out.
+/// The intercept is a little under `thoraxPitch` because the nearest point on
+/// the neighbour is not its hinge but a point a short way out along it; 0.92
+/// is what the 120-frame measurement gives.
+func limbAxisClearance(_ r: Float) -> Float {
+    let intercept: Float = thoraxPitch * 0.92
+    let gap: Float = intercept - limbConvergence * r
+    return max(gap, 0)
+}
+
+/// The widest fore-aft half-chord a blade may have `r` µm out from its hinge:
+/// two neighbours share the gap, so each gets half of it.
+///
+/// There is no safety factor on this, because the wedge is already a worst
+/// case twice over — it takes the largest sweep difference the cycle ever
+/// reaches and applies it at every r, and it treats a blade 26 µm thick as if
+/// it were as wide in every direction as it is fore-aft. Scaling the whole
+/// profile up in a 120-frame sweep, nothing touches until ×1.12, which is that
+/// conservatism showing. The interpenetration test is what holds the line; a
+/// second number multiplied in here would only have to be re-tuned whenever
+/// the first one moved.
+func limbHalfChord(_ r: Float) -> Float {
+    return 0.5 * limbAxisClearance(r)
+}
+
+/// The widest half-chord an ELLIPSOID lobe may have, given where its centre
+/// sits, how long it is and how far it is set fore or aft of the limb axis.
+///
+/// An ellipsoid is widest across its middle, which is the least helpful shape
+/// possible here, so the fit has to be checked all the way out and not just at
+/// the centre: at `t` of the way along, the lobe is only `√(1 − t²)` of its
+/// chord wide, and it has `limbHalfChord` at that radius to fit inside. The
+/// inward half is never the binding one, since the wedge only opens up.
+func fittedChord(from r0: Float, halfLength a: Float, offset: Float) -> Float {
+    var best: Float = .greatestFiniteMagnitude
+    for k in 0...16 {
+        let t: Float = Float(k) / 16
+        let narrowing: Float = (max(1 - t * t, 1e-4)).squareRoot()
+        let room: Float = limbHalfChord(r0 + a * t) - abs(offset)
+        let allowed: Float = max(room, 1) / narrowing
+        best = min(best, allowed)
+    }
+    return best
+}
 
 /// Where thoracic segment `i` sits (i = 0 is the front one).
 func thoracicSegmentX(_ i: Int) -> Float {
@@ -341,6 +442,32 @@ func limbAngle(_ i: Int, frame f: Int, mutations: Mutations = []) -> Float {
     return limbSweepMean + limbSweepAmplitude * cos(warped)
 }
 
+/// How far below horizontal the limb reaches.
+///
+/// A rowing appendage does not swing in a plane — it traces an ELLIPSE,
+/// dropping through the power stroke and tucking up on the recovery. The
+/// stroke angle goes as cos(phase), so the droop goes as sin(phase): a quarter
+/// cycle out, which is exactly what turns a line into an ellipse.
+///
+/// It does NOT keep neighbouring limbs out of each other — see the note above
+/// `limbHalfChord`, which is where that job actually gets done. The quarter
+/// cycle that makes this an ellipse is the same quarter cycle that lines two
+/// neighbours up coplanar at the worst moment of their sweep, so widening the
+/// ellipse cannot help and measurably does not.
+///
+/// The base droop also stays well short of vertical, because the camera is
+/// ventral: a limb drooped past about 55° is pointing at the lens and its
+/// blade, however broad, projects to a line.
+func limbDroop(_ i: Int, frame f: Int, mutations: Mutations = []) -> Float {
+    let base: Float = radians(26) + radians(6) * Float(i) / Float(thoracicSegments - 1)
+    let phase: Float = limbPhase(i, frame: f, mutations: mutations)
+    // The SAME warped phase the stroke angle uses. Feeding this the raw phase
+    // instead leaves the two components slightly out of quadrature, and the
+    // ellipse then pinches at two points in the cycle.
+    let warped: Float = phase + strokeAsymmetry * sin(phase)
+    return base + limbFeatherAmplitude * sin(warped)
+}
+
 /// How far the exopodite is spread. It opens on the power stroke and folds on
 /// the recovery — the same feathering an oar gets, and the reason a limb that
 /// pushes hard one way slips back the other.
@@ -354,10 +481,25 @@ func limbSpread(_ i: Int, frame f: Int, mutations: Mutations = []) -> Float {
 /// The animal is built in its own frame and put into the world by one rotation.
 /// The camera never moves and never rolls: the animal is aimed instead, which
 /// keeps screen x as world x and makes the pixel scale trivially exact.
+///
+/// The roll is the important one and it wants to be very nearly 90°: Fox's
+/// ventral light reaction turns the animal belly-up toward the lamp, and a
+/// brightfield lamp is behind the subject on the camera's own axis, so the
+/// micrograph this is imitating is a ventral view. At the ventro-lateral 32°
+/// an earlier version used, the far limb series was hidden behind the trunk.
+///
+/// The tilt has to be small for the same reason, and it is less obvious why.
+/// The limbs reach out sideways AND ventrally, so a limb's screen length is
+/// part lateral and part ventral — and the lateral part flips sign between the
+/// two sides while the ventral part does not. Any tilt leaves "ventral" with a
+/// component in the plane of the frame, and the two terms then add on one side
+/// of the animal and cancel on the other: one fan comes out long, the other
+/// stubby. At 15° the left fan was half again the right one. Eight degrees is
+/// enough to keep the head in front of the trunk without that showing.
 struct Posture {
     var azimuth: Float = radians(36.87)   // the 3-4-5 diagonal of a 4:3 frame
-    var tilt: Float = radians(15)         // head toward the viewer
-    var ventralRoll: Float = radians(32)  // ventral surface turned toward the viewer
+    var tilt: Float = radians(8)          // head toward the viewer
+    var ventralRoll: Float = radians(82)  // dead ventral: both limb series fan out
 
     /// Anterior, dorsal and left, in world coordinates.
     func axes() -> (anterior: SIMD3<Float>, dorsal: SIMD3<Float>, left: SIMD3<Float>) {
@@ -392,24 +534,44 @@ struct Pose {
     var rotation: simd_float3x3
 }
 
-/// A phyllopod's own frame: along the limb, fore-aft (its thin axis, which is
-/// also the direction it beats in), and laterally.
-private func limbFrame(angle: Float, splay: Float, side: Float)
-    -> (u: SIMD3<Float>, fore: SIMD3<Float>, lat: SIMD3<Float>) {
+/// A phyllopod's own frame.
+///
+/// A phyllopod is a LEAF, and leaves are flat the way leaves are flat: Fox
+/// (*Invertebrate Anatomy OnLine*) has them DORSOVENTRALLY flattened, attached
+/// along their dorsal edge, projecting laterally AND ventrally. So the limb
+/// reaches out to the side — it does not hang straight down — and its thin
+/// axis is dorso-ventral, not fore-aft.
+///
+/// The first version of this file had both of those the other way round: the
+/// limb reached ventrally and the blade was thin fore-aft. Every phyllopod
+/// then rendered as a sliver rather than a leaf, and since there is no view of
+/// the animal from which a sliver looks like a paddle, no camera could have
+/// saved it. Russell spotted it against the reference micrograph.
+///
+///   u     — along the limb: out to the side, drooping ventrally by `droop`,
+///           swung fore-aft by the beat
+///   chord — the blade's width, fore-aft. The broad direction.
+///   thin  — dorso-ventral. The flattening axis.
+///
+/// `thin` is left as the raw cross product rather than being forced to point
+/// dorsally on both sides, so the two series are exact mirror images. The sign
+/// of a semi-axis does not change an ellipsoid.
+private func limbFrame(angle: Float, droop: Float, side: Float)
+    -> (u: SIMD3<Float>, chord: SIMD3<Float>, thin: SIMD3<Float>) {
     let s: Float = sin(angle)
     let c: Float = cos(angle)
-    let cs: Float = cos(splay)
-    let ss: Float = sin(splay)
-    // Straight ventral, swung fore-aft by `angle`, then splayed out sideways.
-    let u = simd_normalize(SIMD3<Float>(s, -c * cs, side * c * ss))
+    let cd: Float = cos(droop)
+    let sd: Float = sin(droop)
+    // Straight out to the side, drooped ventrally, then swung fore-aft.
+    let outward = SIMD3<Float>(0, -sd, side * cd)
+    let u: SIMD3<Float> = simd_normalize(SIMD3<Float>(s, 0, 0) + outward * c)
     let xhat = SIMD3<Float>(1, 0, 0)
     let along: Float = simd_dot(xhat, u)
-    var fore: SIMD3<Float> = xhat - u * along
-    if simd_length(fore) < 1e-4 { fore = SIMD3(0, 0, 1) }
-    fore = simd_normalize(fore)
-    var lat: SIMD3<Float> = simd_normalize(simd_cross(fore, u))
-    if lat.z * side < 0 { lat = -lat }
-    return (u, fore, lat)
+    var chord: SIMD3<Float> = xhat - u * along
+    if simd_length(chord) < 1e-4 { chord = SIMD3(0, 1, 0) }
+    chord = simd_normalize(chord)
+    let thin: SIMD3<Float> = simd_normalize(simd_cross(u, chord))
+    return (u, chord, thin)
 }
 
 /// Builds the whole animal for one frame, already in world coordinates.
@@ -572,9 +734,11 @@ func poseArtemia(frame f: Int, posture: Posture = Posture(), mutations: Mutation
 
     // -- the 22 phyllopods --------------------------------------------------
     // No regional specialisation: every one is the same limb, differing only
-    // in size. Each is three lobes — endopodite, exopodite (the flabellum) and
-    // epipodite (the gill) — plus the gnathobase, the medial endite that walls
-    // the food groove and hands food forward along it.
+    // in size. Each is a tapered blade of three overlapping lobes — the
+    // endopodite — with the exopodite (the flabellum) at its tip carrying the
+    // setal fringe, the epipodite (the gill) beside it, and the gnathobase,
+    // the medial endite that walls the food groove and hands food forward
+    // along it, at its base.
     var lobeCount = 0
     var setaCount = 0
     for i in 0..<thoracicSegments {
@@ -586,62 +750,99 @@ func poseArtemia(frame f: Int, posture: Posture = Posture(), mutations: Mutation
         let spread: Float = limbSpread(i, frame: f, mutations: mutations)
         for side in [Float(1), -1] {
             let hinge: SIMD3<Float> = place(SIMD3(x, -semi.y * 0.80, side * semi.z * 0.62))
-            let splay: Float = radians(26 + 6 * Float(i) / Float(thoracicSegments - 1))
-            let (u, fore, lat) = limbFrame(angle: angle, splay: splay, side: side)
+            let droop: Float = limbDroop(i, frame: f, mutations: mutations)
+            let (u, chord, thin) = limbFrame(angle: angle, droop: droop, side: side)
             hinges.append(world(hinge))
             var lobes: [Int] = []
 
-            // A phyllopod is not a flat plate: each lobe is cupped, so its flat
-            // face is tilted out of the pure fore-aft plane. Without that every
-            // lobe on one side of the animal is exactly edge-on to the camera
-            // at once, and a fan of soft blades turns into a row of hard bars.
+            // Each lobe is cupped: its flat face is rolled out of the pure
+            // horizontal, the way a real phyllopod is dished rather than
+            // planar. Without it the whole fan lies in one plane and reads as
+            // a paper cut-out.
             //
             // The cup is a roll ABOUT the limb's own axis, so a lobe never
             // leaves the ray that runs out from its hinge. Tilting the axis
-            // instead — the obvious way to write this — moves the outer lobes
-            // fore and aft by ±90 µm, which is most of the 155 µm the beat
-            // leaves between one limb and the next, and neighbouring limbs then
-            // pass through each other. The interpenetration test found that.
-            func cupped(_ degrees: Float) -> (SIMD3<Float>, SIMD3<Float>) {
+            // instead — the obvious way to write this — swings the outer lobes
+            // fore and aft, which eats the clearance the beat leaves between
+            // one limb and the next, and neighbouring limbs then pass through
+            // each other. The interpenetration test found that.
+            func cupped(_ degrees: Float) -> (thinV: SIMD3<Float>, chordV: SIMD3<Float>) {
                 let a: Float = radians(degrees)
                 let ca: Float = cos(a)
                 let sa: Float = sin(a)
-                let normal: SIMD3<Float> = fore * ca + lat * sa
-                let broad: SIMD3<Float> = lat * ca - fore * sa
-                return (normal, broad)
+                let thinV: SIMD3<Float> = thin * ca + chord * sa
+                let chordV: SIMD3<Float> = chord * ca - thin * sa
+                return (thinV, chordV)
             }
-            func lobe(_ along: Float, _ sideways: Float, _ a: Float, _ b: Float, _ c: Float,
-                      _ cup: Float) -> Int {
-                let (normal, broad) = cupped(cup)
-                let centre: SIMD3<Float> = hinge + u * (along * size) + lat * (sideways * size)
-                let m = simd_float3x3(columns: (u * (a * size), normal * b, broad * (c * size)))
+            // One lobe of the leaf. `along` and `halfLength` are microns out
+            // from the hinge and `offset` is microns fore or aft of the limb's
+            // own axis, all before the limb's size factor. The chord is NOT a
+            // free parameter: it is whatever `fittedChord` says will still
+            // clear the neighbouring limb through the whole beat, which is the
+            // wedge described up at `limbHalfChord`. `share` is the fraction
+            // of that wedge this lobe takes — the blade proper takes all of
+            // it, the gill and the gnathobase are narrower things beside it.
+            //
+            // The wedge is set by the 350 µm segment pitch, which does not
+            // shrink with the limb, so everything in here is in real microns.
+            func lobe(along: Float, halfLength: Float, thickness: Float,
+                      offset: Float, cup: Float, share: Float) -> Int {
+                let r0: Float = along * size
+                let a0: Float = halfLength * size
+                let off: Float = offset * size
+                let fitted: Float = fittedChord(from: r0, halfLength: a0, offset: off)
+                let c0: Float = fitted * share
+                let (thinV, chordV) = cupped(cup)
+                let centre: SIMD3<Float> = hinge + u * r0 + chord * off
+                let m = simd_float3x3(columns: (u * a0, thinV * thickness, chordV * c0))
                 return addOriented(centre, m, .limb)
             }
-            // endopodite, then the broad exopodite that carries the setal
-            // fringe, then the epipodite behind it, then the gnathobase.
-            lobes.append(lobe(440, -70, 330, 30, 225, 9))
-            let exoA: Float = 360 * (0.72 + 0.28 * spread)
-            let exoC: Float = 295 * (0.58 + 0.42 * spread)
-            let (exoNormal, exoBroad) = cupped(-7)
-            let exoCentre: SIMD3<Float> = hinge + u * (850 * size) + lat * (130 * size)
-            let exoM = simd_float3x3(columns: (u * (exoA * size), exoNormal * 26,
-                                               exoBroad * (exoC * size)))
+            // The blade, as three overlapping lobes stacked along the limb.
+            // They narrow as they go out because the wedge does, and because
+            // they overlap the per-tissue union merges them into one tapered
+            // leaf rather than a string of beads. This is the shape the
+            // reference micrograph shows and the shape the packing demands.
+            lobes.append(lobe(along: 230, halfLength: 180, thickness: 33,
+                              offset: 0, cup: 10, share: 1))
+            lobes.append(lobe(along: 470, halfLength: 260, thickness: 31,
+                              offset: 0, cup: 6, share: 1))
+            lobes.append(lobe(along: 720, halfLength: 250, thickness: 28,
+                              offset: 0, cup: 1, share: 1))
+            // The gnathobase: the medial endite that walls the food groove and
+            // hands food forward along it. Thick, short, and set forward.
+            lobes.append(lobe(along: 150, halfLength: 120, thickness: 40,
+                              offset: -50, cup: 4, share: 0.55))
+            // The epipodite — the gill — lateral and a little behind the blade.
+            lobes.append(lobe(along: 560, halfLength: 230, thickness: 38,
+                              offset: 38, cup: 15, share: 0.85))
+            // The exopodite (the flabellum) is the distal flap, and the one
+            // that carries the setal fringe, so it is built out here where its
+            // axes are still in hand. It opens on the power stroke and folds
+            // on the recovery, which is what `spread` is.
+            let exoR: Float = 940 * size
+            let exoA: Float = 250 * size * (0.74 + 0.26 * spread)
+            let exoFit: Float = fittedChord(from: exoR, halfLength: exoA, offset: 0)
+            let exoC: Float = exoFit * (0.66 + 0.34 * spread)
+            let (exoThin, exoChord) = cupped(-7)
+            let exoCentre: SIMD3<Float> = hinge + u * exoR
+            let exoM = simd_float3x3(columns: (u * exoA, exoThin * 26, exoChord * exoC))
             let exoIndex: Int = addOriented(exoCentre, exoM, .limb)
             lobes.append(exoIndex)
-            lobes.append(lobe(430, 290, 250, 34, 175, 15))
-            lobes.append(lobe(200, -60, 140, 34, 70, 4))
-            lobeCount += 4
+            lobeCount += lobes.count
 
-            // The setal fringe on the exopodite's margin.
+            // The setal fringe on the exopodite's margin. In the reference
+            // micrographs these fans are long enough to overlap their
+            // neighbours and fill the space between limbs — that overlap is
+            // the only depth cue brightfield has, since there is no shading.
             for k in 0..<setaePerLimb {
                 let t: Float = Float(k) / Float(setaePerLimb - 1)
-                let alpha: Float = radians(-84 + 168 * t)
+                let alpha: Float = radians(-96 + 192 * t)
                 let ca: Float = cos(alpha)
                 let sa: Float = sin(alpha)
-                let rim: SIMD3<Float> = exoCentre + u * (exoA * size * ca * 0.94)
-                    + exoBroad * (exoC * size * sa * 0.94)
-                let dir: SIMD3<Float> = simd_normalize(u * (ca * exoC) + exoBroad * (sa * exoA))
-                let length: Float = 210 * size * (0.74 + 0.26 * spread)
+                let rim: SIMD3<Float> = exoCentre + u * (exoA * ca * 0.94)
+                    + exoChord * (exoC * sa * 0.94)
+                let dir: SIMD3<Float> = simd_normalize(u * (ca * exoC) + exoChord * (sa * exoA))
+                let length: Float = 360 * size * (0.74 + 0.26 * spread)
                 let clamped = clampThin(trueRadius: setaTrueRadius,
                                         enabled: !mutations.contains(.noClamp))
                 prims.append(.capsule(from: world(rim), to: world(rim + dir * length),
@@ -758,7 +959,8 @@ private let modelConstants: [Constant] = [
              source: "MODEL: 1/11 so exactly one wave sits on eleven limbs and the loop closes"),
     Constant(name: "limb sweep amplitude", value: Double(limbSweepAmplitude * 180 / .pi),
              unit: "deg", evidence: .model,
-             source: "MODEL: chosen so neighbouring limbs never interpenetrate"),
+             source: "MODEL: the widest arc that still leaves a neighbouring "
+             + "phyllopod room to be a leaf rather than a sliver"),
     Constant(name: "stroke asymmetry", value: Double(strokeAsymmetry), unit: "",
              evidence: .model,
              source: "MODEL: a periodic phase warp, power stroke quicker than recovery"),
