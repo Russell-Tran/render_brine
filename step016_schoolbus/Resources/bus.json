@@ -1,0 +1,111 @@
+{
+  "vehicle": "Type C conventional school bus, 13 rows, high-headroom body",
+  "note": "Every length is in inches, the unit the sources use. `evidence` says how well each number is known: `measured` is a published manufacturer specification or a regulated dimension; `derived` follows by arithmetic from one of those; `model` is a plausible value this render chose because nothing regulates it.",
+  "sources": {
+    "bluebird": "Blue Bird Vision (Type C) specification sheet: interior width 90 3/4 in, interior head room 74 in standard / 77 in high-headroom option, body width 96 in.",
+    "fmvss222": "49 CFR 571.222, Standard No. 222, School bus passenger seating and crash protection, S5.2 (seat back height 24 in above the seating reference point; a restraining barrier is required unless the rear surface of another seat is within 24 in of the seating reference point).",
+    "ospi": "Washington OSPI School Bus Specification Manual (2023). Aisle: minimum width of all aisles 12 in. Seats 1: minimum cushion depth 15 in, seat back height 24 in above the seating reference point. Seats 5: minimum 36 in headroom from the un-depressed seat cushion line to the ceiling. Windows, Type C and D 5: each passenger-side window shall have an unobstructed opening of at least 12 in high and 22 in wide when lowered. Emergency Exits x: the rear-emergency exit window shall be no smaller than 16 in in height and 54 in in width. Emergency Exits: the designation shall be in letters at least 2 in high, of a colour that contrasts with its background, above the door or window. Steps 1 and 5: risers shall not exceed 10 in and the first step at the service door shall be not more than 16 in from the ground. Floor: the floor covering in the aisles shall be ribbed or other raised-pattern elastomer."
+  },
+  "dimensions": {
+    "interior_width": {
+      "inches": 90.75,
+      "evidence": "measured",
+      "source": "bluebird"
+    },
+    "interior_headroom": {
+      "inches": 77.0,
+      "evidence": "measured",
+      "source": "bluebird"
+    },
+    "body_width": {
+      "inches": 96.0,
+      "evidence": "measured",
+      "source": "bluebird"
+    },
+    "floor_height": {
+      "inches": 36.0,
+      "evidence": "derived",
+      "source": "ospi: a three-step stairwell with the first step no more than 16 in from the ground and risers of no more than 10 in puts the floor line at no more than 16 + 10 + 10 = 36 in"
+    },
+    "aisle_width": {
+      "inches": 14.0,
+      "evidence": "derived",
+      "source": "ospi: 12 in is the regulated minimum; 14 in drawn"
+    },
+    "seat_back_height_above_srp": {
+      "inches": 24.0,
+      "evidence": "measured",
+      "source": "fmvss222"
+    },
+    "seat_cushion_depth": {
+      "inches": 15.0,
+      "evidence": "measured",
+      "source": "ospi"
+    },
+    "seat_cushion_height": {
+      "inches": 17.0,
+      "evidence": "model",
+      "source": "nothing regulates the cushion height above the floor; 17 in is the usual bench height and leaves 60 in of headroom, well over the 36 in ospi requires"
+    },
+    "seat_pitch": {
+      "inches": 28.0,
+      "evidence": "model",
+      "source": "fmvss222 caps the gap at 24 in from the seating reference point to the seat back ahead; 28 in back-to-back is the common production pitch that satisfies it"
+    },
+    "window_sill_height": {
+      "inches": 34.0,
+      "evidence": "model",
+      "source": "not regulated; 34 in above the floor line is typical for a Type C body and puts the sill just below the 41 in seat back top"
+    },
+    "window_glass_height": {
+      "inches": 28.0,
+      "evidence": "derived",
+      "source": "ospi requires an unobstructed opening of at least 12 in high when the window is lowered; a half-drop window therefore needs at least 24 in of glass. 28 in drawn"
+    },
+    "window_pillar_width": {
+      "inches": 4.0,
+      "evidence": "model",
+      "source": "the body post between bays; 4 in leaves 24 in of glass in a 28 in bay, clearing the 22 in minimum opening width"
+    },
+    "rear_door_width": {
+      "inches": 26.0,
+      "evidence": "model",
+      "source": "the rear emergency door leaf; not separately regulated once the 45 in by 12 in aisle clearance of ospi is met"
+    },
+    "rear_door_window_width": {
+      "inches": 21.5,
+      "evidence": "model",
+      "source": "the viewing window in the door leaf"
+    },
+    "rear_door_window_height": {
+      "inches": 23.5,
+      "evidence": "model",
+      "source": "the viewing window in the door leaf"
+    },
+    "rear_exit_window_min_height": {
+      "inches": 16.0,
+      "evidence": "measured",
+      "source": "ospi: this is the minimum for a rear-emergency *window*, the alternative body to the rear-emergency *door* drawn here. Kept so the test can show the door's window is not being passed off as one"
+    },
+    "rear_exit_window_min_width": {
+      "inches": 54.0,
+      "evidence": "measured",
+      "source": "ospi, as above"
+    },
+    "emergency_exit_letter_height": {
+      "inches": 2.0,
+      "evidence": "measured",
+      "source": "ospi"
+    },
+    "aisle_rib_pitch": {
+      "inches": 4.7,
+      "evidence": "model",
+      "source": "ospi requires a ribbed or raised-pattern elastomer aisle covering but sets no pitch"
+    }
+  },
+  "counts": {
+    "seat_rows": 13,
+    "window_bays": 13,
+    "seats_per_row": 2
+  }
+}
