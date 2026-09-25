@@ -1,0 +1,7 @@
+# Rebuilt by `make structure` in about 25 seconds, and 3 MB of it. The builder
+# and the deposited structures are what belong in the repo, not the output.
+Resources/scene.json
+# The deposited coordinate files, refetched by the builder from RCSB.
+Resources/*.cif
+.build/
+renders/
