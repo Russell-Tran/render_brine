@@ -122,3 +122,9 @@ GFP from its crystal structure ([PDB 1EMA](https://www.rcsb.org/structure/1EMA))
 ![Looping animation: three panels of the same membrane side by side — CaCl₂ and heat shock labelled MODEL, electroporation labelled SIMULATED, natural competence labelled MEASURED with a protein spanning the membrane](showcase/transformation_routes.gif)
 
 Bacterial transformation, and the first render here whose central event has never been observed: the CaCl₂ and heat-shock method dates to 1970 and its molecular mechanism is still not established. So every frame carries an **evidence bar** saying how well the thing on screen is actually known — measured, simulated, or model — and the tests enforce it, failing if the chemical route ever claims more evidence than it has. 407,000 spheres at 20 ms a frame, with the grid rebuilt every frame. Code: [`step10_transformation/`](step10_transformation/)
+
+### Step 11: The light switch
+
+![Looping animation: a loop of DNA held shut by a protein bridging two distant sites. A small sugar arrives and binds it, the grip moves along the DNA, the loop springs open, and a shape settles onto the newly exposed promoter — then the sugar leaves and the loop re-forms](showcase/switch.gif)
+
+How pGLO's GFP gene gets switched on. AraC holds *araO2* and *araI1* — 210 base pairs apart — at the same time, tying the DNA in a loop that blocks RNA polymerase. Arabinose binds, AraC's grip moves to the adjacent site, the loop opens, and the gene can be read. The two half-sites occur in pGLO verbatim, and araO2 placed by its published offset lands exactly 210 bp away, independently. First scene here that genuinely deforms, so the acceleration grid is rebuilt every frame — which costs only 7.7% of it. Code: [`step11_switch/`](step11_switch/)
