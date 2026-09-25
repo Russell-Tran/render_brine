@@ -12,7 +12,7 @@ SWIFTC := swiftc -O -framework CoreGraphics $(if $(SDK),-sdk $(SDK))
 BUILD := .build
 
 # Waves, camera, colors and PNG saving come from step 3.
-WATER := ../step3_water/Sources/Water.swift
+WATER := ../step003_water/Sources/Water.swift
 
 $(BUILD)/reflections: $(WATER) Sources/Reflections.swift Sources/main.swift Makefile
 	@mkdir -p $(BUILD)

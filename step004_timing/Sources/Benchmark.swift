@@ -1,6 +1,6 @@
 // Times step 3's water render on the GPU's own clock.
 //
-// This file is compiled together with ../step3_water/Sources/Water.swift, so
+// This file is compiled together with ../step003_water/Sources/Water.swift, so
 // it times exactly the same kernel (waterKernelSource) with the same waves.
 //
 // How the timing works, and why:

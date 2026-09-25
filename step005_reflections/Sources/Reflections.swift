@@ -1,6 +1,6 @@
 // Step 3's sea, now reflecting the sky, with smoother edges.
 //
-// Compiled together with ../step3_water/Sources/Water.swift, which provides the
+// Compiled together with ../step003_water/Sources/Water.swift, which provides the
 // waves, camera, colors, waveNormal(), GPUImage, findDevice() and savePNG().
 //
 // What's new compared with step 3:

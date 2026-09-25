@@ -13,7 +13,7 @@ BUILD := .build
 
 # The renderer being timed comes straight from step 3, so both steps always
 # use the same kernel.
-WATER := ../step3_water/Sources/Water.swift
+WATER := ../step003_water/Sources/Water.swift
 
 $(BUILD)/timing: $(WATER) Sources/Benchmark.swift Sources/main.swift Makefile
 	@mkdir -p $(BUILD)

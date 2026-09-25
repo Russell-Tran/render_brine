@@ -38,7 +38,7 @@ import numpy as np
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 RES = os.path.join(HERE, "..", "Resources")
-PGLO = os.path.join(HERE, "..", "..", "step8a_plasmid", "Resources", "pglo.json")
+PGLO = os.path.join(HERE, "..", "..", "step008a_plasmid", "Resources", "pglo.json")
 OUT = os.path.join(RES, "switch.json")
 
 # B-DNA, as step 8a used: solution values, not the tighter crystal helix.
