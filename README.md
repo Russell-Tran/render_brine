@@ -115,6 +115,12 @@ The plasmid that makes *E. coli* glow, at its real size: 5,371 base pairs, 1.83 
 
 GFP from its crystal structure ([PDB 1EMA](https://www.rcsb.org/structure/1EMA)), space-filling: every atom a sphere at its full van der Waals radius. The chromophore inside is not a cofactor — the protein builds it out of three consecutive amino acids of its own chain, and the barrel exists to hold it rigid and keep water away. First render with ambient occlusion, which is what makes a space-filling surface readable at all. Code: [`step9_gfp/`](step9_gfp/)
 
+### Step 9a: GFP compared with mCherry protein
+
+![Looping animation: two space-filling protein barrels side by side, GFP on the left and mCherry on the right, turning together. Part-way round a round porthole opens in each, showing a green chromophore inside the left barrel and a red one inside the right, then both close again](showcase/color.gif)
+
+Two barrels of almost the same size and fold, and the single bond that separates green light from red. It isn't refraction — they fluoresce, and a chromophore's colour is set by how far its π electrons can spread. mCherry's run is longer by an acylimine, and that is measurable in the coordinates: the N1–CA1 bond is **1.471 Å** in GFP (a single bond) and **1.305 Å** in mCherry (a double), 0.166 Å apart and far beyond coordinate error. The π system runs 14 atoms in one and 16 in the other. Both proteins wear the colour of the light they actually emit, computed from its wavelength through the CIE 1931 matching functions rather than chosen — and both clip, because no screen can show a pure wavelength. Code: [`step9a_color/`](step9a_color/)
+
 ### Step 10: Getting a plasmid into a bacterium
 
 ![Looping animation: a supercoiled plasmid, drawn as a branched interwound coil with calcium ions around it, drifts down onto a cross-section of the E. coli envelope — an outer membrane of lipids, a peptidoglycan mesh, and an inner membrane below](showcase/transformation_approach.gif)
