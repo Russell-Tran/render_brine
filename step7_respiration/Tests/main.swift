@@ -1,6 +1,6 @@
 // Tests for step 7. Chemistry tests check atom bookkeeping, oxidation states
 // and product geometry; glucose tests check PubChem's structure; render tests
-// check the ray tracer, including the step 6 feedback (glows stay behind
+// check the ray tracer, including the step 6a feedback (glows stay behind
 // atoms, the background is step 2's gradient, dither stays faint).
 
 import Foundation

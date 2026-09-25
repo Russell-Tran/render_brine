@@ -1,4 +1,4 @@
-// Step 9: glycolysis as two ray-traced GIFs, "spend" (glucose → two
+// Step 7a: glycolysis as two ray-traced GIFs, "spend" (glucose → two
 // glyceraldehyde-3-phosphates, 2 ATP spent) and "payoff" (→ two pyruvates,
 // 4 ATP made, 2 NADH). The chemistry and keyframes come from
 // Tools/build_timeline.py via Resources/timeline.json.

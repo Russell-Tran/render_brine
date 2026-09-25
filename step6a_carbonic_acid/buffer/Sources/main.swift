@@ -1,4 +1,4 @@
-// Step 6: the carbonic acid–bicarbonate buffer, rendered as an animated GIF.
+// Step 6a: the carbonic acid–bicarbonate buffer, rendered as an animated GIF.
 //
 // Water starts with 24 mM bicarbonate and 1.2 mM CO₂ (the amounts in human
 // blood), at equilibrium. At t = 0.25 s, 10 mM of hydrochloric acid goes in.

@@ -1,4 +1,4 @@
-// Tests for step 8. Geometry tests check each key shape against its source;
+// Tests for step 6b. Geometry tests check each key shape against its source;
 // bookkeeping tests check every frame of the loop; renderer tests check the
 // ray tracer and the GIF writer.
 

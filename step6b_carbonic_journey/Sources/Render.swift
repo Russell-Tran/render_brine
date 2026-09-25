@@ -1,9 +1,6 @@
-// A small GPU ray tracer for ball-and-stick molecules (from step 6).
-//
-// One thread per pixel. Each thread shoots a few rays through its pixel
-// (2 × 2, as in step 5), finds the nearest atom (sphere) or bond (cylinder),
-// and shades it with a key light, a fill light and a highlight. Charged atoms
-// also get a soft glow.
+// A small GPU ray tracer for ball-and-stick molecules, copied from step 7
+// (which carries the step 6a feedback: glows only behind atoms, softer glows,
+// and a faint dither against GIF color banding).
 
 import Foundation
 import Metal
@@ -69,6 +66,53 @@ let doubleBondOffset: Float = 0.11
 let positiveGlow = SIMD3<Float>(1.0, 0.78, 0.25)   // warm gold for +
 let negativeGlow = SIMD3<Float>(0.30, 0.80, 1.0)   // cyan for −
 
+/// Turns a molecule into spheres and cylinders. A bond of order 1 is one
+/// stick; order 2 is two sticks; order 1.5 is one stick plus a half-thick one.
+/// A bond fading out (order below 1) gets thinner.
+func sceneGeometry(_ state: MoleculeState) -> (spheres: [GPUSphere], cylinders: [GPUCylinder]) {
+    var spheres: [GPUSphere] = []
+    for atom in state.atoms {
+        let p = atom.position
+        let c = atom.element.color
+        var glow = SIMD4<Float>(0, 0, 0, 0)
+        if atom.glow > 0.01 {
+            let g = positiveGlow * atom.glow * 0.7
+            glow = SIMD4(g.x, g.y, g.z, 0.40)
+        } else if atom.glow < -0.01 {
+            let g = negativeGlow * (-atom.glow) * 0.7
+            glow = SIMD4(g.x, g.y, g.z, 0.36)
+        }
+        spheres.append(GPUSphere(centerRadius: SIMD4(p.x, p.y, p.z, atom.element.ballRadius),
+                                 color: SIMD4(c.x, c.y, c.z, 1), glow: glow))
+    }
+    var cylinders: [GPUCylinder] = []
+    let grey = SIMD4<Float>(0.62, 0.64, 0.67, 1)
+    for bond in state.bonds where bond.order > 0.02 {
+        let a = state.atoms[bond.a].position
+        let b = state.atoms[bond.b].position
+        let along = simd_normalize(b - a)
+        // Double-bond sticks sit side by side, perpendicular to the bond.
+        var sideRaw = simd_cross(along, SIMD3<Float>(0, 0, 1))
+        if simd_length(sideRaw) < 1e-3 { sideRaw = simd_cross(along, SIMD3<Float>(0, 1, 0)) }
+        let side = simd_normalize(sideRaw)
+        if bond.order <= 1 {
+            cylinders.append(GPUCylinder(aRadius: SIMD4(a.x, a.y, a.z, bondRadius * bond.order),
+                                         b: SIMD4(b.x, b.y, b.z, 0), color: grey))
+        } else {
+            let extra: Float = bond.order - 1
+            let shiftMain = side * (-doubleBondOffset * extra)
+            let shiftExtra = side * doubleBondOffset * extra
+            let a1 = a + shiftMain, b1 = b + shiftMain
+            let a2 = a + shiftExtra, b2 = b + shiftExtra
+            cylinders.append(GPUCylinder(aRadius: SIMD4(a1.x, a1.y, a1.z, bondRadius),
+                                         b: SIMD4(b1.x, b1.y, b1.z, 0), color: grey))
+            cylinders.append(GPUCylinder(aRadius: SIMD4(a2.x, a2.y, a2.z, bondRadius * extra),
+                                         b: SIMD4(b2.x, b2.y, b2.z, 0), color: grey))
+        }
+    }
+    return (spheres, cylinders)
+}
+
 let raytraceKernelSource = """
     #include <metal_stdlib>
     using namespace metal;
@@ -93,8 +137,9 @@ let raytraceKernelSource = """
         x ^= x >> 16;
         return x;
     }
-    // A faint, fixed per-pixel noise. GIFs only have 256 colors per frame, so
-    // smooth gradients turn into visible bands; this breaks the bands up.
+    // A faint, fixed per-pixel noise (±1.5 levels out of 255). GIFs only have
+    // 256 colors per frame, so smooth gradients turn into visible bands; this
+    // breaks the bands up.
     float3 dither(uint2 gid) {
         float n = float(hash(gid.x * 1973u + gid.y * 9277u + 1u) & 1023u) / 1023.0 - 0.5;
         return float3(n * 3.0 / 255.0);
@@ -159,8 +204,8 @@ let raytraceKernelSource = """
             float rim = pow(1.0 - max(dot(n, -rd), 0.0), 3.0);
             color = base * (0.22 + 0.85 * key + 0.25 * fill) + 0.45 * spec + 0.12 * rim;
         }
-        // Glows around charged atoms, from how close the ray passes to them.
-        // Only in the background, so atoms keep their true colors.
+        // Glows, from how close the ray passes to an atom. Only in the
+        // background, so atoms always keep their true colors.
         if (t < 1e29) return color;
         for (uint i = 0; i < cam.sphereCount; i++) {
             float4 g = spheres[i].glow;
@@ -246,8 +291,9 @@ final class MoleculeRenderer {
     /// Ray-traces the molecule into the top `viewHeight` rows of `frame`
     /// (which is `width` pixels wide). Returns the GPU time in seconds.
     @discardableResult
-    func render(spheres: [GPUSphere], cylinders: [GPUCylinder], camera: Camera, into frame: MTLBuffer,
-                width: Int, viewHeight: Int, samplesPerSide: Int = 2) throws -> Double {
+    func render(_ state: MoleculeState, camera: Camera, into frame: MTLBuffer, width: Int, viewHeight: Int,
+                samplesPerSide: Int = 2) throws -> Double {
+        let (spheres, cylinders) = sceneGeometry(state)
         var cam = GPUCamera(origin: SIMD4(camera.origin, 1), forward: SIMD4(camera.forward, 0),
                             right: SIMD4(camera.right, 0), up: SIMD4(camera.up, 0),
                             tanHalfFOV: camera.tanHalfFOV, width: UInt32(width), height: UInt32(viewHeight),

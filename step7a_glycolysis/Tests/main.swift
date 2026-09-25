@@ -1,4 +1,4 @@
-// Tests for step 9. The chemistry itself (every species against PubChem,
+// Tests for step 7a. The chemistry itself (every species against PubChem,
 // every reaction balanced) is checked in Python by `make check`; these tests
 // check what the Swift side does with it: sensible shapes at every keyframe,
 // no atoms crashing into each other, the ledger, the seamless loops, the
@@ -262,7 +262,7 @@ test("the first spend frame puts glucose in the middle, with the caption drawn b
     expect(bar.x < 30 && bar.y < 30 && bar.z < 40, "caption bar \(bar)")
 }
 test("the GIF writer makes a looping two-frame GIF") {
-    let url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent("step9-test.gif")
+    let url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent("step7a-test.gif")
     let gif = try GIFWriter(url: url, frameCount: 2, delay: 1 / fps)
     gif.add(buffer, layout: layout)
     gif.add(buffer, layout: layout)

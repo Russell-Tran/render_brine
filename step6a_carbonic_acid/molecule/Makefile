@@ -1,4 +1,4 @@
-# Step 6, up close: one H₂CO₃ molecule splitting into H⁺ + HCO₃⁻
+# Step 6a, up close: one H₂CO₃ molecule splitting into H⁺ + HCO₃⁻
 #
 #   make run    ray-trace the molecule and save renders/molecule.gif
 #   make test   build and run the tests

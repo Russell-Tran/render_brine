@@ -1,4 +1,4 @@
-// Step 6, up close: one carbonic acid molecule splitting into H⁺ + HCO₃⁻,
+// Step 6a, up close: one carbonic acid molecule splitting into H⁺ + HCO₃⁻,
 // ray-traced on the GPU as a ball-and-stick animated GIF.
 
 import Foundation

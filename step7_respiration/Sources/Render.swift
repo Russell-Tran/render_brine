@@ -1,5 +1,5 @@
-// A small GPU ray tracer for ball-and-stick molecules (from step 6, with the
-// step 6 feedback folded in: glows only behind atoms, softer glows, and a
+// A small GPU ray tracer for ball-and-stick molecules (from step 6a, with the
+// step 6a feedback folded in: glows only behind atoms, softer glows, and a
 // faint dither against GIF color banding).
 //
 // One thread per pixel. Each thread shoots a few rays through its pixel

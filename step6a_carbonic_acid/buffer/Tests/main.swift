@@ -1,4 +1,4 @@
-// Tests for step 6. Chemistry tests check the model against textbook
+// Tests for step 6a. Chemistry tests check the model against textbook
 // chemistry; particle tests check the dot bookkeeping; GPU tests check the
 // Brownian motion, the atomic counts, the drawing, and the GIF.
 

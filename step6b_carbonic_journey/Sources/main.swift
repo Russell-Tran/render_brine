@@ -1,4 +1,4 @@
-// Step 8: the carbonic acid journey, CO₂ + H₂O → H₂CO₃ → HCO₃⁻ + H₃O⁺,
+// Step 6b: the carbonic acid journey, CO₂ + H₂O → H₂CO₃ → HCO₃⁻ + H₃O⁺,
 // ray-traced on the GPU as one seamlessly looping GIF.
 //
 //   .build/journey             render the full GIF

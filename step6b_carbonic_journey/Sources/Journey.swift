@@ -20,9 +20,9 @@
 //   CO₂: C=O 1.163 Å, linear (Wikipedia, "Carbon dioxide").
 //   H₂O: O–H 0.9572 Å, H–O–H 104.52° (gas-phase values).
 //   H₂CO₃ (cis-cis): C=O 1.222 Å, C–OH 1.357 Å, O–H 0.980 Å, O=C–O 125°,
-//     C–O–H 106° (computed gas-phase geometry, as in step 6).
+//     C–O–H 106° (computed gas-phase geometry, as in step 6a).
 //   HCO₃⁻: two equal C–O 1.25 Å, C–OH 1.36 Å, O–H 0.97 Å, angles 126° / 117°
-//     (typical of carbonate-type bonds in crystal structures, as in step 6).
+//     (typical of carbonate-type bonds in crystal structures, as in step 6a).
 //   H₃O⁺: O–H 0.974 Å, H–O–H 113.6°, pyramidal (infrared spectroscopy, via
 //     Wikipedia, "Hydronium").
 

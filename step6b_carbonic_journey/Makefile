@@ -1,9 +1,7 @@
-# Step 9: Glycolysis — spend two ATP, earn four
+# Step 6b: the carbonic acid journey, CO₂ + H₂O → H₂CO₃ → HCO₃⁻ + H₃O⁺, looping
 #
-#   make run        render renders/spend.gif and renders/payoff.gif
-#   make test       build and run the Swift tests
-#   make timeline   rebuild Resources/timeline.json (needs Python RDKit: pip3 install --user rdkit)
-#   make check      check every reaction balances (needs Python RDKit)
+#   make run    ray-trace the loop and save renders/journey.gif (make still T=5 for one frame)
+#   make test   build and run the tests
 #
 # If swiftc says the SDK doesn't match the compiler, point it at one that does:
 #   make test SDK=/Library/Developer/CommandLineTools/SDKs/MacOSX26.sdk
@@ -12,9 +10,9 @@
 # to find the GPU (per Apple's docs). CoreText draws the labels.
 SWIFTC := swiftc -O -framework CoreGraphics -framework CoreText $(if $(SDK),-sdk $(SDK))
 BUILD := .build
-SOURCES := Sources/Movie.swift Sources/Render.swift Sources/Overlay.swift
+SOURCES := Sources/Journey.swift Sources/Render.swift Sources/Output.swift
 
-$(BUILD)/glycolysis: $(SOURCES) Sources/main.swift Makefile
+$(BUILD)/journey: $(SOURCES) Sources/main.swift Makefile
 	@mkdir -p $(BUILD)
 	$(SWIFTC) $(filter %.swift,$^) -o $@
 
@@ -22,19 +20,16 @@ $(BUILD)/tests: $(SOURCES) Tests/Harness.swift Tests/main.swift Makefile
 	@mkdir -p $(BUILD)
 	$(SWIFTC) $(filter %.swift,$^) -o $@
 
-run: $(BUILD)/glycolysis
+run: $(BUILD)/journey
 	@$<
 
 test: $(BUILD)/tests
 	@$<
 
-timeline:
-	cd Tools && python3 build_timeline.py
-
-check:
-	cd Tools && python3 check_balances.py
+still: $(BUILD)/journey
+	@$< --still $(T)
 
 clean:
 	rm -rf $(BUILD) renders
 
-.PHONY: run test timeline check clean
+.PHONY: run test still clean
