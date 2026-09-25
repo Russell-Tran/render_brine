@@ -33,7 +33,7 @@ import numpy as np
 HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(HERE, "..", "Resources", "pglo.json")
 SEQ_CACHE = os.path.join(HERE, "..", "Resources", "pglo_sequence.txt")
-DNA_JSON = os.path.join(HERE, "..", "..", "step8_dna", "Resources", "dna.json")
+DNA_JSON = os.path.join(HERE, "..", "..", "step008_dna", "Resources", "dna.json")
 SOURCE_URL = "https://www.novoprolabs.com/vector/V12008"
 
 LENGTH = 5371
