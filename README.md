@@ -94,3 +94,9 @@ C₆H₁₂O₆ + 6 O₂ → 6 CO₂ + 6 H₂O, the overall accounting of cellul
 ![Looping ball-and-stick animation: two glyceraldehyde-3-phosphates side by side make 2 NADH and 4 ATP on the way to two pyruvates](showcase/glycolysis_payoff.gif)
 
 glucose + 2 NAD⁺ + 2 ADP + 2 Pᵢ → 2 pyruvate + 2 NADH + 2 H⁺ + 2 ATP + 2 H₂O. Code: [`step7_glucose/step7a_glycolysis/`](step7_glucose/step7a_glycolysis/)
+
+### Step 8: DNA, slowly turning
+
+![Looping ball-and-stick animation: a DNA double helix lying diagonally turns once about its own axis, with grey carbons, blue nitrogens, red oxygens, orange phosphorus and faint dashed hydrogen bonds between the paired bases](showcase/dna.gif)
+
+The Dickerson–Drew dodecamer, CGCGAATTCGCG, from its X-ray crystal structure ([PDB 1BNA](https://www.rcsb.org/structure/1BNA)): 758 atoms, right-handed, 10.1 base pairs per turn. Code: [`step8_dna/`](step8_dna/)
