@@ -86,3 +86,15 @@ C₆H₁₂O₆ + 6 O₂ → 6 CO₂ + 6 H₂O, the overall accounting of cellul
 ![Looping ball-and-stick animation: CO₂ and water become carbonic acid with a helper water relaying the proton, then bicarbonate and hydronium, while fresh molecules keep arriving](showcase/journey.gif)
 
 CO₂ + H₂O → H₂CO₃ → HCO₃⁻ + H₃O⁺, one molecule at a time. Code: [`step8_carbonic_journey/`](step8_carbonic_journey/)
+
+### Step 9: Glycolysis: spend two, earn four
+
+![Looping ball-and-stick animation: glucose gets two phosphates from two ATP, then splits between carbons 3 and 4 into two glyceraldehyde-3-phosphates](showcase/glycolysis_spend.gif)
+
+![Looping ball-and-stick animation: two glyceraldehyde-3-phosphates side by side make 2 NADH and 4 ATP on the way to two pyruvates](showcase/glycolysis_payoff.gif)
+
+<img src="showcase/glycolysis_spend_60.jpg" width="49%" alt="Hexokinase: glucose gets a phosphate from ATP"> <img src="showcase/glycolysis_spend_272.jpg" width="49%" alt="Aldolase: carbons 3 and 4 break apart">
+<img src="showcase/glycolysis_payoff_45.jpg" width="49%" alt="GAPDH: two NADH made"> <img src="showcase/glycolysis_payoff_110.jpg" width="49%" alt="First payback: back to even">
+<img src="showcase/glycolysis_payoff_250.jpg" width="49%" alt="Pyruvate kinase: H⁺ arrives"> <img src="showcase/glycolysis_payoff_290.jpg" width="49%" alt="Two pyruvates, net +2 ATP">
+
+glucose + 2 NAD⁺ + 2 ADP + 2 Pᵢ → 2 pyruvate + 2 NADH + 2 H⁺ + 2 ATP + 2 H₂O. Code: [`step9_glycolysis/`](step9_glycolysis/)
