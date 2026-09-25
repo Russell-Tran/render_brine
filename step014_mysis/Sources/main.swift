@@ -108,8 +108,6 @@ func labelPlacements(_ pose: MysisPose) -> [(String, CGPoint, CGPoint)] {
 
 func drawOverlay(into buffer: MTLBuffer, pose: MysisPose) {
     drawCaption(mysisCaption(), into: buffer, layout: layout)
-    drawEvidenceBar(mysisEvidenceRows(), into: buffer, layout: layout,
-                    leftEdge: evidenceLeftEdgeM(layout))
     guard let ctx = lightContext(buffer) else { return }
     let k: CGFloat = layout.scale
     let h: CGFloat = CGFloat(layout.height)

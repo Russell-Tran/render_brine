@@ -998,23 +998,19 @@ test("the caption bar fits inside the frame") {
                              captionHeight: mFrameCaptionHeight)
     let k = layout.scale
     let caption = mysisCaption()
-    let edge: CGFloat = evidenceLeftEdgeM(layout)
+    // No evidence bar on the right any more, so the three lines have the whole
+    // width — which the title needs, because "Rendered model of…" is a good
+    // deal longer than what it replaced.
     let left: CGFloat = 18 * k
+    let right: CGFloat = CGFloat(layout.width) - 18 * k
     for (s, size, bold) in [(caption.title, 16 * k, true), (caption.subtitle, 12 * k, false),
                             (caption.facts, 11.5 * k, false)] {
         let w = textWidth(s, size: size, bold: bold)
-        expect(left + w < edge, "\"\(s)\" runs to \(left + w), past the evidence bar at \(edge)")
+        expect(left + w < right, "\"\(s)\" runs to \(left + w) in a \(layout.width) px frame")
     }
-    for row in mysisEvidenceRows() {
-        let labelWidth = textWidth(row.level.label, size: 9.5 * k, bold: true)
-        expect(labelWidth < 58 * k, "\(row.level.label) is \(labelWidth) wide, over its column")
-        let noteLeft: CGFloat = edge + 8 * k + 6 * k + 58 * k
-        let w = textWidth(row.note, size: 9.5 * k, bold: false)
-        expect(noteLeft + w < CGFloat(layout.width) - 6,
-               "\"\(row.note)\" runs to \(noteLeft + w) in a \(layout.width) px frame")
-    }
-    let bottom: CGFloat = 14 * k + 2 * 17 * k + 9.5 * k
-    expect(bottom < CGFloat(layout.captionHeight), "the rows reach \(bottom)")
+    // drawCaption puts the facts line at barTop + 54k at 11.5k.
+    let bottom: CGFloat = 54 * k + 11.5 * k
+    expect(bottom < CGFloat(layout.captionHeight), "the last line reaches \(bottom)")
 }
 
 test("the labels point at things that are actually in the picture") {

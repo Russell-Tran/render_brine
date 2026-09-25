@@ -1014,24 +1014,25 @@ let mysisConstants: [MConstant] = measuredConstants + modelConstants + derivedCo
 // MARK: - What the caption bar says
 
 func mysisCaption() -> Caption {
-    Caption(title: "One mysis shrimp swimming",
-            subtitle: "Mysis diluviana, adult female \u{00B7} darkfield",
-            facts: "8 thoracopod pairs \u{00B7} 2 statocysts \u{00B7} right dorsolateral",
+    Caption(title: "Rendered model of one mysis shrimp swimming",
+            subtitle: "Mysis diluviana, adult female \u{00B7} darkfield "
+                    + "\u{00B7} right dorsolateral",
+            facts: "8 thoracopod pairs \u{00B7} 2 statocysts in the uropod endopods "
+                 + "\u{00B7} the camera never moves",
             aside: "")
 }
 
-func mysisEvidenceRows() -> [EvidenceRow] {
-    let re: String = String(format: "Re %.0f", MReynolds().body)
-    let ratio: SIMD3<Float> = rayleighWeights(exponent: 4)
-    let blueOverRed: String = String(format: "%.1f", ratio.z / ratio.x)
-    return [
-        EvidenceRow(level: .measured, note: "25 mm \u{00B7} statocysts \u{00B7} 10\u{207B}\u{2076} lux"),
-        EvidenceRow(level: .derived, note: "\u{03BB}\u{207B}\u{2074} blue/red \(blueOverRed) \u{00B7} \(re)"),
-        EvidenceRow(level: .model, note: "3.6 Hz \u{00B7} (1\u{2212}|n\u{00B7}v|)^k \u{00B7} the snow"),
-    ]
-}
-
-/// Where the evidence bar starts.
-func evidenceLeftEdgeM(_ layout: FrameLayout) -> CGFloat {
-    CGFloat(layout.width) * 0.585
-}
+// No evidence bar on this frame, for step 13's reason. Step 10 earned one
+// because the thing being rated CHANGED as the render played. Here it would
+// have said the same three lines for all 120 frames, which makes it furniture
+// rather than information.
+//
+// The provenance has not gone anywhere: every constant in `mysisConstants`
+// carries its evidence level and its source, and a test fails the build if a
+// measured one cites nothing, a derived one does not say DERIVED, or a model
+// one does not say MODEL. For this step that table holds, among the rest, the
+// 25 mm body, the two statocysts in the uropod endopods, the only-native-mysid
+// claim, the 10⁻⁶ to 10⁻⁵ lux light threshold and Abbe's zeroth order as
+// MEASURED; the λ⁻⁴ wavelength bias and all three Reynolds numbers as DERIVED;
+// and the beat frequency, the grazing weight, astaxanthin and the snow's flow
+// field as MODEL.
