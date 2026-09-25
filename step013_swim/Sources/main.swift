@@ -56,8 +56,6 @@ let camera: Camera = {
 
 func drawOverlay(into buffer: MTLBuffer) {
     drawCaption(swimCaption(), into: buffer, layout: layout)
-    drawEvidenceBar(swimEvidenceRows(), into: buffer, layout: layout,
-                    leftEdge: evidenceLeftEdge(layout))
     let k = layout.scale
     let bar: CGFloat = CGFloat(1000 / micronsPerPixel)      // 1 mm
     drawScaleBar(into: buffer, layout: layout, lengthPixels: bar, label: "1 mm",

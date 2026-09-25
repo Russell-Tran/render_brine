@@ -829,23 +829,20 @@ let artemiaConstants: [Constant] = countedConstants + modelConstants + derivedCo
 // that overflows the frame is a bug like any other.
 
 func swimCaption() -> Caption {
-    Caption(title: "One brine shrimp swimming",
+    Caption(title: "Rendered model of one brine shrimp swimming",
             subtitle: "Artemia franciscana, adult female · transmitted light",
             facts: "11 thoracic segments · 22 phyllopods · wave runs tail → head",
             aside: "")
 }
 
-func swimEvidenceRows() -> [EvidenceRow] {
-    let re: String = String(format: "Re ≈ %.0f", ReynoldsNumbers().body)
-    return [
-        EvidenceRow(level: .measured, note: "body plan, 5.5 mm/s, ventral up"),
-        EvidenceRow(level: .derived, note: "\(re) · ×1/12 real time · 9.1 µm/px"),
-        EvidenceRow(level: .model, note: "5 Hz beat · 1/11 lag · every σ · the water"),
-    ]
-}
-
-/// Where the evidence bar starts. The caption's own three lines have to fit to
-/// the left of it and the notes to the right of it, which a test checks.
-func evidenceLeftEdge(_ layout: FrameLayout) -> CGFloat {
-    CGFloat(layout.width) * 0.585
-}
+// No evidence bar on this frame. Step 10 earned one because the thing being
+// rated CHANGED as the render played — the three transformation routes each
+// carried a different standard of evidence, and the bar flipped between them.
+// Here it would have said the same three lines for all 120 frames, which makes
+// it furniture rather than information.
+//
+// The provenance has not gone anywhere: every constant in `artemiaConstants`
+// still carries its evidence level and its source, and the tests below still
+// fail if a measured constant cites nothing or a derived one does not say so.
+// That is where the claim belongs — in the data and in the results page, not
+// stamped on a picture that never changes its mind.
