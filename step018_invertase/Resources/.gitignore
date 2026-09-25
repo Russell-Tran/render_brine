@@ -1,0 +1,3 @@
+# The coordinate files are fetched by Tools/build_invertase.py, not committed.
+*.pdb
+*.cif
