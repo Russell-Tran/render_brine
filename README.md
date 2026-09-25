@@ -73,19 +73,19 @@ On both Macs, 16 samples per pixel took only 12× the time of 1 sample, because 
 
 ![Ball-and-stick animation: carbonic acid loses a proton (gold, H⁺) and becomes bicarbonate, whose two free oxygens end up with equal bonds and share the negative charge](showcase/molecule.gif)
 
-H₂CO₃ → H⁺ + HCO₃⁻, ray-traced on the GPU with real bond lengths. Code: [`step6a_carbonic_acid/molecule/`](step6a_carbonic_acid/molecule/)
+H₂CO₃ → H⁺ + HCO₃⁻, ray-traced on the GPU with real bond lengths. Code: [`step6_carbonic_acid/step6a_carbonic_acid/molecule/`](step6_carbonic_acid/step6a_carbonic_acid/molecule/)
 
 ### Step 6b: The carbonic acid journey
 
 ![Looping ball-and-stick animation: CO₂ and water become carbonic acid with a helper water relaying the proton, then bicarbonate and hydronium, while fresh molecules keep arriving](showcase/journey.gif)
 
-CO₂ + H₂O → H₂CO₃ → HCO₃⁻ + H₃O⁺, one molecule at a time. Code: [`step6b_carbonic_journey/`](step6b_carbonic_journey/)
+CO₂ + H₂O → H₂CO₃ → HCO₃⁻ + H₃O⁺, one molecule at a time. Code: [`step6_carbonic_acid/step6b_carbonic_journey/`](step6_carbonic_acid/step6b_carbonic_journey/)
 
 ### Step 7: Glucose meets oxygen
 
 ![Ball-and-stick animation: one glucose molecule and six O₂ molecules rearrange into six CO₂ and six H₂O](showcase/respiration.gif)
 
-C₆H₁₂O₆ + 6 O₂ → 6 CO₂ + 6 H₂O, the overall accounting of cellular respiration: 24 electrons move from carbon to oxygen. Code: [`step7_respiration/`](step7_respiration/)
+C₆H₁₂O₆ + 6 O₂ → 6 CO₂ + 6 H₂O, the overall accounting of cellular respiration: 24 electrons move from carbon to oxygen. Code: [`step7_glucose/step7_respiration/`](step7_glucose/step7_respiration/)
 
 ### Step 7a: Glycolysis: spend two, earn four
 
@@ -93,4 +93,4 @@ C₆H₁₂O₆ + 6 O₂ → 6 CO₂ + 6 H₂O, the overall accounting of cellul
 
 ![Looping ball-and-stick animation: two glyceraldehyde-3-phosphates side by side make 2 NADH and 4 ATP on the way to two pyruvates](showcase/glycolysis_payoff.gif)
 
-glucose + 2 NAD⁺ + 2 ADP + 2 Pᵢ → 2 pyruvate + 2 NADH + 2 H⁺ + 2 ATP + 2 H₂O. Code: [`step7a_glycolysis/`](step7a_glycolysis/)
+glucose + 2 NAD⁺ + 2 ADP + 2 Pᵢ → 2 pyruvate + 2 NADH + 2 H⁺ + 2 ATP + 2 H₂O. Code: [`step7_glucose/step7a_glycolysis/`](step7_glucose/step7a_glycolysis/)
