@@ -181,6 +181,20 @@ The budget closes, and not the way the brief guessed. "Endosperm lost equals hau
 
 First portrait render here, and the first cutaway. Capping the cut faces turned out to be nearly free on top of step 13's ray traversal — take the merged per-material runs, find the one covering the clip plane, shade it as cut, about 25 lines and no second pass. What cost money was what brightfield never needed: surface normals and ambient occlusion, around 40% of the frame. Growth is one-way, so the loop holds on the finished seedling and cross-dissolves back to the dormant nut rather than ever running backwards. 412 primitives, 24.3 ms a frame. Code: [`step015_coconut/`](step015_coconut/)
 
+### Step 16: Inside a moving schoolbus
+
+![Looping animation from a camera fixed inside a school bus, looking down the aisle toward the rear door. The grey-blue seat backs, white ribbed ceiling and dark aisle runner never move. Through the window bays on both walls a roadside streams past — near fence posts smeared with motion blur, the distant treeline barely shifting — while a patch of sunlight sweeps across the seats](showcase/schoolbus.gif)
+
+Not biology, and on purpose. You are not animating a moving bus — you are animating a **stationary bus in a moving world**, which is the same thing and enormously cheaper, because in the bus's own frame the entire interior has a velocity of exactly zero. Every pixel of seat, ceiling and aisle is constant for the whole render; only the glass, and the sunlight coming through it, ever changes.
+
+That pays three times, measured against a control render of the same scene with a moving camera: **20.2% of pixels traced**, **3.23× faster per frame**, and a GIF of **2.42 MB against the control's 14.02 — 5.79× smaller**.
+
+The middle number is there because step 14 taught us to look for it. Step 14 had a frozen camera over an exactly black field and its GIF came out *larger* than step 13's, because only 9.22% of pixels changed but the box around them covered 99.7% — falling snow scattered the changes everywhere, and the encoder stores one rectangle per frame. Here the box is **32.5%**, because the window bays are two solid vertical bands with the sun stripes and the rear door inside them, and the ceiling never changes at all. **A frozen camera is not enough; the changes also have to be contiguous.**
+
+Motion blur came free. Still 2×2 samples per pixel, no rays added — the four samples are just spread across a 180° shutter by jittering each sample's *time* as well as its position, so blur length comes out proportional to angular rate and therefore inversely proportional to distance. The amount of blur becomes automatic evidence of depth: fence posts at 4 m sweep at 219°/s and smear to ghosts, the pylons at 1.5 km cross at 0.58°/s and are pin-sharp.
+
+Two things the build proved I had wrong. **The water tower cannot be made to loop, and that is provable**: a rearward camera keeps something at distance *D* in shot over about 6.78·*D* of track, so a single non-repeating instance needs *D* < 21.7 m. At 1500 m you would see seventy of them converging along the horizon. It became a line of transmission pylons instead — genuinely periodic in life, so the repeat is the truth rather than a tell. And **the sun cannot be behind the bus**: looking rearward, every seat face the camera can see is the forward-facing one, so a sun behind lights nothing. Its 38° elevation is set by the 34-inch sill height and the 90.75-inch interior width, not by taste — below 37° the beam hits the floor before it crosses the aisle. Code: [`step016_schoolbus/`](step016_schoolbus/)
+
 ### Step 17: Lactose cut into glucose and galactose
 
 ![Looping animation: a space-filling protein tetramer turns against a dark field, then a round porthole opens in its surface onto a ball-and-stick active site. Lactose moves in, two glutamate side chains take it apart, glucose leaves, the galactose stays bonded to the protein, then a water breaks that bond and galactose leaves too](showcase/lactase.gif)
