@@ -1,6 +1,6 @@
 # render_brine
 
-Learning to render water on Apple silicon GPUs with Metal, one small step at a time.
+Learning Apple silicon GPUs with Metal, one small step at a time: from ray-traced water to scientifically accurate renders of the chemistry of life, building toward a brine shrimp.
 
 Two Macs take part: an **M4 Mac mini** (10 GPU cores, 16 GB), where the code is written and first run, and an **M3 Max laptop** (40 GPU cores, 48 GB). Steps 1–5 ran on both.
 
