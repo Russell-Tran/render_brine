@@ -13,7 +13,13 @@ import Foundation
 
 let framesPerBeat = 24
 let toothFrameCount = framesPerBeat * Beat.allCases.count      // 144
-let frameDelayCentiseconds = 7
+// 11 centiseconds, not the 7 this started at. The loop is read, not watched:
+// six beats carrying labels, a changing evidence bar and a load figure that
+// has to be legible before the next one replaces it. At 7 cs a beat lasted
+// 1.68 s, which is under a comfortable reading time for the longest caption.
+// The frame count is fixed by the physics precompute, so the only lever on
+// pace is how long each frame is held.
+let frameDelayCentiseconds = 11
 let loopSeconds: Double = Double(frameDelayCentiseconds) * Double(toothFrameCount) / 100
 
 /// The last stretch of the final beat cross-dissolves back to frame 0.
