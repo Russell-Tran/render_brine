@@ -1,0 +1,33 @@
+REMARK 999 SUCROSE (CHAIN F: GLC 1 + FRU 2) COPIED VERBATIM FROM PDB 6S1T FOR STEP 26.
+REMARK 999 SOURCE FILE: step018_invertase/Resources/6S1T.pdb. NO HYDROGENS (X-RAY).
+HEADER    HYDROLASE                               19-JUN-19   6S1T              
+TITLE     STRUCTURE OF BETA-FRUCTOFURANOSIDASE FROM SCHWANNIOMYCES OCCIDENTALIS 
+TITLE    2 COMPLEXED WITH SUCROSE                                               
+REMARK   2 RESOLUTION.    2.09 ANGSTROMS.                                       
+HETNAM     GLC ALPHA-D-GLUCOPYRANOSE                                            
+HETNAM     FRU BETA-D-FRUCTOFURANOSE                                            
+LINK         C1  GLC F   1                 O2  FRU F   2     1555   1555  1.43  
+HETATM 8406  C1  GLC F   1     -14.090  -9.533  21.824  1.00 25.18           C  
+HETATM 8407  C2  GLC F   1     -13.874  -8.655  23.051  1.00 26.93           C  
+HETATM 8408  C3  GLC F   1     -12.704  -9.256  23.829  1.00 27.87           C  
+HETATM 8409  C4  GLC F   1     -13.025 -10.677  24.283  1.00 26.85           C  
+HETATM 8410  C5  GLC F   1     -13.420 -11.515  23.089  1.00 26.38           C  
+HETATM 8411  C6  GLC F   1     -13.938 -12.848  23.613  1.00 26.11           C  
+HETATM 8412  O2  GLC F   1     -13.551  -7.316  22.642  1.00 27.44           O  
+HETATM 8413  O3  GLC F   1     -12.369  -8.407  24.920  1.00 29.71           O  
+HETATM 8414  O4  GLC F   1     -11.875 -11.279  24.884  1.00 26.98           O  
+HETATM 8415  O5  GLC F   1     -14.413 -10.853  22.277  1.00 24.96           O  
+HETATM 8416  O6  GLC F   1     -15.205 -12.611  24.258  1.00 26.73           O  
+HETATM 8417  C1  FRU F   2     -13.246  -7.762  19.344  1.00 21.33           C  
+HETATM 8418  C2  FRU F   2     -13.012  -9.240  19.649  1.00 20.78           C  
+HETATM 8419  C3  FRU F   2     -11.740  -9.709  18.956  1.00 17.92           C  
+HETATM 8420  C4  FRU F   2     -11.957 -11.209  18.908  1.00 17.29           C  
+HETATM 8421  C5  FRU F   2     -13.458 -11.330  18.665  1.00 17.86           C  
+HETATM 8422  C6  FRU F   2     -14.056 -12.540  19.382  1.00 17.06           C  
+HETATM 8423  O1  FRU F   2     -14.531  -7.329  19.759  1.00 24.16           O  
+HETATM 8424  O2  FRU F   2     -12.882  -9.486  21.055  1.00 22.55           O  
+HETATM 8425  O3  FRU F   2     -10.568  -9.307  19.676  1.00 18.53           O  
+HETATM 8426  O4  FRU F   2     -11.237 -11.843  17.859  1.00 15.54           O  
+HETATM 8427  O5  FRU F   2     -14.050 -10.096  19.106  1.00 19.55           O  
+HETATM 8428  O6  FRU F   2     -15.416 -12.657  18.985  1.00 16.25           O  
+END
