@@ -1,12 +1,12 @@
 # Step 21: the lower arch, with the camera travelling along it — from the
-# midline between the lower central incisors back to the second molar, #18,
-# then a dissolve back to the start.
+# midline between the lower central incisors back past the second molar (#18)
+# to the wisdom tooth, #17, then a dissolve back to the start.
 #
 #   make run        render renders/arch_pan.gif
 #   make stills     write a few frames as PNGs, to look at
 #   make test       build and run the tests
-#   make mutants    steer by the raw arch, rewind instead of dissolving — and
-#                   check a test catches each
+#   make mutants    steer by the raw arch, rewind instead of dissolving, leave
+#                   the wisdom teeth out — and check a test catches each
 #   make typecheck  prove no expression is slow to type-check
 #
 # If swiftc says the SDK doesn't match the compiler, point it at one that does:
@@ -17,8 +17,9 @@ BUILD := .build
 
 # The scene and its renderer are step 20's, used rather than copied: the
 # teeth, gum, colours and lights are the same characters step 20 shipped. The
-# only change step 20 took for this step is that its camera is read at run
-# time instead of being typed into the kernel, and its own picture came out
+# changes step 20 took for this step are that its camera is read at run time
+# instead of being typed into the kernel, and two options, off by default: a
+# retromolar pad, and the wisdom teeth. With them off its own picture comes out
 # bit-for-bit the same. The GIF encoder is step 8's, as in every step since.
 SCENE := ../step020_mouth/Sources/Anatomy.swift ../step020_mouth/Sources/Render.swift
 GIF := ../step008_dna/Sources/GIF.swift
@@ -33,10 +34,10 @@ $(BUILD)/tests: $(SOURCES) Tests/Harness.swift Tests/main.swift Makefile
 	$(SWIFTC) $(SOURCES) Tests/Harness.swift Tests/main.swift -o $@
 
 run: $(BUILD)/arch_pan
-	@$< 576 324 3
+	@$< 544 306 3
 
 stills: $(BUILD)/arch_pan
-	@$< stills 576 324 3
+	@$< stills 544 306 3
 
 test: $(BUILD)/tests
 	@$<
@@ -44,7 +45,7 @@ test: $(BUILD)/tests
 # Each mutant must make the suite FAIL. A mutant that passes is a test missing.
 mutants: $(BUILD)/tests
 	@ok=1; \
-	for m in raw rewind; do \
+	for m in raw rewind noWisdom; do \
 	  printf '=== mutation: %s ===\n' "$$m"; \
 	  if SHOT_MUTANT=$$m $< > $(BUILD)/mutant-$$m.log 2>&1; then \
 	    printf '  NOT CAUGHT — no test failed\n'; ok=0; \

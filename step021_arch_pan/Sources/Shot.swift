@@ -1,25 +1,28 @@
 // The shot: a camera that travels alongside the lower teeth, from the midline
-// between the two central incisors (#25 and #24) back along the patient's left
-// to the second molar (#18), holds there, and dissolves back to where it began.
+// between the two central incisors (#25 and #24) back along the patient's left,
+// past the second molar (#18), to the wisdom tooth (#17), holds there, and
+// dissolves back to where it began.
 //
 // Everything here is plain arithmetic on step 20's arch, so the tests can read
 // it without a GPU. The camera is the only thing that moves; the teeth, the
-// gum, the colours and the lights are step 20's, unchanged.
+// gum, the colours and the lights are step 20's, with two of its options
+// switched on: the wisdom teeth, and the retromolar pad behind them.
 //
 // Millimetres, and step 20's axes: y up, y = 0 the occlusal plane, +z back
 // towards the throat, the midline at x = 0, z = 0.
 //
-// WHICH SIDE IS LEFT. Step 20's comments call +x the patient's left. But the
-// renderer is right-handed — the camera's right is forward × up — and facing
-// the patient from the front that puts +x on the viewer's LEFT, which is the
-// patient's RIGHT. (Face someone: their left hand is on your right.) Step 20's
-// arch is an exact mirror image across x = 0, so its still is correct either
-// way and nothing there needs to change. Here it matters: the camera starts
+// WHICH SIDE IS LEFT. Step 20's comments used to call +x the patient's left.
+// But the renderer is right-handed — the camera's right is forward × up — and
+// facing the patient from the front that puts +x on the viewer's LEFT, which
+// is the patient's RIGHT. (Face someone: their left hand is on your right.)
+// Step 20's arch is an exact mirror image across x = 0, so its still was
+// correct either way and only its comments needed to change. Here it matters: the camera starts
 // facing the patient and moves off to one side, and a dentist watching would
-// name the tooth it ends on by which way it went. To end on #18, the lower
-// LEFT second molar, as seen, the camera goes to −x: towards the viewer's
-// right in the first frame. That is the tooth step 20's `placeTeeth()` lists
-// at index 6.
+// name the tooth it ends on by which way it went. To end on #17, the lower
+// LEFT third molar, as seen, the camera goes to −x: towards the viewer's
+// right in the first frame. That is the tooth step 20's
+// `placeTeeth(thirdMolars: true)` lists at index 14 (`tooth17Index`); #18,
+// the second molar in front of it, is index 6.
 
 import Foundation
 import simd
@@ -60,14 +63,17 @@ let aimHeight: Float = -4.0
 /// camera less square to the tooth it is looking at.
 let smoothingHalfWindow: Float = 7.0
 
-/// Arc length from the midline to #18's centre: step 20's `placeTeeth()` puts
-/// the second molar (`mandibularTeeth[6]`) exactly here on both sides.
-let endArc: Float = archCentres[6]
+/// Arc length from the midline to #17's centre: step 20's
+/// `placeTeeth(thirdMolars: true)` puts the third molar exactly here on both
+/// sides, touching the second molar in front of it.
+let endArc: Float = thirdMolarArc
 
 /// The side the camera travels along: −x, the patient's left as seen (see the
-/// head of this file), so the shot ends on #18.
+/// head of this file), so the shot ends on #17.
 let travelSide: Float = -1
-/// #18 in step 20's list: the second molar on the −x side.
+/// #17 in step 20's list with the wisdom teeth on: the third molar on the −x
+/// side. #18, the second molar, is still index 6.
+let tooth17: Int = tooth17Index
 let tooth18: Int = 6
 
 /// Step 20's `archPoint` covers one half of the arch. Negative arc lengths are
@@ -135,6 +141,13 @@ enum ShotMutant {
     case none
     case raw        // follow the raw arch, corner and all
     case rewind     // close the loop by playing the travel backwards
+    case noWisdom   // leave the wisdom teeth out of the scene
+}
+
+/// Whether the scene has the wisdom teeth: always, except for the mutant that
+/// takes them out to check a test notices the shot no longer ends on one.
+func withThirdMolars(_ mutant: ShotMutant = .none) -> Bool {
+    mutant != .noWisdom
 }
 
 /// The camera for a look-at point `s` along the arch: aimed at the arch at
@@ -166,8 +179,12 @@ func railCamera(_ s: Float, mutant: ShotMutant = .none) -> Camera {
 let frameDelayCentiseconds: Int = 5
 let framesPerSecond: Float = 100 / Float(frameDelayCentiseconds)
 
-/// Seconds of travel, of hold on #18, and of dissolve back to the start.
-let travelSeconds: Float = 7.5
+/// Seconds of travel, of hold on #17, and of dissolve back to the start.
+/// The travel is a tooth longer than it was when the shot ended on #18 (58.0
+/// mm of arch instead of 47.75), so it takes a little longer: 8 s instead of
+/// 7.5, the glide 14% quicker than before. Keeping the old pace would have
+/// needed 9.1 s and a GIF well over 10 MB; see main.swift for the measurement.
+let travelSeconds: Float = 8.0
 let holdSeconds: Float = 1.0
 let dissolveSeconds: Float = 1.0
 

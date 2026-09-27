@@ -28,22 +28,28 @@ func argument(_ n: Int, _ fallback: Int) -> Int {
     return v
 }
 
-let width: Int = argument(0, 576)
-let height: Int = argument(1, 324)
+let width: Int = argument(0, 544)
+let height: Int = argument(1, 306)
 let samples: Int = argument(2, 3)
 let from: Int = min(max(argument(4, 0), 0), frameCount - 1)
 let limit: Int = min(argument(3, frameCount), frameCount - from)
 let pixelCount: Int = width * height
 
-// Why 576 × 324, and no dithering. Step 8's encoder saves space by storing
+// Why 544 × 306, and no dithering. Step 8's encoder saves space by storing
 // only the box around the pixels that changed since the last frame. With the
 // camera moving, that box is the whole frame, every frame, so the GIF costs
-// roughly (pixels per frame) × (moving frames). Measured on this loop: 640 ×
-// 360 costs ~77 kB per moving frame, which would make the loop ~15 MB; at 576
-// × 324, 20 frames a second, a 4 × 4 ordered dither against banding made it
-// 11.0 MB and dropping the dither gave back 14%. Side by side the dither's
-// gain on the gum's gradient was barely visible, so it went, and the frame
-// stayed as large as fits under 10 MB.
+// roughly (pixels per frame) × (moving frames). Measured on this loop when it
+// ended on #18: 640 × 360 costs ~77 kB per moving frame, which would make the
+// loop ~15 MB; at 576 × 324, 20 frames a second, a 4 × 4 ordered dither
+// against banding made it 11.0 MB and dropping the dither gave back 14%. Side
+// by side the dither's gain on the gum's gradient was barely visible, so it
+// went, and 576 × 324 came to 9.5 MB.
+//
+// Travelling on to #17 adds 10 mm of arch. Measured again, ten frames at a
+// time: at 576 × 324 a moving frame averages ~58 kB, so 8.5 s of travel (191
+// changing frames with the dissolve) would be ~11 MB; at 544 × 306 ten frames
+// cost 0.91× as much. 8 s of travel at 544 × 306 — 181 changing frames —
+// comes to under 10 MB with the frame only 6% narrower.
 
 /// Blend a frame toward frame 0, in display values, as step 19 does.
 func dissolve(_ buffer: MTLBuffer, toward first: [UInt8], weight: Float) {
@@ -64,7 +70,7 @@ func snapshot(_ buffer: MTLBuffer) -> [UInt8] {
 func frame(_ f: Int, on device: MTLDevice) throws -> (image: MouthImage, gpu: Double) {
     let cam: Camera = railCamera(plan(f).arc)
     let r = try renderMouth(width: width, height: height, samples: samples, camera: cam,
-                             retromolarPad: true, on: device)
+                             retromolarPad: true, thirdMolars: withThirdMolars(), on: device)
     return (r.image, r.gpuSeconds)
 }
 
@@ -115,7 +121,7 @@ do {
     var pixels: [UInt8] = []
     for f in from..<(from + limit) {
         let p: FramePlan = plan(f)
-        // After the travel the camera is still, so the frame on #18 is
+        // After the travel the camera is still, so the frame on #17 is
         // rendered once and every later frame starts from it.
         if f <= travelFrames || pixels.isEmpty {
             let (image, seconds) = try frame(f, on: device)

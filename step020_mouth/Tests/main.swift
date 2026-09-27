@@ -96,6 +96,50 @@ test("every tooth faces out of the arch, away from the tongue") {
     }
 }
 
+test("the wisdom teeth, when asked for, come after the fourteen and change none of them") {
+    // Step 21 turns them on; this still and step 22 leave them off, so the
+    // fourteen must be the same teeth in the same places either way.
+    let more: [PlacedTooth] = placeTeeth(thirdMolars: true)
+    expectEqual(more.count, 16)
+    for i in 0..<placed.count {
+        expect(more[i].spec.name == placed[i].spec.name && more[i].centre == placed[i].centre
+               && more[i].tangent == placed[i].tangent && more[i].outward == placed[i].outward,
+               "tooth \(i) moved when the wisdom teeth were added")
+    }
+    let t17: PlacedTooth = more[tooth17Index]
+    let t32: PlacedTooth = more[tooth32Index]
+    expect(t17.spec.name == "third molar" && t17.side == -1, "index \(tooth17Index) should be #17, on −x")
+    expect(t32.spec.name == "third molar" && t32.side == 1, "index \(tooth32Index) should be #32, on +x")
+    expect(abs(t17.centre.x + t32.centre.x) < 1e-4 && abs(t17.centre.y - t32.centre.y) < 1e-4, "not mirrored")
+    // Each touches its second molar, straight behind it on the arch's line.
+    for (w, m) in [(t17, more[6]), (t32, more[13])] {
+        let gap: Float = simd_distance(w.centre, m.centre)
+        expect(abs(gap - (w.spec.width + m.spec.width) / 2) < 1e-3, "third molar is \(gap) mm from the second")
+        expect(simd_dot(simd_normalize(w.centre - m.centre), m.tangent) > 0.99999, "not in line")
+        expect(simd_dot(w.outward, SIMD2<Float>(0, 20) - w.centre) < 0, "third molar faces in")
+    }
+    expect(mandibularThirdMolar.cervicalWidth < mandibularThirdMolar.width
+           && mandibularThirdMolar.cervicalDepth < mandibularThirdMolar.depth, "the neck should be narrower")
+}
+
+test("the kernel counts the teeth it is given: 14 by default, 16 with the wisdom teeth") {
+    expect(kernelSource(mutant: .none).contains("constant uint TOOTH_COUNT = 14;"), "off")
+    expect(kernelSource(mutant: .none, thirdMolars: true).contains("constant uint TOOTH_COUNT = 16;"), "on")
+    // And the wisdom teeth really are in the scene: solid crowns, not the
+    // tongue, the gum or air.
+    guard let dev = device.device else { expect(false, "no GPU"); return }
+    let more: [PlacedTooth] = placeTeeth(thirdMolars: true)
+    let pts: [SIMD3<Float>] = [tooth17Index, tooth32Index].map {
+        SIMD3<Float>(more[$0].centre.x, -3, more[$0].centre.y)
+    }
+    guard let on = try? probeScene(pts, thirdMolars: true, on: dev), let off = try? probeScene(pts, on: dev)
+    else { expect(false, "probe failed"); return }
+    for k in 0..<2 {
+        expect(on[k].x < 0 && on[k].y == 1, "with them, wisdom tooth \(k) mid-crown is \(on[k])")
+        expect(off[k].x > 0, "without them, wisdom tooth \(k)'s place should be empty: \(off[k])")
+    }
+}
+
 section("colour and reflectance, derived rather than typed")
 
 test("CIELAB conversion: white is white, mid-grey is 18.4% reflectance, and it round-trips") {

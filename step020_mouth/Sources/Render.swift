@@ -159,50 +159,68 @@ func metal(_ v: SIMD3<Float>) -> String { "float3(\(v.x), \(v.y), \(v.z))" }
 // MARK: - the retromolar pad, for a camera that looks behind the last molar
 
 // This still never sees the end of the arch face on, so the gum simply stops
-// behind the second molars in a wall. Step 21's camera ends looking at
-// the second molar from the side, and there the wall shows. Behind the last
-// molar the real mouth has the retromolar pad: a soft, pear-shaped mound of
-// tissue that stands above the gum line and closes the ridge off. It is
-// switched OFF by default, and when it is off the kernel source is the same
-// text, character for character, as it was without it — so this picture
-// cannot change.
+// behind the last molars in a wall. Step 21's camera ends looking at the last
+// molar from the side, and there the wall shows. Behind the last molar the
+// real mouth has the retromolar pad: a soft, pear-shaped mound of tissue that
+// sits on the ridge and closes it off. It is switched OFF by default, and when
+// it is off the kernel source is the same text, character for character, as it
+// was without it — so this picture cannot change.
 
-/// The pad is a column with an oval footprint and a domed top, standing on the
-/// gum's floor: how far behind the second molar's distal surface its centre
-/// sits, its half-length along the arch and half-width across it, and how tall
-/// the dome on top is. MODEL: the pad is described as about a centimetre long
-/// and as wide as the ridge it caps; these give that, beginning just behind
-/// the molar's contact. An ellipsoid alone, tried first, was widest halfway
-/// down and bulged out of the side of the jaw.
-let padBehind: Float = 5.5
-let padAlong: Float = 6.5
-let padAcross: Float = 5.5
-let padDome: Float = 5.0
-/// The pad's top. MODEL: above the gum margin behind the molar (−6 mm here),
-/// as the pad stands proud of the ridge, and kept below the second molar's
-/// cusps so it closes the arch without hiding the tooth.
-let padTop: Float = -3.0
+/// The pad is part of an ellipsoid lying along the ridge, short in front and
+/// long behind: it rises straight off the last molar's gum and slopes away
+/// down the ridge behind it, the way the ridge runs on back towards the ramus
+/// in a real jaw rather than stopping. Its centre is sunk below the gum's
+/// floor, so every part that shows — sides and back end alike — leans in as it
+/// rises, as the ridge's own sides do, and nothing stands vertical.
+///
+/// How far behind the last molar's distal surface its centre sits; its
+/// half-length forward and back along the arch; its half-width across it at
+/// the centre; how far the centre sits below the gum's floor. MODEL: the pad
+/// is described as about a centimetre long, as wide as the ridge it caps and
+/// standing a little proud of it. These put its crest ~4 mm behind the molar,
+/// about as wide as the ridge where it meets the molar's gum, and let it roll
+/// down to the gum's floor ~1.8 cm behind the molar. The first pad, an oval
+/// column with a dome on top, stood up with straight sides and read as a post;
+/// an ellipsoid centred at mid-height, tried before that, was widest halfway
+/// down and bulged out of the jaw; an even-ended one centred on the floor
+/// ended in a rounded cliff; and one that ran 2.6 cm back carried the near
+/// ridge out of step 21's last frame nicely but showed across the mouth as a
+/// long flap standing over empty space behind the far molar.
+let padBehind: Float = 4.0
+let padFront: Float = 9.0
+let padBack: Float = 15.0
+let padAcross: Float = 7.0
+let padSink: Float = 8.0
+/// The pad's top. MODEL: a millimetre or so above the gum margin behind the
+/// molar (−6 mm here), as the pad stands a little proud of the ridge, and well
+/// below the molar's cusps so it closes the arch without hiding the tooth.
+let padTop: Float = -4.5
 
-func padSource(_ on: Bool) -> (function: String, call: String) {
+/// `lastMolars` are the indices of the last tooth on each side: the second
+/// molars (6 and 13) without the wisdom teeth, the third (14 and 15) with them.
+func padSource(_ on: Bool, lastMolars: (Int, Int) = (6, 13)) -> (function: String, call: String) {
     guard on else { return ("", "") }
     let function: String = """
 
-        // The retromolar pad behind each second molar (teeth 6 and 13), in
-        // the molar's own frame: an oval column up to where the dome starts,
-        // a half-ellipsoid dome on top, cut off at the gum's floor.
+        // The retromolar pad behind each last molar (teeth \(lastMolars.0) and
+        // \(lastMolars.1)), in the molar's own frame: an ellipsoid, longer
+        // behind than in front, centred below the gum's floor and cut off there.
+        // The two halves share the cross-section where they meet, so the
+        // surface is unbroken.
         float padSDF(float3 p, constant Tooth *teeth) {
             float d = 1e9;
             for (uint k = 0; k < 2; k++) {
-                constant Tooth &T = teeth[k == 0 ? 6 : 13];
+                constant Tooth &T = teeth[k == 0 ? \(lastMolars.0) : \(lastMolars.1)];
+                float base = -T.shape.x - GUM_DEPTH;
                 float2 c = T.frame.xy + T.frame.zw * (T.halves.x + \(padBehind));
-                float3 q = p - float3(c.x, \(padTop - padDome), c.y);
+                float3 q = p - float3(c.x, base - \(padSink), c.y);
                 float3 l = float3(dot(q.xz, T.frame.zw), q.y, dot(q.xz, T.outward.xy));
-                float3 r = float3(\(padAlong), \(padDome), \(padAcross));
-                float3 top = float3(l.x, max(l.y, 0.0), l.z);
-                float k0 = length(top / r);
-                float k1 = length(top / (r * r));
+                float along = l.x < 0.0 ? \(padFront) : \(padBack);
+                float3 r = float3(along, \(padTop) - base + \(padSink), \(padAcross));
+                float k0 = length(l / r);
+                float k1 = length(l / (r * r));
                 float e = k0 * (k0 - 1.0) / k1;
-                d = min(d, max(e, (-T.shape.x - GUM_DEPTH) - p.y));
+                d = min(d, max(e, base - p.y));
             }
             return d;
         }
@@ -228,8 +246,13 @@ struct SceneExtra {
     static let none = SceneExtra()
 }
 
-func kernelSource(mutant: Mutant, retromolarPad: Bool = false, extra: SceneExtra = .none) -> String {
-    let pad = padSource(retromolarPad)
+/// `thirdMolars` adds the wisdom teeth (Anatomy.swift, `placeTeeth`); the
+/// kernel's tooth count follows the list, and with it off the count reads 14,
+/// as it always has.
+func kernelSource(mutant: Mutant, retromolarPad: Bool = false, thirdMolars: Bool = false,
+                  extra: SceneExtra = .none) -> String {
+    let pad = padSource(retromolarPad, lastMolars: thirdMolars ? (tooth17Index, tooth32Index) : (6, 13))
+    let toothCount: Int = placeTeeth(thirdMolars: thirdMolars).count
     let kinds: [CrownKind] = CrownKind.allCases
     let mids: String = kinds.map { metal(labToLinearSRGB(middleThirdLab[$0]!)) }.joined(separator: ", ")
     let cervs: String = kinds.map { metal(labToLinearSRGB(middleThirdLab[$0]! + cervicalShift)) }.joined(separator: ", ")
@@ -241,7 +264,7 @@ func kernelSource(mutant: Mutant, retromolarPad: Bool = false, extra: SceneExtra
     struct Params { uint width; uint height; uint rowOffset; uint samples;
                     float4 camPos; float4 camFwd; float4 camRight; float4 camUp; float4 fillDir; };
 
-    constant uint TOOTH_COUNT = 14;
+    constant uint TOOTH_COUNT = \(toothCount);
     constant int MUTANT = \(mutant.rawValue);
     constant float STEP_SCALE = \(stepScale);
     constant float HIT_EPS = 0.003;
@@ -808,14 +831,15 @@ func findDevice() throws -> MTLDevice {
 }
 
 func makeLibrary(_ device: MTLDevice, mutant: Mutant, retromolarPad: Bool = false,
-                 extra: SceneExtra = .none) throws -> MTLLibrary {
+                 thirdMolars: Bool = false, extra: SceneExtra = .none) throws -> MTLLibrary {
     let options = MTLCompileOptions()
     // Precise maths, as in every step: the distance functions are subtracted
     // from one another to within a few microns.
     options.fastMathEnabled = false
     do {
-        return try device.makeLibrary(source: kernelSource(mutant: mutant, retromolarPad: retromolarPad, extra: extra),
-                                      options: options)
+        let source: String = kernelSource(mutant: mutant, retromolarPad: retromolarPad,
+                                         thirdMolars: thirdMolars, extra: extra)
+        return try device.makeLibrary(source: source, options: options)
     } catch {
         throw MouthError.kernelCompile("\(error)")
     }
@@ -831,11 +855,13 @@ func pipeline(_ device: MTLDevice, _ library: MTLLibrary, _ name: String) throws
 /// Render in horizontal bands, one command buffer each, so no single piece of
 /// GPU work runs long enough to trip the system's watchdog.
 func renderMouth(width: Int, height: Int, samples: Int, mutant: Mutant = .none,
-                 camera: Camera = stillCamera, retromolarPad: Bool = false, extra: SceneExtra = .none,
+                 camera: Camera = stillCamera, retromolarPad: Bool = false, thirdMolars: Bool = false,
+                 extra: SceneExtra = .none,
                  on device: MTLDevice) throws -> (image: MouthImage, gpuSeconds: Double) {
-    let library = try makeLibrary(device, mutant: mutant, retromolarPad: retromolarPad, extra: extra)
+    let library = try makeLibrary(device, mutant: mutant, retromolarPad: retromolarPad,
+                                  thirdMolars: thirdMolars, extra: extra)
     let pso = try pipeline(device, library, "mouth")
-    var teeth: [GPUTooth] = gpuTeeth(placeTeeth())
+    var teeth: [GPUTooth] = gpuTeeth(placeTeeth(thirdMolars: thirdMolars))
     guard let pixels = device.makeBuffer(length: width * height * 4, options: .storageModeShared),
           let aux = device.makeBuffer(length: width * height * 16, options: .storageModeShared),
           let toothBuf = device.makeBuffer(bytes: &teeth, length: MemoryLayout<GPUTooth>.stride * teeth.count,
@@ -877,12 +903,13 @@ func renderMouth(width: Int, height: Int, samples: Int, mutant: Mutant = .none,
 /// The scene's distance and material at arbitrary points, from the same kernel
 /// source the render uses — so a test of the distance function is a test of
 /// the thing that drew the picture, not of a copy of it.
-func probeScene(_ points: [SIMD3<Float>], retromolarPad: Bool = false, extra: SceneExtra = .none,
-                on device: MTLDevice) throws -> [SIMD2<Float>] {
-    let library = try makeLibrary(device, mutant: .none, retromolarPad: retromolarPad, extra: extra)
+func probeScene(_ points: [SIMD3<Float>], retromolarPad: Bool = false, thirdMolars: Bool = false,
+                extra: SceneExtra = .none, on device: MTLDevice) throws -> [SIMD2<Float>] {
+    let library = try makeLibrary(device, mutant: .none, retromolarPad: retromolarPad,
+                                  thirdMolars: thirdMolars, extra: extra)
     let pso = try pipeline(device, library, "probe")
     var pts: [SIMD4<Float>] = points.map { SIMD4<Float>($0.x, $0.y, $0.z, 0) }
-    var teeth: [GPUTooth] = gpuTeeth(placeTeeth())
+    var teeth: [GPUTooth] = gpuTeeth(placeTeeth(thirdMolars: thirdMolars))
     guard let pb = device.makeBuffer(bytes: &pts, length: 16 * pts.count, options: .storageModeShared),
           let ob = device.makeBuffer(length: 8 * pts.count, options: .storageModeShared),
           let tb = device.makeBuffer(bytes: &teeth, length: MemoryLayout<GPUTooth>.stride * teeth.count,

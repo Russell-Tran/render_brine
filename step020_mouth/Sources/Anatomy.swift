@@ -1,6 +1,6 @@
-// The lower arch as numbers: fourteen teeth, where each one sits, and what
-// colour each tissue is. Nothing here touches the GPU; it is the part a test
-// can read against the textbooks.
+// The lower arch as numbers: fourteen teeth (sixteen with the wisdom teeth),
+// where each one sits, and what colour each tissue is. Nothing here touches
+// the GPU; it is the part a test can read against the textbooks.
 //
 // Millimetres throughout. y is up, and y = 0 is the occlusal plane, where the
 // incisal edges and cusp tips meet their opponents. x runs across the mouth
@@ -63,6 +63,28 @@ let mandibularTeeth: [ToothSpec] = [
               cervicalWidth: 8.0, depth: 10.0, cervicalDepth: 9.0, cejCurve: 1.0),
 ]
 
+/// The mandibular third molar — the wisdom tooth, #17 on the patient's left
+/// and #32 on the right — for a camera that travels to the back of the arch
+/// (step 21). Not in `mandibularTeeth`, so step 20's fourteen are untouched;
+/// `placeTeeth(thirdMolars: true)` adds one per side.
+///
+/// Sizes are the mandibular third molar row of the same Wheeler's table (Nelson,
+/// *Wheeler's Dental Anatomy*, chapter "The Permanent Mandibular Molars"):
+/// crown 7.0 tall, 10.0 mesiodistally (7.5 at the cervix), 9.5 buccolingually
+/// (9.0 at the cervix), cervical line curving 1.0. UNVERIFIED: these are the
+/// values as quoted from the book, and no copy of the table could be reached
+/// online to check them against. They are plausible beside the rows that are
+/// checked: as tall as the second molar and a little narrower each way.
+///
+/// Its crown is drawn as a second molar's, four cusps: a mandibular third
+/// molar "could resemble a four-cusped mandibular second molar or a five-cusped
+/// mandibular first molar" (Scheid & Weiss, *Woelfel's Dental Anatomy*, "Maxillary
+/// and mandibular third molar type traits"). MODEL: the four-cusp form of the
+/// two. Erupted and in line with its neighbours, as in a mouth that had room
+/// for it — MODEL, since many are impacted or tipped.
+let mandibularThirdMolar = ToothSpec(name: "third molar", kind: .secondMolar, crownHeight: 7.0, width: 10.0,
+                                     cervicalWidth: 7.5, depth: 9.5, cervicalDepth: 9.0, cejCurve: 1.0)
+
 // MARK: - the arch
 
 // The arch form is Bonwill–Hawley, the oldest one in orthodontics and still the
@@ -121,24 +143,48 @@ let archCentres: [Float] = {
     return out
 }()
 
+/// Arc length from the midline to a third molar's centre: it starts where the
+/// second molar ends, so they touch, like every other pair of neighbours. The
+/// straight line behind the canine simply continues.
+let thirdMolarArc: Float = archCentres[6] + mandibularTeeth[6].width / 2 + mandibularThirdMolar.width / 2
+
+/// One tooth set on the arch at arc length `arc` from the midline, on `side`.
+func placeTooth(_ spec: ToothSpec, at arc: Float, side: Float) -> PlacedTooth {
+    let (p, t) = archPoint(arc)
+    let centre = SIMD2<Float>(p.x * side, p.y)
+    let tangent = simd_normalize(SIMD2<Float>(t.x * side, t.y))
+    // Perpendicular to the arch, on the side away from its centre.
+    var outward = SIMD2<Float>(tangent.y, -tangent.x)
+    let towardMidline = SIMD2<Float>(-centre.x, 20 - centre.y)
+    if simd_dot(outward, towardMidline) > 0 { outward = -outward }
+    return PlacedTooth(spec: spec, centre: centre, tangent: tangent, outward: outward, side: side)
+}
+
 /// All fourteen: the patient's left side (−x) first, then the right.
-func placeTeeth() -> [PlacedTooth] {
+///
+/// With `thirdMolars` on, the two wisdom teeth come after them, so no other
+/// tooth's index moves: index 14 is #17, the patient's LEFT third molar (−x),
+/// and index 15 is #32, the right. Off — the default, and what step 20 and
+/// step 22 draw — the list is the same fourteen, in the same order, from the
+/// same arithmetic, as before the option existed.
+func placeTeeth(thirdMolars: Bool = false) -> [PlacedTooth] {
     var out: [PlacedTooth] = []
     for side in [Float(-1), Float(1)] {
         for (i, spec) in mandibularTeeth.enumerated() {
-            let (p, t) = archPoint(archCentres[i])
-            let centre = SIMD2<Float>(p.x * side, p.y)
-            let tangent = simd_normalize(SIMD2<Float>(t.x * side, t.y))
-            // Perpendicular to the arch, on the side away from its centre.
-            var outward = SIMD2<Float>(tangent.y, -tangent.x)
-            let towardMidline = SIMD2<Float>(-centre.x, 20 - centre.y)
-            if simd_dot(outward, towardMidline) > 0 { outward = -outward }
-            out.append(PlacedTooth(spec: spec, centre: centre, tangent: tangent,
-                                   outward: outward, side: side))
+            out.append(placeTooth(spec, at: archCentres[i], side: side))
+        }
+    }
+    if thirdMolars {
+        for side in [Float(-1), Float(1)] {
+            out.append(placeTooth(mandibularThirdMolar, at: thirdMolarArc, side: side))
         }
     }
     return out
 }
+
+/// Where the wisdom teeth sit in `placeTeeth(thirdMolars: true)`.
+let tooth17Index: Int = 14
+let tooth32Index: Int = 15
 
 // MARK: - the gum
 
