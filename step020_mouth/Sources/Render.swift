@@ -210,7 +210,25 @@ func padSource(_ on: Bool) -> (function: String, call: String) {
     return (function, " dG = smin(dG, padSDF(p, teeth), GUM_BLEND);")
 }
 
-func kernelSource(mutant: Mutant, retromolarPad: Bool = false) -> String {
+// MARK: - room for a later step's objects in the same scene
+
+/// Metal text a later step splices into this kernel, to put something of its
+/// own in the mouth — step 22's toothbrush — lit, shadowed and occluded by
+/// the same light as the teeth. Three places: `functions` goes in beside the
+/// tongue's distance function; `sceneCall` runs at the end of the scene's
+/// distance, with `p`, `d` and `mat` in hand; `shadeBranch` is spliced into
+/// the shading's chain of materials as `else if (...) { ... }`, before the
+/// tongue's final `else`, and sets `albedo` and the lobes as the others do.
+/// Empty by default, and then the kernel is the same text, character for
+/// character, as it was before this existed — so this picture cannot change.
+struct SceneExtra {
+    var functions: String = ""
+    var sceneCall: String = ""
+    var shadeBranch: String = ""
+    static let none = SceneExtra()
+}
+
+func kernelSource(mutant: Mutant, retromolarPad: Bool = false, extra: SceneExtra = .none) -> String {
     let pad = padSource(retromolarPad)
     let kinds: [CrownKind] = CrownKind.allCases
     let mids: String = kinds.map { metal(labToLinearSRGB(middleThirdLab[$0]!)) }.joined(separator: ", ")
@@ -420,7 +438,7 @@ func kernelSource(mutant: Mutant, retromolarPad: Bool = false) -> String {
         float k0 = length(q / TONGUE_R);
         float k1 = length(q / (TONGUE_R * TONGUE_R));
         return k0 * (k0 - 1.0) / k1;
-    }\(pad.function)
+    }\(pad.function)\(extra.functions)
 
     // The floor of the mouth, inside the arch only, so nothing shows through.
     float floorSDF(float3 p) {
@@ -459,7 +477,7 @@ func kernelSource(mutant: Mutant, retromolarPad: Bool = false) -> String {
         float dTo = tongueSDF(p);
         if (dTo < d) { d = dTo; mat = 3; }
         float dF = floorSDF(p);
-        if (dF < d) { d = dF; mat = 4; }
+        if (dF < d) { d = dF; mat = 4; }\(extra.sceneCall)
         return d;
     }
 
@@ -614,7 +632,7 @@ func kernelSource(mutant: Mutant, retromolarPad: Bool = false) -> String {
             filmAlpha = mix(0.06, 0.22, noise3(p * 0.7));
             baseAlpha = 0.5;
             baseF0 = 0.0;
-        } else {
+        }\(extra.shadeBranch) else {
             float3 bump = noiseGrad(p * 4.5);
             n = normalize(n + 0.18 * (bump - n * dot(bump, n)));
             albedo = mat == 3 ? mix(TONGUE, float3(0.62, 0.42, 0.40), 0.25 * noise3(p * 4.5)) : TONGUE * 0.8;
@@ -789,13 +807,15 @@ func findDevice() throws -> MTLDevice {
     throw MouthError.noMetalDevice
 }
 
-func makeLibrary(_ device: MTLDevice, mutant: Mutant, retromolarPad: Bool = false) throws -> MTLLibrary {
+func makeLibrary(_ device: MTLDevice, mutant: Mutant, retromolarPad: Bool = false,
+                 extra: SceneExtra = .none) throws -> MTLLibrary {
     let options = MTLCompileOptions()
     // Precise maths, as in every step: the distance functions are subtracted
     // from one another to within a few microns.
     options.fastMathEnabled = false
     do {
-        return try device.makeLibrary(source: kernelSource(mutant: mutant, retromolarPad: retromolarPad), options: options)
+        return try device.makeLibrary(source: kernelSource(mutant: mutant, retromolarPad: retromolarPad, extra: extra),
+                                      options: options)
     } catch {
         throw MouthError.kernelCompile("\(error)")
     }
@@ -811,8 +831,9 @@ func pipeline(_ device: MTLDevice, _ library: MTLLibrary, _ name: String) throws
 /// Render in horizontal bands, one command buffer each, so no single piece of
 /// GPU work runs long enough to trip the system's watchdog.
 func renderMouth(width: Int, height: Int, samples: Int, mutant: Mutant = .none,
-                 camera: Camera = stillCamera, retromolarPad: Bool = false, on device: MTLDevice) throws -> (image: MouthImage, gpuSeconds: Double) {
-    let library = try makeLibrary(device, mutant: mutant, retromolarPad: retromolarPad)
+                 camera: Camera = stillCamera, retromolarPad: Bool = false, extra: SceneExtra = .none,
+                 on device: MTLDevice) throws -> (image: MouthImage, gpuSeconds: Double) {
+    let library = try makeLibrary(device, mutant: mutant, retromolarPad: retromolarPad, extra: extra)
     let pso = try pipeline(device, library, "mouth")
     var teeth: [GPUTooth] = gpuTeeth(placeTeeth())
     guard let pixels = device.makeBuffer(length: width * height * 4, options: .storageModeShared),
@@ -856,9 +877,9 @@ func renderMouth(width: Int, height: Int, samples: Int, mutant: Mutant = .none,
 /// The scene's distance and material at arbitrary points, from the same kernel
 /// source the render uses — so a test of the distance function is a test of
 /// the thing that drew the picture, not of a copy of it.
-func probeScene(_ points: [SIMD3<Float>], retromolarPad: Bool = false,
+func probeScene(_ points: [SIMD3<Float>], retromolarPad: Bool = false, extra: SceneExtra = .none,
                 on device: MTLDevice) throws -> [SIMD2<Float>] {
-    let library = try makeLibrary(device, mutant: .none, retromolarPad: retromolarPad)
+    let library = try makeLibrary(device, mutant: .none, retromolarPad: retromolarPad, extra: extra)
     let pso = try pipeline(device, library, "probe")
     var pts: [SIMD4<Float>] = points.map { SIMD4<Float>($0.x, $0.y, $0.z, 0) }
     var teeth: [GPUTooth] = gpuTeeth(placeTeeth())
