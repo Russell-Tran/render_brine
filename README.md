@@ -315,6 +315,14 @@ The most minimal render in the series: one nerve cell, the four parts that make 
 
 It has **twelve** dendrites rather than the "few" a textbook sketch shows, because measured cat motor neurons average twelve (range 5–20), and the sizes follow the measurements rather than the sketch. Where it simplifies, it says so: the dendrites are drawn several times shorter than their real millimetre so the tree doesn't swallow the cell; the nucleus size comes from a different neuron, since no motor-neuron value turned up; the end knobs are schematic; and the green is a choice — real neurons are colourless unless stained. The camera is straight-on so the scale bar is true anywhere in the frame. Code: [`step027_neuron/`](step027_neuron/)
 
+### Step 31: One neuron fires
+
+![The step 27 motor neuron, unchanged, with a soft gold glow starting where the axon leaves its cone, gliding out along the axon, vanishing into the break and reappearing beyond it, and brightening the four end knobs before the cell rests again; a caption notes it is slowed about 700,000 times](showcase/neuron_firing.gif)
+
+Step 27's neuron, every pixel of it at rest identical to the still, with **one nerve impulse** travelling out. It starts where impulses really start — the axon's initial segment, just past the cone where it leaves the cell body (Coombs, Curtis & Eccles showed this in cat motor neurons in 1957) — glides out along the axon, disappears into the break and comes out the far side, and lights the four end knobs. Then the cell rests, and the next impulse follows: a loop that only ever runs forward.
+
+The caption carries the real numbers. The speed is derived rather than typed: about 6 m/s per micrometre of fibre diameter (Hursh 1939) on the 7 µm axon and its insulation gives **70 m/s**, inside the 50–100 usually quoted, so the render is slowed about **700,000×**. And it is honest about what it simplifies: real motor axons are insulated with myelin and the impulse *jumps* from gap to gap, but step 27 left the myelin out, so here it glides; the metre hidden in the break would really take 14 ms — nearly three hours at this slow-down — and is cut to under a second. Tests hold it to the physiology: it starts at the initial segment, moves only outward, and never lights a dendrite; start it in a dendrite or run it backwards and the suite fails. Full HD, 8 s, just 0.39 MB — only a short stretch of thin axon changes in any frame. Code: [`step031_neuron_firing/`](step031_neuron_firing/)
+
 ### Step 32: An ant tastes table salt
 
 ![The black garden ant from step 26, touching a small cubic grain of table salt with one antenna tip; the first inset shows the taste hair touching the moisture film while the smell hair has nothing to catch, and the second shows the rock-salt lattice of violet sodium and green chloride ions, with ions leaving the crystal face into the water film](showcase/ant_salt.png)
