@@ -164,7 +164,7 @@ test("outside every surface, it never claims more room than there is, beyond wha
 
 test("the teeth stand out of the gum, and the gum out of the jaw, where they should") {
     guard let dev = device.device else { expect(false, "no GPU"); return }
-    let t: PlacedTooth = placed[3]       // right first premolar
+    let t: PlacedTooth = placed[3]       // the patient's left first premolar, #21
     let c = SIMD3<Float>(t.centre.x, 0, t.centre.y)
     let pts: [SIMD3<Float>] = [
         c + SIMD3<Float>(0, -3, 0),                                   // mid crown

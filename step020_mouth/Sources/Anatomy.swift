@@ -4,7 +4,10 @@
 //
 // Millimetres throughout. y is up, and y = 0 is the occlusal plane, where the
 // incisal edges and cusp tips meet their opponents. x runs across the mouth
-// (+x is the patient's left), z runs back towards the throat, and the midline
+// (+x is the patient's RIGHT: the renderer is right-handed, so facing the
+// patient from the front +x lands on the viewer's left, and the patient's
+// right is on the viewer's left — step 21 caught this written backwards),
+// z runs back towards the throat, and the midline
 // between the two central incisors is x = 0, z = 0.
 
 import Foundation
@@ -83,7 +86,7 @@ struct PlacedTooth {
     var centre: SIMD2<Float>    // (x, z)
     var tangent: SIMD2<Float>
     var outward: SIMD2<Float>
-    var side: Float             // +1 patient's left, −1 right
+    var side: Float             // +1 patient's right, −1 patient's left
 }
 
 /// Where along one half of the arch a distance `s` from the midline lands, and
@@ -118,7 +121,7 @@ let archCentres: [Float] = {
     return out
 }()
 
-/// All fourteen, right side then left.
+/// All fourteen: the patient's left side (−x) first, then the right.
 func placeTeeth() -> [PlacedTooth] {
     var out: [PlacedTooth] = []
     for side in [Float(-1), Float(1)] {

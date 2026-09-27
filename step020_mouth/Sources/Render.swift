@@ -54,7 +54,7 @@ func topHalfDepth(_ spec: ToothSpec) -> Float {
 // MARK: - the camera and the lights
 
 /// Looking down and across the lower arch from in front of the patient's
-/// right premolars, the angle of the reference: incisors turning away on the
+/// left premolars (−x), the angle of the reference: incisors turning away on the
 /// left, the near premolars square to the camera, a molar at the right edge.
 let cameraPosition = SIMD3<Float>(-50, 17, 1)
 let cameraTarget = SIMD3<Float>(-9, -4.5, 14)
