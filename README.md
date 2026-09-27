@@ -257,6 +257,16 @@ The interesting problem was a corner nobody could see in the still. Hawley's arc
 
 Building it also caught an error in step 20: its comments had **left and right mirrored**. The renderer is right-handed, so seen from the front, +x lands on the viewer's left — the patient's *right*. The arch is an exact mirror image, so the still never showed it, but a camera sent to +x would have ended on #31. Step 20 was made to take its camera at run time without changing a pixel: its re-render hashes identically to the committed image. 576 × 324 at 20 fps, 191 frames, 9.5 MB — every pixel changes every frame when the camera moves, so the size was chosen after measuring ten frames. Code: [`step021_arch_pan/`](step021_arch_pan/)
 
+### Step 22: Brush meets tooth
+
+![The step 20 lower arch, same camera and light, with a round electric toothbrush head at the bottom of the frame pressing its dark-blue and light-blue tufts against the cheek side of a premolar where it meets the gum; the tufts pressed hardest are shorter and splay slightly](showcase/brush.png)
+
+Step 20's still, untouched, with a round oscillating toothbrush head pressed against the cheek side of **#21**, the patient's left lower first premolar, right at the gumline where brushing is aimed. Modelled on Russell's own brush: a 13 mm head with a rim of sixteen tufts, 1.6 mm each, in dark and light blue, sized from dental and patent sources and coloured from his photographs.
+
+The point of the step is that **contact comes from the geometry, not the eye**. Each tuft is fired along its own axis at step 20's distance function and stopped where it meets the tooth or the gum, to about a micron; the head is pressed in until the tuft with furthest to go just arrives at its full 8 mm, and every other tuft is as much shorter as the surface in front of it is nearer — 4.35 mm to 8 mm. The ones pressed hardest splay. The largest gap between any tuft tip and a surface is 0.00000 mm, and 78,125 points inside the tufts confirm none passes through. Lift the brush a millimetre, or push it a millimetre in, and a test fails.
+
+Step 20 gained an optional hook for extra scenery and changed not a pixel — its render still hashes identically. Two compromises are visible: at this camera the 13 mm head cannot fit below the gumline, so the frame cuts it off and hides its white centre tufts; and the neck leaves through the right edge, where a real one would come from between the lips. Code: [`step022_brush/`](step022_brush/)
+
 ### Step 23: Secretory diarrhea (cholera-type)
 
 ![Animated cutaway in two stacked panels, normal above and cholera below: the end of the small intestine with its villi opens through a valve into the flat-lined colon; in the lower panel the crypts pour out chloride, sodium and water, a squeezing wave pushes thin fluid along, and a close-up of one crypt wall shows chloride crossing through the cells and sodium between them](showcase/diarrhea.gif)
