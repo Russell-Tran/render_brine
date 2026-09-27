@@ -267,6 +267,16 @@ The mechanism is drawn in its real order and along its real routes. The toxin op
 
 The particles are counted, not sprinkled. The lumen holds **135 : 100 : 15 : 45** sodium, chloride, potassium and bicarbonate — adult cholera stool, from the WHO tables — which gives an osmotic gap of −10: under 50, the laboratory signature of a secretory diarrhea. And the colon is drawn honestly. It is not idle, it is **overwhelmed**: working near its ceiling of about 5 L a day (Debongnie & Phillips 1978) while severe cholera can deliver more than a litre an hour. So the cholera colon returns *more* water than the normal one — 32 arrows a loop against 9 — and still falls hopelessly behind. The squeezing wave contracts behind the contents and relaxes ahead of them, as Bayliss and Starling described in 1899. 1280 × 960, 80 frames, 8.9 MB. Code: [`step023_diarrhea/`](step023_diarrhea/)
 
+### Step 25: A bean flower pollinates itself
+
+![A white common-bean flower bud cut open: the keel coils into a flat spiral with the style running inside it, the ovary below holds six ovules in a row, and a round inset magnifies the stigma ten times to show golden pollen grains on its brush of hairs and one grain sending a tube down into the style; a soft green pod lies blurred in the background, labelled as the same ovary about fourteen days later](showcase/bean.png)
+
+A white *Phaseolus vulgaris* bud, cut open at the moment its own pollen reaches its own stigma — and it is a **bud** on purpose. In beans the anthers split the evening **before the flower opens** (McGregor, USDA Handbook 496), so by the time a bean flower opens it has usually fertilized itself already. The pollination happens inside a flower that has not yet opened.
+
+The hero is the shape nobody expects: the **keel coils** — "spirally coiled through 1–5 turns", in the Flora of Tropical East Africa — and the style coils inside it, 639° here against the 360° the floras require. A test follows the style all the way round and checks it never touches the keel wall. Around the stigma sit the ten stamens in the legumes' own **9 + 1** arrangement, nine fused into a sheath around the ovary and one free, and a test probes the gaps to prove it. Pollen is **triporate and 41–50 µm across** (PalDat), which at true scale is under four pixels — so the flower is drawn true and a ×10.3 inset shows the grains on the stigma's brush of hairs and one of them sending its tube down to one of six ovules. The tube is traced through 428 points and never leaves the pistil.
+
+Where the evidence is weaker it says so: bud-selfing is documented for cultivated beans and the tepary bean, but a wild variety is receptive before its anthers open and only partly self-compatible, so the honest phrase is "mostly self-pollinated" — natural crossing runs 0–10%. The pod behind, the same ovary about fourteen days on, is drawn as a soft blur, and reads more as a green smudge than a pod. Code: [`step025_bean/`](step025_bean/)
+
 ### Step 26: An ant tastes sugar
 
 ![A black garden ant on a pale surface touching a glassy grain of sugar with one antenna tip; a round inset magnifies the antenna tip to show a taste hair with one pore at its tip beside a smell hair with many pores in its wall, and a second inset shows a sucrose molecule in ball-and-stick, each view with its own scale bar](showcase/ant.png)
