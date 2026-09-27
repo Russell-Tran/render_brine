@@ -37,41 +37,52 @@ let brushedToothIndex: Int = 3
 
 // MARK: - the head, in sourced sizes
 
-/// Diameter of the round head. "The cup-shaped brush head has a diameter of
-/// approximately 13mm" (Oral-B's professional education site, dentalcare.ca,
-/// "Round for a reason"). That is for the maker's own round heads; the head in
-/// the photos is the same design, so its disc is taken as 13 mm.
-let headDiameter: Float = 13.0
+/// Diameter of the round head: 11.5 mm. The first render used 13 mm, from
+/// "the cup-shaped brush head has a diameter of approximately 13mm" (Oral-B's
+/// professional education site, dentalcare.ca, "Round for a reason"), and it
+/// read too big beside a 7 mm premolar. Russell asked for it slightly smaller.
+/// What the sources give: the 13 mm figure is for Oral-B's classic round
+/// cup; the newer iO head is 2 mm WIDER than the CrossAction ("Cleansing
+/// efficacy of the electric toothbrush Oral-B iO...", Clin Oral Investig 2024,
+/// PMC11339098); and reviewers call the Precision Clean — the design in the
+/// photos — the smallest of the maker's standard round heads (animated-teeth
+/// .com). No maker publishes its millimetres. MODEL: 11.5 mm, a little under
+/// the classic 13, and every other part of the head scales with it by
+/// `headScale`, so the brush keeps the proportions of the one in the photos.
+let headDiameter: Float = 11.5
+/// How much smaller than the first render's 13 mm head everything is.
+let headScale: Float = headDiameter / 13.0
 
 /// Thickness of the disc that carries the tufts. MODEL: in the side-on photo
 /// the disc is about a quarter of its own diameter thick.
-let carrierThickness: Float = 3.0
+let carrierThickness: Float = 3.0 * headScale
 
 /// The hexagonal boss on the back of the disc: across its flats, and how far
 /// it stands proud. MODEL: in the photo of the back it spans a little under
 /// six tenths of the disc, and stands about half the disc's thickness.
-let hexAcrossFlats: Float = 7.5
-let hexHeight: Float = 1.5
+let hexAcrossFlats: Float = 7.5 * headScale
+let hexHeight: Float = 1.5 * headScale
 
 /// The neck: width and thickness where it meets the head and where it leaves
 /// the frame, and how long a piece of it is modelled. MODEL, from the photos:
 /// the neck is about four tenths of the disc wide at the head and widens
 /// steadily towards the handle.
-let neckWidthNear: Float = 5.0
-let neckWidthFar: Float = 8.0
-let neckThickNear: Float = 3.8
-let neckThickFar: Float = 5.5
+let neckWidthNear: Float = 5.0 * headScale
+let neckWidthFar: Float = 8.0 * headScale
+let neckThickNear: Float = 3.8 * headScale
+let neckThickFar: Float = 5.5 * headScale
 let neckLength: Float = 60.0
 /// How far behind the disc's front face the neck's front face sits. MODEL:
 /// in the side-on photo the neck runs along the back half of the disc.
-let neckSetBack: Float = 0.8
+let neckSetBack: Float = 0.8 * headScale
 
 // MARK: - the tufts, in sourced sizes
 
 /// Diameter of one tuft. "Standard tufts with a diameter of between 1.5 mm
 /// and 1.7 mm" (Braun GmbH, US 6,957,468 B2, "Toothbrush head with
-/// anchor-free bristle tufting", 2005). The middle of that range.
-let tuftDiameter: Float = 1.6
+/// anchor-free bristle tufting", 2005). The bottom of that range, so sixteen
+/// still fit round the smaller head (the first render used the middle, 1.6).
+let tuftDiameter: Float = 1.5
 
 /// Diameter of one filament: "nylon 6,12 filaments typically having a
 /// diameter of 0.15–0.25 mm, often 0.2 mm" (Unilever, EP 1 014 830 B1,
@@ -85,8 +96,9 @@ let filamentDiameter: Float = 0.2
 /// (6.5–9 mm against 13 mm). Manual-brush patents give 9 ± 1 mm for short
 /// tufts and 13 ± 1 mm for long ones (US 2010/0180392 A1, "Toothbrush with long
 /// tapered bristles and short non-tapered bristles"); a round oscillating head
-/// is smaller, and 8 mm sits at the photo's middle.
-let restLength: Float = 8.0
+/// is smaller, and 8 mm sat at the photo's middle for a 13 mm head — scaled
+/// with the head, so the tufts keep the photo's proportions.
+let restLength: Float = 8.0 * headScale
 
 /// The rim: a ring of 16 equal tufts, as in the round oscillating head of
 /// US 9,332,828 B2 ("Brush head for an electric toothbrush", Ranir LLC, 2016),
@@ -95,14 +107,15 @@ let restLength: Float = 8.0
 /// `tuftDiameter` fit with `tuftGap` between neighbours.
 let rimTuftCount: Int = 16
 /// Clear space between neighbouring tufts' bases. MODEL: the moulded walls
-/// between tuft holes are 0.2–0.3 mm thick (US 6,957,468 B2, as above).
-let tuftGap: Float = 0.3
+/// between tuft holes are 0.2–0.3 mm thick (US 6,957,468 B2, as above). The
+/// thin end, for the smaller head.
+let tuftGap: Float = 0.2
 let rimRadius: Float = Float(rimTuftCount) * (tuftDiameter + tuftGap) / (2 * Float.pi)
 /// The white centre: one tuft and a ring of eight round it. MODEL: the photo
 /// of the face shows a white centre about half the field across; the patent
 /// above puts two rings of six there, which the photo does not show.
 let innerTuftCount: Int = 8
-let innerRadius: Float = 2.6
+let innerRadius: Float = 2.6 * headScale
 
 /// How much a pressed tuft splays: its tip widens by `splayGrowth` × its
 /// fractional compression, and leans outward from the head's centre by
@@ -532,6 +545,8 @@ func brushExtra(_ brush: Brush) -> SceneExtra {
         constant float3 BR_NECK_END = \(metal(neckEnd));
         constant float BR_NECK_R = \(neckRadius);
         constant float HEAD_R = \(headDiameter / 2);
+        constant float DIAMOND_X = \(13.0 * headScale);
+        constant float SLOT_X = \(17.0 * headScale);
         constant float CARRIER_T = \(carrierThickness);
         constant float HEX_F = \(hexAcrossFlats / 2);
         constant float HEX_H = \(hexHeight);
@@ -619,11 +634,11 @@ func brushExtra(_ brush: Brush) -> SceneExtra {
             float neck = roundBox(nq, float3(NECK_LEN * 0.5, hw, ht), min(hw, ht) * 0.7);
             // The diamond-shaped recess on the back of the neck, and the slot
             // on its front.
-            float2 dq = abs(float2(q.x - 13.0, q.y));
+            float2 dq = abs(float2(q.x - DIAMOND_X, q.y));
             float rhomb = (dq.x * 1.0 + dq.y * 2.2 - 2.2) / sqrt(1.0 + 2.2 * 2.2);
             float back = -(q.z + NECK_BACK + 2.0 * ht);
             float diamond = max(rhomb, abs(back) - 0.35);
-            float2 sq = float2(max(abs(q.x - 17.0) - 1.4, 0.0), q.y);
+            float2 sq = float2(max(abs(q.x - SLOT_X) - 1.4, 0.0), q.y);
             float slot = max(length(sq) - 0.55, abs(q.z + NECK_BACK) - 0.9);
             neck = max(neck, -diamond);
             neck = max(neck, -slot);
