@@ -184,6 +184,8 @@ func drawOverlay(into frame: Frame, time t: Float, mutant: Mutant = .none) {
     c.text("watery chyme", x: chyme.x, top: chyme.y, size: 11.5, centred: true, backed: true)
     let firming: CGPoint = pt(SIMD3(52, colonAxisY - colonRadius + 2.5, -2), 0, l)
     c.text("water absorbed, stool firming", x: firming.x, top: firming.y, size: 11.5, centred: true, backed: true)
+    // Formed stool is ~75% water (median 74.6%: Rose, Parker, Jefferson &
+    // Cartmell, Crit Rev Environ Sci Technol 45:1827, 2015).
     let formed: CGPoint = pt(SIMD3(125, colonAxisY - colonRadius + 2.5, -2), 0, l)
     c.text("formed stool, ~75% water", x: formed.x, top: formed.y, size: 11.5, centred: true, backed: true)
 

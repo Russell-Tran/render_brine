@@ -99,8 +99,11 @@ func emitters(panel: Int, mutant: Mutant = .none) -> [Emitter] {
     let colon: [Float] = colonSurfaceXs()
     let perL: Float = waterParticlesPerLitre
 
-    // Secretion from the crypts. In cholera every crypt in the cut face
-    // fires; normally a quarter of them fire once a loop (basal secretion).
+    // Secretion from the crypts — the site of cAMP-driven secretion (Welsh,
+    // Smith, Fromm & Frizzell, Science 218:1219, 1982: fluid droplets form
+    // over crypt openings, and only crypt cells respond electrically). In
+    // cholera every crypt in the cut face fires; normally a quarter of them
+    // fire once a loop (basal secretion; MODEL count).
     for (i, x) in crypts.enumerated() {
         for side: Float in [1, -1] {
             let s: Int = side > 0 ? 0 : 1
