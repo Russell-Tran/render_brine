@@ -267,6 +267,16 @@ The mechanism is drawn in its real order and along its real routes. The toxin op
 
 The particles are counted, not sprinkled. The lumen holds **135 : 100 : 15 : 45** sodium, chloride, potassium and bicarbonate — adult cholera stool, from the WHO tables — which gives an osmotic gap of −10: under 50, the laboratory signature of a secretory diarrhea. And the colon is drawn honestly. It is not idle, it is **overwhelmed**: working near its ceiling of about 5 L a day (Debongnie & Phillips 1978) while severe cholera can deliver more than a litre an hour. So the cholera colon returns *more* water than the normal one — 32 arrows a loop against 9 — and still falls hopelessly behind. The squeezing wave contracts behind the contents and relaxes ahead of them, as Bayliss and Starling described in 1899. 1280 × 960, 80 frames, 8.9 MB. Code: [`step023_diarrhea/`](step023_diarrhea/)
 
+### Step 26: An ant tastes sugar
+
+![A black garden ant on a pale surface touching a glassy grain of sugar with one antenna tip; a round inset magnifies the antenna tip to show a taste hair with one pore at its tip beside a smell hair with many pores in its wall, and a second inset shows a sucrose molecule in ball-and-stick, each view with its own scale bar](showcase/ant.png)
+
+The brief was "an ant smelling sucrose", and the render corrects it on the page: **sucrose has no vapour to smell.** At room temperature its vapour pressure is effectively zero — heated, it melts and decomposes before it could ever boil off — so no sugar reaches an ant through the air. Ants find sugar by **touch**: taste hairs on their antenna tips, mouthparts and feet.
+
+So the picture is three views at three scales, each with a scale bar that is true everywhere in its frame. A *Lasius niger* worker, 4.0 mm long with a head sized from Seifert's measurements, rests one antenna on a grain of sugar — **12 antennal segments**, as every worker ant has, six legs on the middle body section, one waist scale — and the contact is measured, not placed: the tip sits 0.0000 mm from the crystal. The grains are cut from sucrose's real monoclinic crystal cell. The first inset shows why taste and smell are different senses you can see: a **taste hair has one pore, at its tip**, and must touch; a **smell hair has hundreds in its wall**, and samples the air. The second shows the molecule itself, from the same crystal structure step 18 used, with its hydrogens added in idealised geometry.
+
+The distance-function test caught two shapes that were quietly lying — a waist drawn as a thin ellipsoid over-reported distance 2.7×, and the smell hair's pores 1.7× — and both were rebuilt as exact shapes. Where the textbook is tidier than the ant, the code says so: ant smell hairs can carry a small dimple at the tip too. And the sugar grains still read a little like ice cubes. Code: [`step026_ant/`](step026_ant/)
+
 ### Step 27: One neuron
 
 ![A single spinal motor neuron on a near-white background: a sea-green cell body with a blue nucleus and dark nucleolus showing through, twelve branching dendrites, one axon interrupted by a break mark and ending in four small knobs, and a 50 micrometre scale bar](showcase/neuron.png)
