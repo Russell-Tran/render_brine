@@ -60,6 +60,23 @@ let cameraPosition = SIMD3<Float>(-50, 17, 1)
 let cameraTarget = SIMD3<Float>(-9, -4.5, 14)
 let tanHalfFOV: Float = 0.30
 
+/// Where the camera stands and what it looks at. The kernel reads it at run
+/// time rather than having it typed into its source, so a later step can move
+/// the camera between frames without recompiling; this still passes the one
+/// camera above.
+struct Camera {
+    var position: SIMD3<Float>
+    var target: SIMD3<Float>
+
+    var forward: SIMD3<Float> { simd_normalize(target - position) }
+    var right: SIMD3<Float> { simd_normalize(simd_cross(forward, SIMD3<Float>(0, 1, 0))) }
+    var up: SIMD3<Float> { simd_cross(right, forward) }
+    /// The fill softbox sits beside the lens, so it goes where the camera goes.
+    var fill: SIMD3<Float> { simd_normalize(simd_normalize(position - target) + SIMD3<Float>(0, 0.25, 0)) }
+}
+
+let stillCamera = Camera(position: cameraPosition, target: cameraTarget)
+
 /// A softbox above and in front, and a second, dimmer one beside the camera —
 /// the way dental photographs are lit, with the flash at the lens, which is
 /// what puts a highlight on every labial face.
@@ -70,7 +87,7 @@ let tanHalfFOV: Float = 0.30
 /// diffusely. A small, bright box gives crisp highlights; the same light spread
 /// over a big dim one gives none — which is what the first render did.
 let keyDirection = simd_normalize(SIMD3<Float>(-0.45, 1.0, -0.55))
-let fillDirection = simd_normalize(simd_normalize(cameraPosition - cameraTarget) + SIMD3<Float>(0, 0.25, 0))
+let fillDirection: SIMD3<Float> = stillCamera.fill
 let keyColour = SIMD3<Float>(1.0, 0.98, 0.95) * 1.7
 let fillColour = SIMD3<Float>(0.96, 0.97, 1.0) * 0.8
 /// Angular radius of each softbox, as the cosine of it.
@@ -139,10 +156,62 @@ let stepScale: Float = 0.6
 
 func metal(_ v: SIMD3<Float>) -> String { "float3(\(v.x), \(v.y), \(v.z))" }
 
-func kernelSource(mutant: Mutant) -> String {
-    let forward: SIMD3<Float> = simd_normalize(cameraTarget - cameraPosition)
-    let right: SIMD3<Float> = simd_normalize(simd_cross(forward, SIMD3<Float>(0, 1, 0)))
-    let up: SIMD3<Float> = simd_cross(right, forward)
+// MARK: - the retromolar pad, for a camera that looks behind the last molar
+
+// This still never sees the end of the arch face on, so the gum simply stops
+// behind the second molars in a wall. Step 21's camera ends looking at
+// the second molar from the side, and there the wall shows. Behind the last
+// molar the real mouth has the retromolar pad: a soft, pear-shaped mound of
+// tissue that stands above the gum line and closes the ridge off. It is
+// switched OFF by default, and when it is off the kernel source is the same
+// text, character for character, as it was without it — so this picture
+// cannot change.
+
+/// The pad is a column with an oval footprint and a domed top, standing on the
+/// gum's floor: how far behind the second molar's distal surface its centre
+/// sits, its half-length along the arch and half-width across it, and how tall
+/// the dome on top is. MODEL: the pad is described as about a centimetre long
+/// and as wide as the ridge it caps; these give that, beginning just behind
+/// the molar's contact. An ellipsoid alone, tried first, was widest halfway
+/// down and bulged out of the side of the jaw.
+let padBehind: Float = 5.5
+let padAlong: Float = 6.5
+let padAcross: Float = 5.5
+let padDome: Float = 5.0
+/// The pad's top. MODEL: above the gum margin behind the molar (−6 mm here),
+/// as the pad stands proud of the ridge, and kept below the second molar's
+/// cusps so it closes the arch without hiding the tooth.
+let padTop: Float = -3.0
+
+func padSource(_ on: Bool) -> (function: String, call: String) {
+    guard on else { return ("", "") }
+    let function: String = """
+
+        // The retromolar pad behind each second molar (teeth 6 and 13), in
+        // the molar's own frame: an oval column up to where the dome starts,
+        // a half-ellipsoid dome on top, cut off at the gum's floor.
+        float padSDF(float3 p, constant Tooth *teeth) {
+            float d = 1e9;
+            for (uint k = 0; k < 2; k++) {
+                constant Tooth &T = teeth[k == 0 ? 6 : 13];
+                float2 c = T.frame.xy + T.frame.zw * (T.halves.x + \(padBehind));
+                float3 q = p - float3(c.x, \(padTop - padDome), c.y);
+                float3 l = float3(dot(q.xz, T.frame.zw), q.y, dot(q.xz, T.outward.xy));
+                float3 r = float3(\(padAlong), \(padDome), \(padAcross));
+                float3 top = float3(l.x, max(l.y, 0.0), l.z);
+                float k0 = length(top / r);
+                float k1 = length(top / (r * r));
+                float e = k0 * (k0 - 1.0) / k1;
+                d = min(d, max(e, (-T.shape.x - GUM_DEPTH) - p.y));
+            }
+            return d;
+        }
+    """
+    return (function, " dG = smin(dG, padSDF(p, teeth), GUM_BLEND);")
+}
+
+func kernelSource(mutant: Mutant, retromolarPad: Bool = false) -> String {
+    let pad = padSource(retromolarPad)
     let kinds: [CrownKind] = CrownKind.allCases
     let mids: String = kinds.map { metal(labToLinearSRGB(middleThirdLab[$0]!)) }.joined(separator: ", ")
     let cervs: String = kinds.map { metal(labToLinearSRGB(middleThirdLab[$0]! + cervicalShift)) }.joined(separator: ", ")
@@ -151,7 +220,8 @@ func kernelSource(mutant: Mutant) -> String {
     using namespace metal;
 
     struct Tooth { float4 frame; float4 outward; float4 halves; float4 shape; float4 toothBound; float4 gumBound; };
-    struct Params { uint width; uint height; uint rowOffset; uint samples; };
+    struct Params { uint width; uint height; uint rowOffset; uint samples;
+                    float4 camPos; float4 camFwd; float4 camRight; float4 camUp; float4 fillDir; };
 
     constant uint TOOTH_COUNT = 14;
     constant int MUTANT = \(mutant.rawValue);
@@ -159,14 +229,9 @@ func kernelSource(mutant: Mutant) -> String {
     constant float HIT_EPS = 0.003;
     constant float FAR = 260.0;
 
-    constant float3 CAM_POS = \(metal(cameraPosition));
-    constant float3 CAM_FWD = \(metal(forward));
-    constant float3 CAM_RIGHT = \(metal(right));
-    constant float3 CAM_UP = \(metal(up));
     constant float TAN_HALF_FOV = \(tanHalfFOV);
 
     constant float3 KEY_DIR = \(metal(keyDirection));
-    constant float3 FILL_DIR = \(metal(fillDirection));
     constant float3 KEY_COL = \(metal(keyColour));
     constant float3 FILL_COL = \(metal(fillColour));
     constant float3 KEY_RADIANCE = \(metal(discRadiance(keyColour, cosine: keyDiscCosine)));
@@ -355,7 +420,7 @@ func kernelSource(mutant: Mutant) -> String {
         float k0 = length(q / TONGUE_R);
         float k1 = length(q / (TONGUE_R * TONGUE_R));
         return k0 * (k0 - 1.0) / k1;
-    }
+    }\(pad.function)
 
     // The floor of the mouth, inside the arch only, so nothing shows through.
     float floorSDF(float3 p) {
@@ -387,7 +452,7 @@ func kernelSource(mutant: Mutant) -> String {
             dG = mix(g, dG, h) - GUM_BLEND * h * (1.0 - h);
             steepG = mix(steep, steepG, h);
         }
-        dG /= steepG;
+        dG /= steepG;\(pad.call)
         float d = dT;
         mat = 1;
         if (dG < d) { d = dG; mat = 2; }
@@ -465,13 +530,13 @@ func kernelSource(mutant: Mutant) -> String {
     // The room: dim below, brighter above, and the two softboxes as discs.
     // The discs' edges are softened by a quarter of their radius so a
     // highlight has a soft rim rather than aliasing.
-    float3 environment(float3 d) {
+    float3 environment(float3 d, float3 fillDir) {
         float up = smoothstep(-0.4, 0.8, d.y);
         float3 c = mix(float3(0.22, 0.19, 0.19), float3(0.75, 0.75, 0.78), up);
         float kSoft = (1.0 - KEY_DISC) * 0.5;
         float fSoft = (1.0 - FILL_DISC) * 0.5;
         c += KEY_RADIANCE * smoothstep(KEY_DISC - kSoft, KEY_DISC + kSoft, dot(d, KEY_DIR));
-        c += FILL_RADIANCE * smoothstep(FILL_DISC - fSoft, FILL_DISC + fSoft, dot(d, FILL_DIR));
+        c += FILL_RADIANCE * smoothstep(FILL_DISC - fSoft, FILL_DISC + fSoft, dot(d, fillDir));
         return c;
     }
 
@@ -506,7 +571,7 @@ func kernelSource(mutant: Mutant) -> String {
         return clamp((p.y + H) / H, 0.0, 1.0);
     }
 
-    float3 shade(float3 p, float3 rd, int mat, constant Tooth *teeth) {
+    float3 shade(float3 p, float3 rd, int mat, constant Tooth *teeth, float3 fillDir) {
         float3 n = sceneNormal(p, teeth);
         float3 v = -rd;
         float occ = ambientOcclusion(p, n, teeth);
@@ -562,7 +627,7 @@ func kernelSource(mutant: Mutant) -> String {
 
         float ndv = max(dot(n, v), 1e-3);
         float nk = dot(n, KEY_DIR);
-        float nf = dot(n, FILL_DIR);
+        float nf = dot(n, fillDir);
         float key = max((nk + wrap) / (1.0 + wrap), 0.0) * sh;
         float fill = max((nf + wrap) / (1.0 + wrap), 0.0);
         float terminator = max(wrap - abs(nk), 0.0) / max(wrap, 1e-3) * sh;
@@ -578,16 +643,16 @@ func kernelSource(mutant: Mutant) -> String {
         // lights for those rough surfaces, and for the enamel beneath the film.
         float3 r = reflect(-v, n);
         float blur = smoothstep(0.08, 0.35, filmAlpha);
-        float3 mirror = environment(r);
+        float3 mirror = environment(r, fillDir);
         float keyVisible = mix(sh, 1.0, 0.0);
         float3 sharp = mirror * Ffilm * mix(1.0, occ, 0.5);
         if (dot(r, KEY_DIR) > KEY_DISC - 0.02) sharp *= keyVisible;
         float3 rough = KEY_COL * ggx(n, v, KEY_DIR, max(filmAlpha, 0.12), FILM_F0) * sh
-                     + FILL_COL * ggx(n, v, FILL_DIR, max(filmAlpha, 0.12), FILM_F0)
+                     + FILL_COL * ggx(n, v, fillDir, max(filmAlpha, 0.12), FILM_F0)
                      + irradiance(r) * Ffilm * occ;
         float3 specular = mix(sharp, rough, blur);
         if (baseF0 > 0.0) specular += KEY_COL * ggx(n, v, KEY_DIR, baseAlpha, baseF0) * sh
-                                    + FILL_COL * ggx(n, v, FILL_DIR, baseAlpha, baseF0);
+                                    + FILL_COL * ggx(n, v, fillDir, baseAlpha, baseF0);
         return diffuse + specular;
     }
 
@@ -606,11 +671,11 @@ func kernelSource(mutant: Mutant) -> String {
         return select(1.055 * pow(c, 1.0 / 2.4) - 0.055, 12.92 * c, c <= 0.0031308);
     }
 
-    float3 cameraRay(float2 pixel, uint width, uint height) {
-        float aspect = float(width) / float(height);
-        float sx = (2.0 * pixel.x / float(width) - 1.0) * aspect * TAN_HALF_FOV;
-        float sy = (1.0 - 2.0 * pixel.y / float(height)) * TAN_HALF_FOV;
-        return normalize(CAM_FWD + sx * CAM_RIGHT + sy * CAM_UP);
+    float3 cameraRay(float2 pixel, constant Params &P) {
+        float aspect = float(P.width) / float(P.height);
+        float sx = (2.0 * pixel.x / float(P.width) - 1.0) * aspect * TAN_HALF_FOV;
+        float sy = (1.0 - 2.0 * pixel.y / float(P.height)) * TAN_HALF_FOV;
+        return normalize(P.camFwd.xyz + sx * P.camRight.xyz + sy * P.camUp.xyz);
     }
 
     // ---------------------------------------------------------------- kernels
@@ -623,16 +688,18 @@ func kernelSource(mutant: Mutant) -> String {
         uint x = gid.x;
         uint y = gid.y + P.rowOffset;
         if (x >= P.width || y >= P.height) return;
+        float3 camPos = P.camPos.xyz;
+        float3 fillDir = P.fillDir.xyz;
         float3 sum = float3(0.0);
         uint S = P.samples;
         for (uint sy = 0; sy < S; sy++) {
             for (uint sx = 0; sx < S; sx++) {
                 float2 jitter = float2((float(sx) + 0.5) / float(S), (float(sy) + 0.5) / float(S));
-                float3 rd = cameraRay(float2(x, y) + jitter, P.width, P.height);
+                float3 rd = cameraRay(float2(x, y) + jitter, P);
                 float t;
                 int mat;
-                if (march(CAM_POS, rd, teeth, t, mat)) {
-                    sum += toneMap(shade(CAM_POS + rd * t, rd, mat, teeth));
+                if (march(camPos, rd, teeth, t, mat)) {
+                    sum += toneMap(shade(camPos + rd * t, rd, mat, teeth, fillDir));
                 } else {
                     sum += float3(BG);
                 }
@@ -643,15 +710,15 @@ func kernelSource(mutant: Mutant) -> String {
 
         // What the centre of the pixel sees, for the tests: material, crown
         // fraction, tooth kind.
-        float3 rd = cameraRay(float2(x, y) + 0.5, P.width, P.height);
+        float3 rd = cameraRay(float2(x, y) + 0.5, P);
         float t;
         int mat;
         float4 a = float4(0.0);
-        if (march(CAM_POS, rd, teeth, t, mat)) {
+        if (march(camPos, rd, teeth, t, mat)) {
             a.x = float(mat);
             if (mat == 1) {
                 int kind;
-                a.y = toothT(CAM_POS + rd * t, teeth, kind);
+                a.y = toothT(camPos + rd * t, teeth, kind);
                 a.z = float(kind);
             }
         }
@@ -692,6 +759,11 @@ struct Params {
     var height: UInt32
     var rowOffset: UInt32
     var samples: UInt32
+    var camPos: SIMD4<Float>
+    var camFwd: SIMD4<Float>
+    var camRight: SIMD4<Float>
+    var camUp: SIMD4<Float>
+    var fillDir: SIMD4<Float>
 }
 
 /// The finished picture, and what each pixel's centre saw.
@@ -717,13 +789,13 @@ func findDevice() throws -> MTLDevice {
     throw MouthError.noMetalDevice
 }
 
-func makeLibrary(_ device: MTLDevice, mutant: Mutant) throws -> MTLLibrary {
+func makeLibrary(_ device: MTLDevice, mutant: Mutant, retromolarPad: Bool = false) throws -> MTLLibrary {
     let options = MTLCompileOptions()
     // Precise maths, as in every step: the distance functions are subtracted
     // from one another to within a few microns.
     options.fastMathEnabled = false
     do {
-        return try device.makeLibrary(source: kernelSource(mutant: mutant), options: options)
+        return try device.makeLibrary(source: kernelSource(mutant: mutant, retromolarPad: retromolarPad), options: options)
     } catch {
         throw MouthError.kernelCompile("\(error)")
     }
@@ -739,8 +811,8 @@ func pipeline(_ device: MTLDevice, _ library: MTLLibrary, _ name: String) throws
 /// Render in horizontal bands, one command buffer each, so no single piece of
 /// GPU work runs long enough to trip the system's watchdog.
 func renderMouth(width: Int, height: Int, samples: Int, mutant: Mutant = .none,
-                 on device: MTLDevice) throws -> (image: MouthImage, gpuSeconds: Double) {
-    let library = try makeLibrary(device, mutant: mutant)
+                 camera: Camera = stillCamera, retromolarPad: Bool = false, on device: MTLDevice) throws -> (image: MouthImage, gpuSeconds: Double) {
+    let library = try makeLibrary(device, mutant: mutant, retromolarPad: retromolarPad)
     let pso = try pipeline(device, library, "mouth")
     var teeth: [GPUTooth] = gpuTeeth(placeTeeth())
     guard let pixels = device.makeBuffer(length: width * height * 4, options: .storageModeShared),
@@ -759,7 +831,10 @@ func renderMouth(width: Int, height: Int, samples: Int, mutant: Mutant = .none,
             throw MouthError.gpu("could not make a command buffer")
         }
         var params = Params(width: UInt32(width), height: UInt32(height),
-                            rowOffset: UInt32(row), samples: UInt32(samples))
+                            rowOffset: UInt32(row), samples: UInt32(samples),
+                            camPos: SIMD4<Float>(camera.position, 0), camFwd: SIMD4<Float>(camera.forward, 0),
+                            camRight: SIMD4<Float>(camera.right, 0), camUp: SIMD4<Float>(camera.up, 0),
+                            fillDir: SIMD4<Float>(camera.fill, 0))
         enc.setComputePipelineState(pso)
         enc.setBuffer(pixels, offset: 0, index: 0)
         enc.setBuffer(aux, offset: 0, index: 1)
@@ -781,8 +856,9 @@ func renderMouth(width: Int, height: Int, samples: Int, mutant: Mutant = .none,
 /// The scene's distance and material at arbitrary points, from the same kernel
 /// source the render uses — so a test of the distance function is a test of
 /// the thing that drew the picture, not of a copy of it.
-func probeScene(_ points: [SIMD3<Float>], on device: MTLDevice) throws -> [SIMD2<Float>] {
-    let library = try makeLibrary(device, mutant: .none)
+func probeScene(_ points: [SIMD3<Float>], retromolarPad: Bool = false,
+                on device: MTLDevice) throws -> [SIMD2<Float>] {
+    let library = try makeLibrary(device, mutant: .none, retromolarPad: retromolarPad)
     let pso = try pipeline(device, library, "probe")
     var pts: [SIMD4<Float>] = points.map { SIMD4<Float>($0.x, $0.y, $0.z, 0) }
     var teeth: [GPUTooth] = gpuTeeth(placeTeeth())
