@@ -25,7 +25,9 @@ func woodLabelZ(width w: Int, height h: Int, row: CGFloat) -> Float {
     for _ in 0..<50 {
         let mid: Float = (lo + hi) / 2
         // Larger z is nearer the camera, lower in the frame.
-        if CGFloat(project(SIMD3<Float>(0, 0, mid), width: w, height: h).y) < row { lo = mid } else { hi = mid }
+        let probe: SIMD3<Float> = SIMD3<Float>(0, 0, mid)
+        let probeRow: CGFloat = CGFloat(project(probe, width: w, height: h).y)   // typed apart: 5 ms inline on the mini
+        if probeRow < row { lo = mid } else { hi = mid }
     }
     return (lo + hi) / 2
 }
