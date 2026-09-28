@@ -142,20 +142,20 @@ func cowDesign(_ mutant: Mutant = activeMutant) -> ToyDesign {
     // The body. Deep barrel; straight topline from withers to rump, the rump
     // a little higher; hook and pin bones showing, as a dairy cow's do; the
     // udder with four teats. MODEL shapes on the measured landmarks.
-    var trunk: [Prim] = [
-        Prim.cone(SIMD3(2.0, rumpTop - 10.4, 0), 10.4, SIMD3(shoulderPt.x - 7, withersTop - 11.2, 0), 11.2, paint: white),
-        Prim.cone(SIMD3(pin.x + 1.5, pin.y + 0.5, 0), 5.4, SIMD3(2.0, rumpTop - 10.4, 0), 10.4, paint: white),
-        Prim.ball(SIMD3(pin.x, pin.y, 2.6), 3.3, paint: white), Prim.ball(SIMD3(pin.x, pin.y, -2.6), 3.3, paint: white),
-        Prim.ball(SIMD3(1.0, rumpTop - 2.6, 5.4), 2.8, paint: white), Prim.ball(SIMD3(1.0, rumpTop - 2.6, -5.4), 2.8, paint: white),
-        Prim.ball(SIMD3(shoulderPt.x - 5.5, withersTop - 10.6, 0), 10.6, paint: white),
-        Prim.ball(SIMD3(shoulderPt.x - 1.8, shoulderPt.y - 1.0, 0), 5.2, paint: white),
+    var trunk: [Prim] = [   // SIMD3<Float> spelled out below: inferred, this literal took 5 ms on the mini
+        Prim.cone(SIMD3<Float>(2.0, rumpTop - 10.4, 0), 10.4, SIMD3<Float>(shoulderPt.x - 7, withersTop - 11.2, 0), 11.2, paint: white),
+        Prim.cone(SIMD3<Float>(pin.x + 1.5, pin.y + 0.5, 0), 5.4, SIMD3<Float>(2.0, rumpTop - 10.4, 0), 10.4, paint: white),
+        Prim.ball(SIMD3<Float>(pin.x, pin.y, 2.6), 3.3, paint: white), Prim.ball(SIMD3<Float>(pin.x, pin.y, -2.6), 3.3, paint: white),
+        Prim.ball(SIMD3<Float>(1.0, rumpTop - 2.6, 5.4), 2.8, paint: white), Prim.ball(SIMD3<Float>(1.0, rumpTop - 2.6, -5.4), 2.8, paint: white),
+        Prim.ball(SIMD3<Float>(shoulderPt.x - 5.5, withersTop - 10.6, 0), 10.6, paint: white),
+        Prim.ball(SIMD3<Float>(shoulderPt.x - 1.8, shoulderPt.y - 1.0, 0), 5.2, paint: white),
         // Neck, rising forward from the shoulders.
-        Prim.cone(SIMD3(shoulderPt.x - 3.5, withersTop - 5.8, 0), 6.4, SIMD3(shoulderPt.x + 3.6, withersTop - 3.2, 0), 4.6, paint: white),
+        Prim.cone(SIMD3<Float>(shoulderPt.x - 3.5, withersTop - 5.8, 0), 6.4, SIMD3<Float>(shoulderPt.x + 3.6, withersTop - 3.2, 0), 4.6, paint: white),
         // Where the legs go in.
-        Prim.ball(SIMD3(0, 0.5, 4.6), 4.0, paint: white), Prim.ball(SIMD3(0, 0.5, -4.6), 4.0, paint: white),
-        Prim.ball(SIMD3(elbow.x, elbow.y + 1.5, 3.6), 3.2, paint: white), Prim.ball(SIMD3(elbow.x, elbow.y + 1.5, -3.6), 3.2, paint: white),
+        Prim.ball(SIMD3<Float>(0, 0.5, 4.6), 4.0, paint: white), Prim.ball(SIMD3<Float>(0, 0.5, -4.6), 4.0, paint: white),
+        Prim.ball(SIMD3<Float>(elbow.x, elbow.y + 1.5, 3.6), 3.2, paint: white), Prim.ball(SIMD3<Float>(elbow.x, elbow.y + 1.5, -3.6), 3.2, paint: white),
         // The udder, forward of the hind legs, and its four teats.
-        Prim.ball(SIMD3(3.2, -2.4, 0), 4.0, paint: CowPaint.udder.rawValue),
+        Prim.ball(SIMD3<Float>(3.2, -2.4, 0), 4.0, paint: CowPaint.udder.rawValue),
     ]
     for (dx, dz) in [(Float(1.4), Float(1.7)), (1.4, -1.7), (-1.4, 1.7), (-1.4, -1.7)] {
         let top = SIMD3<Float>(3.2 + dx, -4.8, dz)
