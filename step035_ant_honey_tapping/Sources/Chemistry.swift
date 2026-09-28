@@ -314,8 +314,10 @@ func odourPose(_ lane: OdourLane, along s: Float) -> (position: SIMD3<Float>, ra
         let c: Float = 1 - (1 - b) * (1 - b)
         let d: Float = 1 - c
         let p0: SIMD3<Float> = lane.start * (d * d * d)
-        let p1: SIMD3<Float> = lane.bend1 * (3 * d * d * c)
-        let p2: SIMD3<Float> = lane.bend2 * (3 * d * c * c)
+        let w1: Float = 3 * d * d * c   // typed apart: the mini's compiler took 8 ms inline
+        let w2: Float = 3 * d * c * c
+        let p1: SIMD3<Float> = lane.bend1 * w1
+        let p2: SIMD3<Float> = lane.bend2 * w2
         let p3: SIMD3<Float> = lane.end * (c * c * c)
         return (p0 + p1 + p2 + p3, volatileDotRadius)
     }
