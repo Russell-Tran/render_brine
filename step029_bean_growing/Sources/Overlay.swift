@@ -42,8 +42,8 @@ func insetPixels(width: Int, height: Int) -> Int { Int(insetPlacement(width: wid
 func mainPixelsPerMillimetre(height: Int) -> Float {
     mainCamera().pixelsPerMillimetre(at: mainTarget, height: height)
 }
-func insetPixelsPerMillimetre(side: Int) -> Float {
-    insetCamera().pixelsPerMillimetre(at: insetTarget, height: side)
+func insetPixelsPerMillimetre(side: Int, view: InsetView = stillInsetView) -> Float {
+    insetCamera(view).pixelsPerMillimetre(at: view.target, height: side)
 }
 
 /// The scale bars: 1 mm in the main view, 100 µm in the inset.
@@ -52,12 +52,23 @@ let insetBarMillimetres: Float = 0.1
 
 /// The magnification written on the inset, to one decimal: the ratio of the
 /// two views' pixels per millimetre.
-func magnification(width: Int, height: Int) -> Float {
+func magnification(width: Int, height: Int, view: InsetView = stillInsetView) -> Float {
     let side: Int = insetPixels(width: width, height: height)
-    return insetPixelsPerMillimetre(side: side) / mainPixelsPerMillimetre(height: height)
+    let main: Float = mainCamera().pixelsPerMillimetre(at: view.mainReference, height: height)
+    return insetPixelsPerMillimetre(side: side, view: view) / main
 }
-func magnificationLabel(width: Int, height: Int) -> String {
-    String(format: "×%.1f", magnification(width: width, height: height))
+func magnificationLabel(width: Int, height: Int, view: InsetView = stillInsetView) -> String {
+    String(format: "×%.1f", magnification(width: width, height: height, view: view))
+}
+
+/// Step 29: the inset's scale bar — 100 µm as in step 25 while that is at
+/// least 45 px long (at 1080 lines), else the next of 200 or 500 µm that is.
+func insetBarLength(width: Int, height: Int, view: InsetView = stillInsetView) -> Float {
+    let side: Int = insetPixels(width: width, height: height)
+    let ppm: Float = insetPixelsPerMillimetre(side: side, view: view)
+    let least: Float = 45 * Float(height) / 1080
+    for bar in [Float(0.1), 0.2, 0.5] where bar * ppm >= least { return bar }
+    return 0.5
 }
 
 // MARK: - blur and composite
@@ -203,8 +214,77 @@ private func put(_ s: String, _ ctx: CGContext, x: CGFloat, baseline: CGFloat, s
 private let ink = CGColor(srgbRed: 0.18, green: 0.22, blue: 0.22, alpha: 0.9)
 private let faint = CGColor(srgbRed: 0.18, green: 0.22, blue: 0.22, alpha: 0.45)
 
-/// The finished picture as sRGB bytes, marks drawn.
-func finish(_ display: [SIMD3<Float>], width: Int, height: Int) -> [UInt8] {
+/// Step 29: the grown tube drawn over the main view, wider than life so it
+/// can be seen, with a marker on its growing tip; and a ring round the tip in
+/// the inset.
+struct TubeOverlay {
+    var points: [SIMD3<Float>]
+}
+
+/// The widened line's width in the main view, px at 1080 lines. MODEL: about
+/// five times the tube's true 10 µm at this scale (see `tubeWidening`).
+let tubeLineWidth: Float = 4.0
+
+/// How many times wider than life the main view's tube line is drawn.
+func tubeWidening(height: Int) -> Float {
+    let truePx: Float = 2 * pollenTubeRadius * mainPixelsPerMillimetre(height: height)
+    return tubeLineWidth * Float(height) / 1080 / truePx
+}
+
+private let tubeGold = CGColor(srgbRed: 1.0, green: 0.70, blue: 0.08, alpha: 1)
+private let tubeEdge = CGColor(srgbRed: 0.50, green: 0.26, blue: 0.0, alpha: 0.85)
+private let tipHalo = CGColor(srgbRed: 1.0, green: 0.62, blue: 0.0, alpha: 0.35)
+private let tipCore = CGColor(srgbRed: 1.0, green: 0.93, blue: 0.55, alpha: 1)
+
+private func drawTube(_ ctx: CGContext, _ o: TubeOverlay, view: InsetView, width: Int, height: Int) {
+    let k: CGFloat = CGFloat(height) / 1080
+    let h: CGFloat = CGFloat(height)
+    let cam: Camera = mainCamera()
+    let pts: [CGPoint] = o.points.map { p in
+        let q: SIMD2<Float> = cam.project(p, width: width, height: height)
+        return CGPoint(x: CGFloat(q.x), y: h - CGFloat(q.y))
+    }
+    guard let tip = pts.last else { return }
+    ctx.setLineCap(.round)
+    ctx.setLineJoin(.round)
+    if pts.count > 1 {
+        let w: CGFloat = CGFloat(tubeLineWidth) * k
+        for (color, width) in [(tubeEdge, w + 2 * k), (tubeGold, w)] {
+            ctx.setStrokeColor(color)
+            ctx.setLineWidth(width)
+            ctx.move(to: pts[0])
+            for p in pts.dropFirst() { ctx.addLine(to: p) }
+            ctx.strokePath()
+        }
+    }
+    // The growing tip: a soft halo and a bright dot.
+    ctx.setFillColor(tipHalo)
+    ctx.fillEllipse(in: CGRect(x: tip.x - 12 * k, y: tip.y - 12 * k, width: 24 * k, height: 24 * k))
+    ctx.setFillColor(tipCore)
+    ctx.setStrokeColor(tubeEdge)
+    ctx.setLineWidth(1.5 * k)
+    let core: CGRect = CGRect(x: tip.x - 5 * k, y: tip.y - 5 * k, width: 10 * k, height: 10 * k)
+    ctx.fillEllipse(in: core)
+    ctx.strokeEllipse(in: core)
+    // The same tip in the inset, ringed.
+    let side: Int = insetPixels(width: width, height: height)
+    let place: InsetPlacement = insetPlacement(width: width, height: height)
+    let qi: SIMD2<Float> = insetCamera(view).project(o.points[o.points.count - 1], width: side, height: side)
+    let ix: CGFloat = CGFloat(place.centre.x - Float(side) / 2 + qi.x)
+    let iy: CGFloat = h - CGFloat(place.centre.y - Float(side) / 2 + qi.y)
+    let dx: CGFloat = ix - CGFloat(place.centre.x)
+    let dy: CGFloat = iy - (h - CGFloat(place.centre.y))
+    if (dx * dx + dy * dy).squareRoot() < CGFloat(place.radius) - 20 * k {
+        ctx.setStrokeColor(tubeGold)
+        ctx.setLineWidth(2.5 * k)
+        ctx.strokeEllipse(in: CGRect(x: ix - 16 * k, y: iy - 16 * k, width: 32 * k, height: 32 * k))
+    }
+}
+
+/// The finished picture as sRGB bytes, marks drawn. Step 29 adds the inset's
+/// view (step 25's by default) and the widened tube (none by default).
+func finish(_ display: [SIMD3<Float>], width: Int, height: Int, view: InsetView = stillInsetView,
+            tube: TubeOverlay? = nil) -> [UInt8] {
     var bytes = [UInt8](repeating: 255, count: width * height * 4)
     for i in 0..<(width * height) {
         let c: SIMD3<Float> = simd_clamp(display[i], SIMD3<Float>(0, 0, 0), SIMD3<Float>(1, 1, 1))
@@ -218,13 +298,14 @@ func finish(_ display: [SIMD3<Float>], width: Int, height: Int) -> [UInt8] {
         guard let ctx = CGContext(data: raw.baseAddress, width: width, height: height, bitsPerComponent: 8,
                                   bytesPerRow: width * 4, space: CGColorSpace(name: CGColorSpace.sRGB)!,
                                   bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue) else { return }
+        if let o = tube { drawTube(ctx, o, view: view, width: width, height: height) }
         ctx.setLineCap(.round)
         let cam: Camera = mainCamera()
         let place: InsetPlacement = insetPlacement(width: width, height: height)
 
         // The region the inset magnifies, and two lines out to it.
-        let s: SIMD2<Float> = cam.project(insetTarget, width: width, height: height)
-        let markR: CGFloat = CGFloat(insetFieldDiameter / 2 * mainPixelsPerMillimetre(height: height))
+        let s: SIMD2<Float> = cam.project(view.target, width: width, height: height)
+        let markR: CGFloat = CGFloat(view.field / 2 * cam.pixelsPerMillimetre(at: view.mainReference, height: height))
         let big: CGFloat = CGFloat(place.radius)
         let a = CGPoint(x: CGFloat(s.x), y: h - CGFloat(s.y))
         let b = CGPoint(x: CGFloat(place.centre.x), y: h - CGFloat(place.centre.y))
@@ -251,14 +332,16 @@ func finish(_ display: [SIMD3<Float>], width: Int, height: Int) -> [UInt8] {
 
         // Inset scale bar and magnification, inside the circle's lower edge.
         let side: Int = insetPixels(width: width, height: height)
-        let insetBar: CGFloat = CGFloat(insetBarMillimetres * insetPixelsPerMillimetre(side: side))
+        let barMM: Float = insetBarLength(width: width, height: height, view: view)
+        let insetBar: CGFloat = CGFloat(barMM * insetPixelsPerMillimetre(side: side, view: view))
         let ib = CGPoint(x: b.x - big * 0.62 - insetBar / 2, y: b.y - big * 0.66)
         ctx.setLineWidth(3 * k)
         ctx.move(to: ib)
         ctx.addLine(to: CGPoint(x: ib.x + insetBar, y: ib.y))
         ctx.strokePath()
-        put("100 µm", ctx, x: ib.x + insetBar / 2, baseline: h - ib.y - 8 * k, size: 17 * k, height: h, color: ink, centred: true)
-        put(magnificationLabel(width: width, height: height), ctx, x: b.x + big * 0.62, baseline: h - b.y + big * 0.70,
+        put("\(Int((barMM * 1000).rounded())) µm", ctx, x: ib.x + insetBar / 2, baseline: h - ib.y - 8 * k, size: 17 * k,
+            height: h, color: ink, centred: true)
+        put(magnificationLabel(width: width, height: height, view: view), ctx, x: b.x + big * 0.62, baseline: h - b.y + big * 0.70,
             size: 17 * k, height: h, color: ink, centred: true)
 
         // Main scale bar, bottom left.
@@ -388,9 +471,14 @@ final class BeanFrames {
         gpuSeconds = g
     }
 
+    /// The inset's view in the layer held from the last frame.
+    private var lastView: InsetView = stillInsetView
+
     /// The picture with the tube grown to `grown` mm, marks drawn (step 25's
-    /// marks only; the time-lapse caption is drawn separately).
-    func render(grown: Float) throws -> (bytes: [UInt8], flower: LayerImage, inset: LayerImage) {
+    /// marks, the inset looking through `view`, and the widened tube if
+    /// given; the time-lapse caption is drawn separately).
+    func render(grown: Float, view: InsetView = stillInsetView,
+                tube overlay: TubeOverlay? = nil) throws -> (bytes: [UInt8], flower: LayerImage, inset: LayerImage) {
         let footprint: Float = 1 / mainPixelsPerMillimetre(height: height)
         // The pollen tube is 10 µm across and a main-view pixel is ~15: drawn at
         // true width it would flicker in and out. So in the main view only, it is
@@ -399,19 +487,22 @@ final class BeanFrames {
         let side: Int = insetPixels(width: width, height: height)
         let again: Bool = reuse && self.flower != nil
         let mainRect: PixelRect? = again ? mainTubeRect(from: lastGrown, to: grown) : nil
-        let insetRect: PixelRect? = again ? insetTubeRect(from: lastGrown, to: grown) : nil
+        // A moved inset is rendered whole; a still one only round the new tube.
+        let insetAgain: Bool = again && view == stillInsetView && lastView == stillInsetView
+        let insetRect: PixelRect? = insetAgain ? insetTubeRect(from: lastGrown, to: grown) : nil
         let (flower, g1) = try scene.render(camera: mainCamera(), width: width, height: height, samples: samples,
                                             layer: 0, tubeMin: footprint * 0.6, tubeGrown: grown,
                                             into: again ? self.flower : nil, rect: mainRect)
-        let (inset, g2) = try scene.render(camera: insetCamera(), width: side, height: side, samples: samples,
+        let (inset, g2) = try scene.render(camera: insetCamera(view), width: side, height: side, samples: samples,
                                            layer: 0, tubeMin: 0, tubeGrown: grown,
-                                           into: again ? self.inset : nil, rect: insetRect)
+                                           into: again ? self.inset : nil, rect: insetRect, cutZ: view.cutZ)
         self.flower = flower
         self.inset = inset
         lastGrown = grown
+        lastView = view
         gpuSeconds += g1 + g2
         let display: [SIMD3<Float>] = composite(flower: flower, pod: pod, inset: inset)
-        return (finish(display, width: width, height: height), flower, inset)
+        return (finish(display, width: width, height: height, view: view, tube: overlay), flower, inset)
     }
 }
 
@@ -435,7 +526,7 @@ func clockText(hours: Float) -> String {
 /// Two lines under the inset: what is shown and how fast, and the real time
 /// since the tube emerged.
 func drawCaption(_ bytes: inout [UInt8], width: Int, height: Int, hours: Float, rate: Float,
-                 totalHours: Float, growthSeconds: Float) {
+                 totalHours: Float, growthSeconds: Float, legend: Bool) {
     let k: CGFloat = CGFloat(height) / 1080
     let h: CGFloat = CGFloat(height)
     let place: InsetPlacement = insetPlacement(width: width, height: height)
@@ -451,5 +542,21 @@ func drawCaption(_ bytes: inout [UInt8], width: Int, height: Int, hours: Float, 
             font: "HelveticaNeue-Italic", color: ink, centred: true)
         put(clockText(hours: hours) + " since the tube emerged", ctx, x: x, baseline: top + 76 * k,
             size: 17 * k, height: h, color: ink, centred: true)
+        guard legend else { return }
+        // A key for the widened line: a short sample of it, then what it is.
+        let text: String = String(format: "pollen tube, drawn ~%.0f× wider to be seen", tubeWidening(height: height))
+        put("the inset follows its tip, cut open along the style", ctx, x: x, baseline: top + 132 * k,
+            size: 17 * k, height: h, color: ink, centred: true)
+        let y: CGFloat = h - (top + 104 * k) + 6 * k
+        let x0: CGFloat = x - 170 * k
+        ctx.setLineCap(.round)
+        for (color, w) in [(tubeEdge, CGFloat(tubeLineWidth + 2) * k), (tubeGold, CGFloat(tubeLineWidth) * k)] {
+            ctx.setStrokeColor(color)
+            ctx.setLineWidth(w)
+            ctx.move(to: CGPoint(x: x0, y: y))
+            ctx.addLine(to: CGPoint(x: x0 + 28 * k, y: y))
+            ctx.strokePath()
+        }
+        put(text, ctx, x: x0 + 40 * k, baseline: top + 104 * k, size: 17 * k, height: h, color: ink)
     }
 }

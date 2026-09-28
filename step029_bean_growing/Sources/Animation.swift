@@ -42,18 +42,17 @@ let growthStart: Float = 0.4 / 12.0
 let growthEnd: Float = 10.0 / 12.0
 let holdEnd: Float = 10.7 / 12.0
 
-/// How the playback clock maps to the real one. A tube growing at a steady
-/// rate spends only 1.5% of its journey inside the inset (its first 0.3 mm),
-/// which at a steady time-lapse would be a flash. So the time-lapse starts
-/// slow and speeds up: steady for the first `lapseSlowUntil` of the growth,
-/// then rising smoothly to `lapseSpeedRatio` times faster by `lapseFastFrom`,
-/// and steady again after. The real time — and so the tube's length, which
-/// grows at a steady real rate — is written on the frame as a clock, so the
-/// changing speed is shown, not hidden. MODEL, chosen so the tube spends
-/// about the first fifth of the growth inside the inset.
-let lapseSpeedRatio: Float = 20.0
-let lapseSlowUntil: Float = 0.2
-let lapseFastFrom: Float = 0.45
+/// How the playback clock maps to the real one. The first render ran the
+/// time-lapse 20× faster at the end than the start, so the inset's part was
+/// seen and the rest of the journey flew by. Now the inset follows the tip,
+/// and the advance is nearly steady: the time-lapse eases in from a third of
+/// its speed over the first quarter of the growth (so the tube can be seen
+/// leaving its grain), and is steady after that. The real time — and so the
+/// tube's length, which grows at a steady real rate — is written on the frame
+/// as a clock. MODEL.
+let lapseSpeedRatio: Float = 3.0
+let lapseSlowUntil: Float = 0.0
+let lapseFastFrom: Float = 0.25
 
 /// Fraction of the tube grown at a fraction `v` of the growth phase: the
 /// integral of the playback speed, normalised to reach 1 exactly at v = 1.
@@ -152,11 +151,22 @@ final class Loop {
         (timeline.u(timeline.arrivalFrame) - growthStart) * Float(timeline.frameCount * delayCentiseconds) / 100
     }
 
+    /// Whether the widened tube and the following inset are drawn: always,
+    /// except in the mutant that shows what step 29 first looked like.
+    var visible: Bool { timeline.mutant != .invisible }
+
+    /// What the inset looks at in a frame.
+    func view(_ s: FrameState) -> InsetView {
+        visible ? trackingView(frames.scene.model.tube, grown: s.grown) : stillInsetView
+    }
+
     private func picture(_ s: FrameState) throws -> [UInt8] {
-        var bytes: [UInt8] = try frames.render(grown: s.grown).bytes
+        let tube: Chain = frames.scene.model.tube
+        let overlay: TubeOverlay? = visible ? TubeOverlay(points: grownTube(tube, s.grown)) : nil
+        var bytes: [UInt8] = try frames.render(grown: s.grown, view: view(s), tube: overlay).bytes
         drawCaption(&bytes, width: frames.width, height: frames.height, hours: timeline.hours(s),
                     rate: growthRate(tubeLength: timeline.tubeLength), totalHours: realGrowthHours,
-                    growthSeconds: growthSeconds)
+                    growthSeconds: growthSeconds, legend: visible)
         return bytes
     }
 
@@ -172,4 +182,48 @@ final class Loop {
         if first == nil { first = try picture(timeline.state(0)) }
         return dissolve(full!, first!, s.fade)
     }
+}
+
+// MARK: - the inset follows the tip
+
+/// The field the inset shows once it is following the tip, mm across. MODEL:
+/// wide enough that the tissue sliding past is not a blur at 20 frames a
+/// second (the tip advances ~2 mm per second of playback), close enough that
+/// the tube is drawn at its true 10 µm width (~3 px) and the style's cells of
+/// tissue read as tissue.
+let insetFollowField: Float = 1.4
+
+/// The tube's grown length at which the inset starts to follow, and has fully
+/// taken up the tip. Before that it is step 25's view of the stigma, in which
+/// the tube leaves its grain; its first ~0.3 mm lies there. MODEL.
+let insetFollowFrom: Float = 0.15
+let insetFollowBy: Float = 0.9
+
+/// Where on the tube the inset looks: a little behind the tip — the average
+/// of the last 0.3 mm grown — so the tip leads, and the averaging smooths the
+/// turns of the path into a steady pan.
+func trackingView(_ tube: Chain, grown: Float) -> InsetView {
+    var sum = SIMD3<Float>(0, 0, 0)
+    let n: Int = 8
+    for i in 0...n {
+        let s: Float = max(grown - 0.3 * Float(i) / Float(n), 0)
+        sum += grownTube(tube, s).last!
+    }
+    let behind: SIMD3<Float> = sum / Float(n + 1)
+    let w: Float = smoothstep(insetFollowFrom, insetFollowBy, grown)
+    let target: SIMD3<Float> = insetTarget + (behind - insetTarget) * w
+    let field: Float = insetFieldDiameter + (insetFollowField - insetFieldDiameter) * w
+    let reference: SIMD3<Float> = mainTarget + (target - mainTarget) * w
+    // The cut comes down from above the flower onto the tube's own plane as
+    // the inset takes up the tip, opening the style along the tube so the
+    // tube shows at its true width instead of behind the filaments that run
+    // in front of the style all round the coil. MODEL (a dissection).
+    // The plane sits at the lowest point of the last 0.8 mm grown, so the
+    // whole stretch of tube in view lies on the cut face, none buried.
+    var lowZ: Float = 1e9
+    for i in 0...16 {
+        lowZ = min(lowZ, grownTube(tube, max(grown - 0.8 * Float(i) / 16, 0)).last!.z)
+    }
+    let cutZ: Float = w > 0 ? lowZ + (1 - w) * 2.0 : 1e9
+    return InsetView(target: target, field: field, mainReference: reference, cutZ: cutZ)
 }

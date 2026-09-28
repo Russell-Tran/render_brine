@@ -25,7 +25,11 @@
 // View carries how much of it has grown, and the tube — and its glow through
 // the style — is drawn only that far, cut exactly; and a column offset lets a
 // frame re-render just a rectangle. With the tube fully grown the picture is
-// step 25's, bit for bit.
+// step 25's, bit for bit. And (tubeP.z) a second cut, used only by the inset
+// that follows the tip: the plane z = cutZ opens the style, filaments and
+// anthers along the tube, so the tube can be seen inside the style at its
+// true width. It is a max() with a plane, so still a distance bound; at
+// cutZ = 1e9 it changes nothing.
 
 import Foundation
 import simd
@@ -112,7 +116,7 @@ struct HairG { float4 base; float4 tip; };
 struct View { float4 pos; float4 fwd; float4 right; float4 up;
               float tanHalf; uint width; uint height; uint rowOffset;
               uint samples; uint layer; float tubeMinV; float tubeGrownV;
-              uint colOffset; uint pad0; uint pad1; uint pad2; };
+              uint colOffset; float cutZ; uint pad1; uint pad2; };
 
 #define SCENE_ARGS device const SpineVert *spine, device const float4 *spineChunks, \\
     device const float4 *cverts, device const Chunk *chunks, device const AntherG *anthers, \\
@@ -396,7 +400,7 @@ void consider(thread float &best, thread int &mat, thread int &cap, float d, int
 
 float podSDF(float3 p, thread int &mat);
 
-float sceneSDF(float3 p, int mode, float2 tubeP, thread int &mat, thread int &cap, SCENE_ARGS) {
+float sceneSDF(float3 p, int mode, float3 tubeP, thread int &mat, thread int &cap, SCENE_ARGS) {
     float best = 1e9;
     mat = 0; cap = 0;
     bool all = mode <= P_UNCUT;
@@ -425,7 +429,7 @@ float sceneSDF(float3 p, int mode, float2 tubeP, thread int &mat, thread int &ca
     }
     if (all || mode == P_PISTIL) {
         float st = min(si.style, length(p - STIG_C) - STIG_R);
-        consider(best, mat, cap, st, M_STYLE, false, p);
+        consider(best, mat, cap, max(st, p.z - tubeP.z), M_STYLE, false, p);
         float ov = ovaryOuter(p);
         if (all) ov = max(ov, -locule(p));
         consider(best, mat, cap, ov, M_OVARY, cut, p);
@@ -436,7 +440,7 @@ float sceneSDF(float3 p, int mode, float2 tubeP, thread int &mat, thread int &ca
             consider(best, mat, cap, ellipsoidD(p - ovules[i].xyz, OVULE_R), M_OVULE, false, p);
     }
     if (mode == P_OVULES) return best;
-    if ((all || mode == P_STAMENS) && SHEATH == 1) consider(best, mat, cap, sheath(p), M_STAMEN, cut, p);
+    if ((all || mode == P_STAMENS) && SHEATH == 1) consider(best, mat, cap, max(sheath(p), p.z - tubeP.z), M_STAMEN, cut, p);
 
     // The chains: filaments, funiculi, the pollen tube.
     if (all || mode == P_STAMENS || mode == P_TUBE) {
@@ -463,6 +467,7 @@ float sceneSDF(float3 p, int mode, float2 tubeP, thread int &mat, thread int &ca
             for (uint i = ch.first; i < ch.first + ch.count; i++) {
                 float4 a = cverts[i], b = cverts[i + 1];
                 float d = capsule(p, a.xyz, b.xyz, a.w, b.w);
+                if (m == M_STAMEN) d = max(d, p.z - tubeP.z);
                 consider(best, mat, cap, d, m, false, p);
             }
         }
@@ -474,7 +479,7 @@ float sceneSDF(float3 p, int mode, float2 tubeP, thread int &mat, thread int &ca
     if (length(p - TIP_C) - TIP_R < best) {
         if (all) {
             consider(best, mat, cap, hairField(p, si, hairs), M_HAIR, false, p);
-            for (uint i = 0; i < ANTHER_N; i++) consider(best, mat, cap, antherD(p, anthers[i]), M_ANTHER, false, p);
+            for (uint i = 0; i < ANTHER_N; i++) consider(best, mat, cap, max(antherD(p, anthers[i]), p.z - tubeP.z), M_ANTHER, false, p);
         }
         for (uint i = 0; i < GRAIN_N; i++) {
             GrainG g = grains[i];
@@ -521,19 +526,19 @@ float podSDF(float3 p, thread int &mat) {
 
 // ------------------------------------------------------------------ marching
 
-float sdf(float3 p, uint layer, float2 tubeP, thread int &mat, thread int &cap, SCENE_ARGS) {
+float sdf(float3 p, uint layer, float3 tubeP, thread int &mat, thread int &cap, SCENE_ARGS) {
     if (layer == 1) { cap = 0; return podSDF(p, mat); }
     return sceneSDF(p, P_RENDER, tubeP, mat, cap, SCENE);
 }
 
-float3 sceneNormal(float3 p, uint layer, float2 tubeP, float e, SCENE_ARGS) {
+float3 sceneNormal(float3 p, uint layer, float3 tubeP, float e, SCENE_ARGS) {
     int m, c;
     float3 k1 = float3(1, -1, -1), k2 = float3(-1, -1, 1), k3 = float3(-1, 1, -1), k4 = float3(1, 1, 1);
     return normalize(k1 * sdf(p + k1 * e, layer, tubeP, m, c, SCENE) + k2 * sdf(p + k2 * e, layer, tubeP, m, c, SCENE)
                    + k3 * sdf(p + k3 * e, layer, tubeP, m, c, SCENE) + k4 * sdf(p + k4 * e, layer, tubeP, m, c, SCENE));
 }
 
-bool march(float3 ro, float3 rd, uint layer, float2 tubeP, float pixAngle, thread float &t,
+bool march(float3 ro, float3 rd, uint layer, float3 tubeP, float pixAngle, thread float &t,
            thread int &mat, thread int &cap, SCENE_ARGS) {
     t = layer == 1 ? 150.0 : 20.0;
     float far = layer == 1 ? 800.0 : 110.0;
@@ -551,7 +556,7 @@ bool march(float3 ro, float3 rd, uint layer, float2 tubeP, float pixAngle, threa
 // white petal a few cells thick transmits of the order of half the light), so
 // the inside of the closed bud is lit through its own walls, as a real bud
 // is. Only opaque tissue makes a penumbra.
-float softShadow(float3 ro, float3 rd, uint layer, float2 tubeP, float t0, SCENE_ARGS) {
+float softShadow(float3 ro, float3 rd, uint layer, float3 tubeP, float t0, SCENE_ARGS) {
     float res = 1.0;
     float through = 1.0;
     float t = t0;
@@ -576,7 +581,7 @@ float softShadow(float3 ro, float3 rd, uint layer, float2 tubeP, float t0, SCENE
     return clamp(res, 0.0, 1.0) * through;
 }
 
-float ambientOcclusion(float3 p, float3 n, uint layer, float2 tubeP, float scale, SCENE_ARGS) {
+float ambientOcclusion(float3 p, float3 n, uint layer, float3 tubeP, float scale, SCENE_ARGS) {
     float occ = 0.0;
     float weight = 1.0;
     int m, c;
@@ -645,7 +650,7 @@ float exineHeight(float3 dir) {
     return 1.0 - smoothstep(0.0, 0.16, f.y - f.x);
 }
 
-float3 shade(float3 p, float3 rd, int mat, int cap, uint layer, float2 tubeP, float pixSize, SCENE_ARGS) {
+float3 shade(float3 p, float3 rd, int mat, int cap, uint layer, float3 tubeP, float pixSize, SCENE_ARGS) {
     float e = max(pixSize * 0.5, 0.0002);
     float3 n = sceneNormal(p, layer, tubeP, e, SCENE);
     float3 v = -rd;
@@ -749,6 +754,10 @@ float3 shade(float3 p, float3 rd, int mat, int cap, uint layer, float2 tubeP, fl
         albedo = float3(0.96, 0.72, 0.20);
         emit += float3(0.6, 0.38, 0.06) * 0.3;
         trans = 0.3;
+        // Step 29: in the cut-open inset, a deeper gold — the key's colour —
+        // so a 10 µm thread reads against the pale cut face. (A living tube
+        // is colourless; microscopists stain it to see it. MODEL.)
+        if (tubeP.z < 1e8) { albedo = float3(0.92, 0.50, 0.02); emit = float3(0.35, 0.16, 0.0); }
     } else if (mat == M_POD) {
         albedo = float3(0.13, 0.30, 0.09) * (0.9 + 0.15 * noise3(p * 0.4));
         alpha = 0.3;
@@ -815,9 +824,9 @@ kernel void render(device float4 *pixels [[buffer(0)]],
             float3 rd = cameraRay(V, float2(x, y) + jitter);
             float t;
             int mat, cap;
-            if (march(V.pos.xyz, rd, V.layer, float2(V.tubeMinV, V.tubeGrownV), pixAngle, t, mat, cap, SCENE)) {
+            if (march(V.pos.xyz, rd, V.layer, float3(V.tubeMinV, V.tubeGrownV, V.cutZ), pixAngle, t, mat, cap, SCENE)) {
                 float3 p = V.pos.xyz + rd * t;
-                sum += toneMap(shade(p, rd, mat, cap, V.layer, float2(V.tubeMinV, V.tubeGrownV), pixAngle * t, SCENE));
+                sum += toneMap(shade(p, rd, mat, cap, V.layer, float3(V.tubeMinV, V.tubeGrownV, V.cutZ), pixAngle * t, SCENE));
                 cover += 1.0;
             }
         }
@@ -829,7 +838,7 @@ kernel void render(device float4 *pixels [[buffer(0)]],
     float t;
     int mat, cap;
     float4 a = float4(0.0);
-    if (march(V.pos.xyz, rd, V.layer, float2(V.tubeMinV, V.tubeGrownV), pixAngle, t, mat, cap, SCENE)) a = float4(float(mat), float(cap), t, 0.0);
+    if (march(V.pos.xyz, rd, V.layer, float3(V.tubeMinV, V.tubeGrownV, V.cutZ), pixAngle, t, mat, cap, SCENE)) a = float4(float(mat), float(cap), t, 0.0);
     aux[y * V.width + x] = a;
 }
 
@@ -847,7 +856,7 @@ kernel void probe(device const float4 *points [[buffer(0)]],
                   constant float &grown [[buffer(11)]],
                   uint id [[thread_position_in_grid]]) {
     int mat, cap;
-    float d = sceneSDF(points[id].xyz, mode, float2(0.0, grown), mat, cap, SCENE);
+    float d = sceneSDF(points[id].xyz, mode, float3(0.0, grown, 1e9), mat, cap, SCENE);
     out[id] = float2(d, float(mat));
 }
 """

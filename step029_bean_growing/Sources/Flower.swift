@@ -57,6 +57,7 @@ enum Mutant: String {
     // Step 29's two:
     case rewind                       // the tube shrinks back partway through the loop
     case strays                       // partway down the coil the tube pokes out of the style
+    case invisible                    // no widened tube drawn, and the inset left at the stigma
 
     static var fromEnvironment: Mutant {
         Mutant(rawValue: ProcessInfo.processInfo.environment["BEAN_MUTANT"] ?? "none") ?? .none

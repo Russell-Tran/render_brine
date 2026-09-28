@@ -5,7 +5,7 @@
 #   make run        render renders/bean_growing.gif and copy it to ../showcase
 #   make stills     first, middle and last frames as PNGs in renders/
 #   make test       build and run the tests
-#   make mutants    break the growth two ways (and the flower step 25's three);
+#   make mutants    break the growth three ways (and the flower step 25's three);
 #                   the tests must catch each
 #   make typecheck  prove no expression is slow to type-check
 #
@@ -34,7 +34,7 @@ run: $(BUILD)/bean_growing
 	@cp renders/bean_growing.gif ../showcase/bean_growing.gif
 
 stills: $(BUILD)/bean_growing
-	@for f in 0 40 120 200 230; do $< still $$f renders/frame_$$f.png; done
+	@$< still 0,25,75,125,140 renders/frame
 
 test: $(BUILD)/tests
 	@$<
@@ -42,7 +42,7 @@ test: $(BUILD)/tests
 # Each mutant must make the suite FAIL. A mutant that passes is a test missing.
 mutants: $(BUILD)/tests
 	@ok=1; \
-	for m in rewind strays tube_leaves open all_free; do \
+	for m in rewind strays invisible tube_leaves open all_free; do \
 	  printf '=== mutation: %s ===\n' "$$m"; \
 	  if BEAN_MUTANT=$$m $< > $(BUILD)/mutant-$$m.log 2>&1; then \
 	    printf '  NOT CAUGHT — no test failed\n'; ok=0; \

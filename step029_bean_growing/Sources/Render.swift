@@ -38,7 +38,8 @@ struct GPUView {
     /// Step 29: the first column rendered, so a frame can re-render just the
     /// rectangle round the tube.
     var colOffset: UInt32
-    var pad0: UInt32
+    /// Step 29: the inset's cut plane, z (1e9: none).
+    var cutZ: Float
     var pad1: UInt32
     var pad2: UInt32
 }
@@ -212,6 +213,23 @@ func insetCamera() -> Camera {
     Camera(target: insetTarget, direction: viewDirection, distance: cameraDistance, halfHeightAtTarget: insetFieldDiameter / 2)
 }
 
+/// Step 29: what the inset looks at — where, how wide a field, and the point
+/// whose main-view scale its magnification is measured against. Step 25's
+/// fixed view is `stillInsetView`; the animation moves it along the tube.
+struct InsetView: Equatable {
+    var target: SIMD3<Float>
+    var field: Float
+    var mainReference: SIMD3<Float>
+    /// The plane the inset cuts the style open along (1e9: no cut).
+    var cutZ: Float = 1e9
+}
+
+let stillInsetView = InsetView(target: insetTarget, field: insetFieldDiameter, mainReference: mainTarget)
+
+func insetCamera(_ v: InsetView) -> Camera {
+    Camera(target: v.target, direction: viewDirection, distance: cameraDistance, halfHeightAtTarget: v.field / 2)
+}
+
 struct PodFrame {
     var origin: SIMD3<Float>
     var x: SIMD3<Float>
@@ -312,7 +330,7 @@ final class BeanScene {
     /// an image already holding the rest of the frame.
     func render(camera: Camera, width: Int, height: Int, samples: Int, layer: Int,
                 tubeMin: Float, tubeGrown: Float, into: LayerImage? = nil,
-                rect: PixelRect? = nil) throws -> (image: LayerImage, gpuSeconds: Double) {
+                rect: PixelRect? = nil, cutZ: Float = 1e9) throws -> (image: LayerImage, gpuSeconds: Double) {
         let pso = try pipeline("render")
         let area: PixelRect = rect ?? PixelRect(x0: 0, y0: 0, x1: width, y1: height)
         let pixels: MTLBuffer
@@ -343,7 +361,7 @@ final class BeanScene {
                                up: v4(camera.up), tanHalf: camera.tanHalf, width: UInt32(width),
                                height: UInt32(height), rowOffset: UInt32(row), samples: UInt32(samples),
                                layer: UInt32(layer), tubeMin: tubeMin, tubeGrown: tubeGrown,
-                               colOffset: UInt32(area.x0), pad0: 0, pad1: 0, pad2: 0)
+                               colOffset: UInt32(area.x0), cutZ: cutZ, pad1: 0, pad2: 0)
             enc.setComputePipelineState(pso)
             enc.setBuffer(pixels, offset: 0, index: 0)
             enc.setBuffer(aux, offset: 0, index: 1)

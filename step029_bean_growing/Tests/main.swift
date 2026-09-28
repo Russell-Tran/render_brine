@@ -4,7 +4,7 @@
 // the loop closes by dissolving forward to frame 0, never by rewinding; and
 // the animation's first frame is step 25's picture but for the tube.
 //
-// BEAN_MUTANT=rewind|strays (step 29) or tube_leaves|open|all_free (step 25)
+// BEAN_MUTANT=rewind|strays|invisible (step 29) or tube_leaves|open|all_free (step 25)
 // breaks it on purpose; `make mutants` requires the suite to fail for each.
 //
 // Step 25's header follows.
@@ -602,7 +602,7 @@ test("frame 0 is step 25's composition: same camera, light and scene numbers") {
     expectEqual(model.anthers.count, still.anthers.count)
 }
 
-test("with the tube fully grown, the picture is step 25's committed still, pixel for pixel") {
+test("with the widened tube off and the inset at step 25's field, the fully grown picture is step 25's committed still, pixel for pixel") {
     guard let s = box.scene, let r = try? renderBean(s, width: 1920, height: 1080, samples: 3) else {
         expect(false, "render failed"); return
     }
@@ -713,6 +713,124 @@ test("the clock runs from 0 to the full journey's hours, never backwards") {
     expect(abs(prev - realGrowthHours) < 1e-5, "at arrival the clock reads \(prev) h")
     expectEqual(clockText(hours: 3.52), "3 h 30 min")
     expectEqual(clockText(hours: 10), "10 h 00 min")
+}
+
+
+section("step 29: the growth can be seen")
+
+/// A mid-size loop at the GIF's own pacing, for the visibility tests.
+let seeLoop: Loop? = {
+    guard let s = box.scene, let fr = try? BeanFrames(s, width: 960, height: 540, samples: 1) else { return nil }
+    return Loop(fr, frameCount: 150, delayCentiseconds: 8, mutant: mutant)
+}()
+
+/// Frames one second of playback apart, all within the growth.
+func secondPairs(_ tl: Timeline, delay: Int) -> [(Int, Int)] {
+    let step: Int = 100 / delay
+    var out: [(Int, Int)] = []
+    var f: Int = Int((growthStart * Float(tl.frameCount)).rounded(.up))
+    while f + step <= tl.arrivalFrame { out.append((f, f + step)); f += step }
+    return out
+}
+
+test("each second, dozens of main-view pixels change clearly, along the newly grown stretch") {
+    guard let loop = seeLoop else { expect(false, "render failed"); return }
+    let w: Int = 960
+    let h: Int = 540
+    let cam: Camera = mainCamera()
+    let place: InsetPlacement = insetPlacement(width: w, height: h)
+    let left: Int = Int(place.centre.x - place.radius) - 4
+    let tube: Chain = loop.frames.scene.model.tube
+    let arc: [Float] = tubeArcLengths(tube.points)
+    var counts: [Int] = []
+    for (a, b) in secondPairs(loop.timeline, delay: 8) {
+        guard let ia = try? loop.frame(a), let ib = try? loop.frame(b) else { expect(false, "render failed"); return }
+        let s0: Float = loop.timeline.state(a).grown
+        let s1: Float = loop.timeline.state(b).grown
+        var stretch: [SIMD2<Float>] = []
+        for (i, p) in tube.points.enumerated() where arc[i] >= s0 && arc[i] <= s1 {
+            stretch.append(cam.project(p, width: w, height: h))
+        }
+        stretch.append(cam.project(grownTube(tube, s0).last!, width: w, height: h))
+        stretch.append(cam.project(grownTube(tube, s1).last!, width: w, height: h))
+        var near: Int = 0
+        for y in 0..<h {
+            for x in 0..<left {
+                let i: Int = (y * w + x) * 4
+                let d: Int = abs(Int(ia[i]) - Int(ib[i])) + abs(Int(ia[i + 1]) - Int(ib[i + 1])) + abs(Int(ia[i + 2]) - Int(ib[i + 2]))
+                guard d > 60 else { continue }
+                let q = SIMD2<Float>(Float(x) + 0.5, Float(y) + 0.5)
+                if stretch.contains(where: { simd_distance($0, q) < 4 }) { near += 1 }
+            }
+        }
+        counts.append(near)
+    }
+    print("        clearly changed pixels on the new stretch, second by second: \(counts)")
+    expect(!counts.isEmpty, "no seconds of growth")
+    for (k, n) in counts.enumerated() { expect(n >= 40, "second \(k): only \(n) pixels change along the tube") }
+}
+
+test("the inset follows the tip: the tip stays in its field, and the view moves every second") {
+    guard let loop = seeLoop else { expect(false, "render failed"); return }
+    let tl: Timeline = loop.timeline
+    let tube: Chain = loop.frames.scene.model.tube
+    let side: Int = insetPixels(width: 960, height: 540)
+    var worst: Float = 0
+    for f in 0...tl.arrivalFrame {
+        let st: FrameState = tl.state(f)
+        let v: InsetView = loop.view(st)
+        let q: SIMD2<Float> = insetCamera(v).project(grownTube(tube, st.grown).last!, width: side, height: side)
+        let off: Float = simd_distance(q, SIMD2<Float>(Float(side) / 2, Float(side) / 2)) / (Float(side) / 2)
+        worst = max(worst, off)
+        expect(off < 0.8, "frame \(f): the tip is \(off) of the inset's radius from its centre")
+    }
+    var moves: [Float] = []
+    for (a, b) in secondPairs(tl, delay: 8) {
+        moves.append(simd_distance(loop.view(tl.state(a)).target, loop.view(tl.state(b)).target))
+    }
+    print(String(format: "        the tip stays within %.2f of the inset's radius; the view moves %@ mm a second",
+                 worst, moves.map { String(format: "%.2f", $0) }.joined(separator: ", ")))
+    for (k, m) in moves.enumerated() { expect(m > 0.2, "second \(k): the inset moves only \(m) mm") }
+}
+
+test("the advance is roughly steady: every second after the first quarter moves the tip similarly far on screen") {
+    let tl = Timeline(frameCount: 150, tubeLength: tubeLength, mutant: mutant)
+    let cam: Camera = mainCamera()
+    var travel: [Float] = []
+    for (a, b) in secondPairs(tl, delay: 8) where tl.u(a) > growthStart + (growthEnd - growthStart) * lapseFastFrom {
+        var len: Float = 0
+        var prev: SIMD2<Float>? = nil
+        for i in 0...20 {
+            let g: Float = tl.state(a).grown + (tl.state(b).grown - tl.state(a).grown) * Float(i) / 20
+            let q: SIMD2<Float> = cam.project(grownTube(tube, g).last!, width: 1920, height: 1080)
+            if let p = prev { len += simd_distance(p, q) }
+            prev = q
+        }
+        travel.append(len)
+    }
+    print("        px the tip travels each second: \(travel.map { Int($0) })")
+    guard let lo = travel.min(), let hi = travel.max() else { expect(false, "no seconds"); return }
+    expect(lo > 0.5 * hi, "the advance ranges from \(lo) to \(hi) px a second")
+    expect(lo > 60, "the tip moves only \(lo) px in a second")
+}
+
+test("the inset's scale bar and magnification are true at every frame") {
+    guard let loop = seeLoop else { expect(false, "render failed"); return }
+    let tl: Timeline = loop.timeline
+    let side: Int = insetPixels(width: 1920, height: 1080)
+    for f in 0..<tl.frameCount {
+        let v: InsetView = loop.view(tl.state(f))
+        let bar: Float = insetBarLength(width: 1920, height: 1080, view: v)
+        let px: Float = bar * insetPixelsPerMillimetre(side: side, view: v)
+        let cam: Camera = insetCamera(v)
+        let a: SIMD2<Float> = cam.project(v.target, width: side, height: side)
+        let b: SIMD2<Float> = cam.project(v.target + cam.right * bar, width: side, height: side)
+        expect(abs(simd_distance(a, b) - px) < 0.5, "frame \(f): bar \(px) px, projected \(simd_distance(a, b)) px")
+        let mag: Float = magnification(width: 1920, height: 1080, view: v)
+        let main: Float = mainCamera().pixelsPerMillimetre(at: v.mainReference, height: 1080)
+        expect(abs(mag - px / bar / main) < 1e-3, "frame \(f): magnification \(mag)")
+        expect(px > 40 && px < 200, "frame \(f): the bar is \(px) px")
+    }
 }
 
 finish()

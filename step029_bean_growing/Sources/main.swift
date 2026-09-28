@@ -2,16 +2,17 @@
 // the GPU and saved as a looping GIF.
 //
 //   .build/bean_growing                 render renders/bean_growing.gif
-//   .build/bean_growing still F out.png one frame of the loop, as a PNG
+//   .build/bean_growing still F out.png one frame of the loop, as a PNG (F may be a list: 0,60,120)
 //   .build/bean_growing full out.png [mm]  step 25's still (tube fully grown, or to mm), no caption
 //   .build/bean_growing rectcheck [mm]     re-rendering only rectangles vs rendering whole
 //
 // Environment overrides, so a short run needs no recompile:
 //   BEAN_WIDTH, BEAN_HEIGHT  frame size (default 1920 × 1080)
-//   BEAN_FRAMES              frames per loop (default 240)
-//   BEAN_DELAY               hundredths of a second per frame (default 5)
+//   BEAN_FRAMES              frames per loop (default 150)
+//   BEAN_DELAY               hundredths of a second per frame (default 8)
 //   BEAN_SAMPLES             samples per pixel side (default 3, as step 25)
 //   BEAN_LIMIT               encode only this many frames (for measuring)
+//   BEAN_FIRST               ...starting from this frame
 //   BEAN_OUT                 where the GIF goes
 
 import Foundation
@@ -31,8 +32,8 @@ let args: [String] = Array(CommandLine.arguments.dropFirst())
 let width: Int = envInt("BEAN_WIDTH", 1920)
 let height: Int = envInt("BEAN_HEIGHT", 1080)
 let samples: Int = envInt("BEAN_SAMPLES", 3)
-let frameCount: Int = envInt("BEAN_FRAMES", 240)
-let delayCentiseconds: Int = envInt("BEAN_DELAY", 5)
+let frameCount: Int = envInt("BEAN_FRAMES", 150)
+let delayCentiseconds: Int = envInt("BEAN_DELAY", 8)
 
 /// An 8 × 8 Bayer matrix, 0…63.
 let bayer: [Int] = [0, 32, 8, 40, 2, 34, 10, 42, 48, 16, 56, 24, 50, 18, 58, 26,
@@ -49,8 +50,14 @@ let ditherLevels: Float = 6
 
 func dithered(_ bytes: [UInt8]) -> [UInt8] {
     var out: [UInt8] = bytes
+    // Not inside the inset: it has no broad gradients to band, and it changes
+    // every frame, where dither noise would only cost bytes.
+    let place: InsetPlacement = insetPlacement(width: width, height: height)
     for y in 0..<height {
         for x in 0..<width {
+            let dx: Float = Float(x) + 0.5 - place.centre.x
+            let dy: Float = Float(y) + 0.5 - place.centre.y
+            if dx * dx + dy * dy < place.radius * place.radius { continue }
             let d: Float = (Float(bayer[(y & 7) * 8 + (x & 7)]) + 0.5) / 64 - 0.5
             let i: Int = (y * width + x) * 4
             for c in 0..<3 {
@@ -99,7 +106,8 @@ func renderGIF(_ loop: Loop, device: MTLDevice, path: String) throws {
     let quantizer = try Quantizer(device: device, palette: palette, pixels: pixels)
     let gif = GIFWriter(url: URL(fileURLWithPath: path), width: width, height: height,
                         palette: palette, delayCentiseconds: delayCentiseconds)
-    for f in 0..<count {
+    let first: Int = envInt("BEAN_FIRST", 0)
+    for f in first..<min(first + count, frameCount) {
         let b: MTLBuffer = try bufferOf(dithered(try loop.frame(f)), device)
         gif.add(try quantizer.indices(of: b))
         if f % 10 == 0 { note("  frame \(f)/\(count)") }
@@ -125,12 +133,19 @@ do {
     let mode: String = args.first ?? "gif"
     switch mode {
     case "still":
-        let f: Int = args.count > 1 ? (Int(args[1]) ?? 0) : 0
+        // One frame, or several in one run: still 0,60,120 renders/f → renders/f_60.png…
+        let spec: String = args.count > 1 ? args[1] : "0"
+        let parts: [Substring] = spec.split(separator: ",")
+        var list: [Int] = []
+        for part in parts { if let f = Int(part) { list.append(f) } }
         let out: String = args.count > 2 ? args[2] : "renders/still.png"
-        try savePNG(try loop.frame(f), width: width, height: height, to: URL(fileURLWithPath: out))
-        let s: FrameState = loop.timeline.state(f)
-        print(String(format: "frame %d: tube %.3f of %.3f mm, fade %.2f → %@", f, s.grown,
-                     loop.timeline.tubeLength, s.fade, out))
+        for f in list {
+            let path: String = list.count == 1 ? out : out + "_\(f).png"
+            try savePNG(try loop.frame(f), width: width, height: height, to: URL(fileURLWithPath: path))
+            let s: FrameState = loop.timeline.state(f)
+            print(String(format: "frame %d: tube %.3f of %.3f mm, fade %.2f → %@", f, s.grown,
+                         loop.timeline.tubeLength, s.fade, path))
+        }
     case "rectcheck":
         // Grow the tube frame by frame, re-rendering only the rectangles, and
         // compare with rendering the last frame whole.
