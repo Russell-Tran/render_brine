@@ -515,6 +515,42 @@ The same conveyor, seven ants long, built on the M3 Max laptop. The frame's widt
 
 Step 44's trail moved onto real wood, built on the M3 Max laptop. The board is quarter-sawn Scots pine sapwood, drawn to one study's measurements (Pinkowski et al. 2016): annual rings 2.3 mm apart, 32% latewood. Planing leaves the soft earlywood rougher (Ra 7.2 µm) than the dense latewood (3.8 µm). For the first time in the series, **the feet stand on a measured surface relief**. Each foot rests on the wood from geometry and never sinks in, and a test measures the drawn roughness along the grain against the study. The wood's rays, about 15 µm wide, are smaller than a pixel here and are left out. On whether wood holds a trail differently from a smooth surface, the honest answer is on the frame: a Pharaoh's ant trail's half-life was about 3 minutes on newspaper and about 9 on plastic (Jeanson et al. 2003), and no measurement was found for wood. Swap the two woods' roughness, sink a foot into the board, or freeze the motion, and the suite fails. Code: [`step057_ant_trail_wood/`](step057_ant_trail_wood/)
 
+### Step 58: A plastic toy Stegosaurus
+
+![A small green plastic toy Stegosaurus with rust-orange plates on a grey table, its faint mould parting line labelled; an inset cuts across a foreleg to show solid PVC with a thin paint layer and the seam's tiny bump](showcase/toy_stegosaurus.png)
+
+The first of three toys, each the kind of small, solid, hard-plastic animal figure that comes in sets, and 2–3 inches long as Russell specified. This one is 70 mm. The still is about **the material**. The toy is one piece of injection-moulded PVC, and its gloss comes from PVC's measured refractive index, n = 1.545 (Zhang et al. 2020), which mirrors 4.6% of the light straight on and more at grazing angles. A faint **parting line**, where the two halves of the mould met, runs round every piece, and the inset cuts through a leg to show there is no hollow inside. The animal is right because a good toy gets it right. Stegosaurus follows the most complete specimen's description (Maidment et al. 2015): nineteen plates in two **alternating** rows, not paired, four tail spikes, short forelimbs, and the tail held clear of the ground. Pairing the plates, removing the gloss, or dropping the seam fails the suite. The paint colours and the 25 µm paint layer are marked MODEL, and it is unbranded. One honest limit: it's built from smooth, simple shapes, so it reads as a basic toy rather than a finely sculpted one. Code: [`step058_toy_stegosaurus/`](step058_toy_stegosaurus/)
+
+### Step 59: The toy Stegosaurus comes to life
+
+![Looping animation of the plastic toy Stegosaurus standing frozen, then coming to life, walking a small circle on the table with its rigid plastic legs in a four-beat walk, and settling back into its exact moulded pose; a footfall diagram shows the step order](showcase/toy_stegosaurus_alive.gif)
+
+The toy stands frozen, then comes to life: it looks around, walks a small circle and settles back into its exact moulded pose, so the loop closes going forward. **The waking is fiction by design,** because a one-piece toy has no joints, and the caption says so. Everything else is kept true. The pieces stay rigid plastic, turning at hips, knees and neck, never bending like flesh, and planted feet never slide. The walk is a real quadruped walk, stepping left hind, left fore, right hind, right fore, each foot down about 65% of the stride (Usherwood & Smith 2018), and the footfall diagram is read off the drawn feet. For Stegosaurus the step order is **inferred**, since its fossil tracks show four feet but not their timing, and the caption says that too. Freeze it, slide its feet, swap in a trot, or play it backwards, and the suite fails. Code: [`step059_toy_stegosaurus_alive/`](step059_toy_stegosaurus_alive/)
+
+### Step 60: A plastic toy pig
+
+![A small pink plastic toy pig on a grey table, with erect ears, a flat snout disc, a curled tail and dark cloven hooves, its parting line labelled; an inset cuts across a foreleg to show solid painted PVC](showcase/toy_pig.png)
+
+The same toy-making physics as step 58, on a domestic pig after the Large White breed: erect ears, a flat snout disc and a curled tail. It is 56 mm long. The detail that matters is the **cloven hoof**, two claws to a foot, digits III and IV. A test checks that the cleft between them is really open, and a mutant with a single solid hoof fails. The pig's proportions are marked MODEL: the one body-measurement study found used a landmark too unclear to build from, so it wasn't used. Code: [`step060_toy_pig/`](step060_toy_pig/)
+
+### Step 61: The toy pig comes to life
+
+![Looping animation of the plastic toy pig waking, walking a small circle on its rigid legs in a lateral-sequence walk, and settling back into its moulded pose; a footfall diagram shows the step order](showcase/toy_pig_alive.gif)
+
+Step 59's routine with the pig's own gait. Pigs walk in a **lateral sequence**, left hind then left fore, then right hind and right fore, a four-beat walk (Boakye et al. 2020; Thorup et al. 2007). One finding is deliberately left out and flagged: a pig's forelegs stay down a little longer than its hind legs. The waking is fiction, the plastic stays rigid, and the feet stay planted. Code: [`step061_toy_pig_alive/`](step061_toy_pig_alive/)
+
+### Step 62: A plastic toy cow
+
+![A small black-and-white plastic toy Holstein cow on a grey table, with a pink muzzle, an udder with four teats and dark cloven hooves, its parting line labelled; an inset cuts across a foreleg to show solid PVC](showcase/toy_cow.png)
+
+A Holstein, 63 mm long, built at 1:33 from a measured herd (Paksoy et al. 2026): the rump stands higher than the withers, as a dairy cow's does, and a test holds both heights to within 0.02 mm of the scaled measurements. It has an udder with four teats and cloven hooves, and the pied coat's patches are marked MODEL. Of the three toys it's the most caricatured: the head is cartoonish and the tail is a plain rod. Code: [`step062_toy_cow/`](step062_toy_cow/)
+
+### Step 63: The toy cow comes to life
+
+![Looping animation of the plastic toy cow waking, walking a small circle in a lateral-sequence walk on rigid legs, and settling back into its moulded pose; a footfall diagram shows the step order](showcase/toy_cow_alive.gif)
+
+The cow's walk is the one best supported by measurement. Usherwood & Smith (2018) recorded cattle, grazing or walking, stepping in exactly this lateral sequence with each foot down about 65% of the stride. The waking is fiction and the rest is kept true. In all three animations the toy walks small in a wide, mostly empty frame, and its waking head-turn is modest; the walk is where the motion reads. Code: [`step063_toy_cow_alive/`](step063_toy_cow_alive/)
+
 ### Step 66: Upper dental arch
 
 ![A still render of an upper dental arch seen from below and in front: wide ivory central incisors, smaller laterals, yellower canines, premolars and molars back to both wisdom teeth, coral gums, and the pink vault of the hard palate with its transverse ridges behind the front teeth](showcase/upper_arch.png)
