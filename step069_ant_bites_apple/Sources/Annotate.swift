@@ -279,7 +279,10 @@ func annotate(_ image: AntImage, scene: Scene, frame: FrameState) {
     ctx.strokeEllipse(in: CGRect(x: zc.x - zr, y: h - zc.y - zr, width: 2 * zr, height: 2 * zr))
     ctx.setStrokeColor(ink)
     ctx.setLineWidth(1.5 * k)
-    ctx.strokeEllipse(in: CGRect(x: zc.x - zr - 3.5 * k, y: h - zc.y - zr - 3.5 * k, width: 2 * zr + 7 * k, height: 2 * zr + 7 * k))
+    let ringPad: CGFloat = 3.5 * k                    // typed apart: 5 ms inline on the mini
+    let ringSide: CGFloat = 2 * zr + 2 * ringPad
+    let ringRect: CGRect = CGRect(x: zc.x - zr - ringPad, y: h - zc.y - zr - ringPad, width: ringSide, height: ringSide)
+    ctx.strokeEllipse(in: ringRect)
     // Its own 0.1 mm bar, inside the circle's foot.
     let zPxPerMM: CGFloat = 2 * zr / CGFloat(zoomField)
     let zb: CGFloat = 0.1 * zPxPerMM
