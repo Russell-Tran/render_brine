@@ -7,7 +7,7 @@
 // angle. The kernel reads that from a table the CPU computed spectrally from
 // gold's measured n and k (Optics.swift), 129 angles from grazing to normal,
 // and multiplies it into whatever the reflected ray finds: the softboxes, the
-// dim backdrop, the table, or the lock itself — up to four bounces, so the
+// bright tent and its black flags, the table, or the lock itself — up to four bounces, so the
 // shackle shows in the face and the face in the shackle.
 //
 // The shape is simple on purpose, so its distance function is exact outside
@@ -93,6 +93,12 @@ func kernelSource(mutant: Mutant) -> String {
     constant float BG_ZENITH = \(backdropZenith);
     constant float BG_LOW = \(belowHorizon);
     constant float AMBIENT_E = \(ambientIrradiance);
+    constant int FLAG_N = \(blackFlags.count);
+    constant float3 FLAG_C[\(blackFlags.count)] = { \(blackFlags.map { metal($0.centre) }.joined(separator: ", ")) };
+    constant float3 FLAG_A[\(blackFlags.count)] = { \(blackFlags.map { metal($0.axisA) }.joined(separator: ", ")) };
+    constant float3 FLAG_B[\(blackFlags.count)] = { \(blackFlags.map { metal($0.axisB) }.joined(separator: ", ")) };
+    constant float2 FLAG_T[\(blackFlags.count)] = { \(blackFlags.map { "float2(\($0.tanA), \($0.tanB))" }.joined(separator: ", ")) };
+    constant float FLAG_L[\(blackFlags.count)] = { \(blackFlags.map { "\($0.radiance)" }.joined(separator: ", ")) };
     constant float TABLE_ALBEDO = \(tableAlbedo);
     constant float TONE_GAIN = \(toneGain);
 
@@ -190,7 +196,7 @@ func kernelSource(mutant: Mutant) -> String {
 
     // ---------------------------------------------------------------- light
 
-    // Which light a direction sees: 1 the key softbox, 2 the strip, 0 backdrop.
+    // Which light a direction sees: 1 the key softbox, 2 the strip, 0 the tent (or a flag in it).
     int envTag(float3 r) {
         float c = dot(r, KEY_C);
         if (c > 0.0 && abs(dot(r, KEY_A)) < KEY_TA * c && abs(dot(r, KEY_B)) < KEY_TB * c) return 1;
@@ -210,6 +216,11 @@ func kernelSource(mutant: Mutant) -> String {
             return float3(KEY_L * mix(KEY_EDGE, 1.0, g));
         }
         if (tag == 2) return float3(STRIP_L);
+        for (int i = 0; i < FLAG_N; i++) {
+            float c = dot(r, FLAG_C[i]);
+            if (c > 0.0 && abs(dot(r, FLAG_A[i])) < FLAG_T[i].x * c && abs(dot(r, FLAG_B[i])) < FLAG_T[i].y * c) return float3(FLAG_L[i]);
+        }
+        // The tent: sin(elevation) is r.y, and √ of it gives the gradient.
         float L = r.y < 0.0 ? BG_LOW : mix(BG_HORIZON, BG_ZENITH, sqrt(r.y));
         return float3(L);
     }
@@ -242,7 +253,7 @@ func kernelSource(mutant: Mutant) -> String {
     }
 
     // The matte table: Lambert, lit by the two softboxes (with soft shadows
-    // whose width follows each box's angular size) and the backdrop.
+    // whose width follows each box's angular size) and the tent.
     float3 tableRadiance(float3 p) {
         float3 o = p + float3(0, 0.02, 0);
         float key = softShadow(o, KEY_C, 1.0 / KEY_TB);
@@ -259,7 +270,7 @@ func kernelSource(mutant: Mutant) -> String {
 
     // Polished metal: follow the mirror ray, multiplying in the reflectance
     // at each bounce, until it leaves for the sky or lands on the table.
-    // firstTag records what the FIRST reflection saw: 0 backdrop, 1 key,
+    // firstTag records what the FIRST reflection saw: 0 the tent or a flag, 1 key,
     // 2 strip, 3 table, 4 the lock itself.
     float3 shadeMetal(float3 p, float3 rd, thread int &firstTag) {
         float3 throughput = float3(1.0);

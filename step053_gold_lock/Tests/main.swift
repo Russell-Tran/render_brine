@@ -305,6 +305,7 @@ test("the frame holds the lock and the table; the lock mirrors a light and mirro
     var surroundings: Int = 0
     var litLum: Double = 0
     var restLum: Double = 0
+    var lums: [Double] = []
     for y in 0..<img.height {
         for x in 0..<img.width {
             let s: SIMD4<Float> = img.seen(x, y)
@@ -313,6 +314,7 @@ test("the frame holds the lock and the table; the lock mirrors a light and mirro
             lock += 1
             let c: SIMD3<Double> = pixelLinear(img, x, y)
             let lum: Double = 0.2126 * c.x + 0.7152 * c.y + 0.0722 * c.z
+            lums.append(lum)
             if s.w == 1 || s.w == 2 { lit += 1; litLum += lum } else { restLum += lum }
             if s.w == 3 || s.w == 4 { surroundings += 1 }
         }
@@ -324,10 +326,19 @@ test("the frame holds the lock and the table; the lock mirrors a light and mirro
                  Double(lock) / total * 100, Double(table) / total * 100, lit, litLum, restLum, surroundings))
     expect(Double(lock) / total > 0.08 && Double(lock) / total < 0.4, "lock covers \(Double(lock) / total)")
     expect(Double(table) / total > 0.5)
-    // A clear highlight: a large patch mirroring a light, several times
-    // brighter than the rest of the metal.
+    // A clear highlight in a bright studio: a large patch mirroring a light,
+    // half as bright again as the rest of the metal — which is itself bright,
+    // since the lock sits in a light tent. (Step 53's first, dark studio asked
+    // for 4×; in a tent the rest of the metal mirrors white too, so that
+    // measured the darkness of the room, not the highlight.) And the form
+    // reads: the black flags put dark lines on it, so the darkest twentieth of
+    // the metal is under a quarter as bright as the highlight.
+    lums.sort()
+    let dark: Double = lums.isEmpty ? 1 : lums[lums.count / 20]
+    print(String(format: "        the darkest twentieth of the metal is below luminance %.3f", dark))
     expect(lit > 20_000, "the highlight: only \(lit) pixels mirror a light")
-    expect(litLum > 4 * restLum, "the highlight is not clear: \(litLum) against \(restLum)")
+    expect(litLum > 1.5 * restLum, "the highlight is not clear: \(litLum) against \(restLum)")
+    expect(dark < 0.25 * litLum, "no dark lines to show the form: \(dark) against \(litLum)")
     expect(surroundings > 20_000, "the reflection: only \(surroundings) pixels mirror the table or the lock")
 }
 

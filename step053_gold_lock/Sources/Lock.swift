@@ -198,10 +198,16 @@ func mainPixelsPerMillimetre(height: Int, cam: Camera = camera) -> Float {
 
 // MARK: - lights
 
-// A small studio: a dark, neutral backdrop, a big softbox overhead and behind
-// the lock for the front face to mirror, and a tall strip light at the side for
-// the shackle's streaks. MODEL throughout — a metal shows nothing but what it
-// reflects, so this is the choice of what it reflects. Every light is NEUTRAL
+// A light tent: the lock sits inside a white diffusing enclosure that wraps it
+// on every side and overhead, so nearly every face has something bright to
+// mirror — which is how gold is photographed, because a mirror metal in a dark
+// room just looks dark. Inside the tent, a brighter softbox beyond the lock for
+// the front face's highlight, a tall strip light at the side for the shackle's
+// streaks, and two black flags (dark cards) standing in the tent, so edges and
+// curves pick up dark lines and the form still reads; under uniform white a
+// metal looks flat. MODEL throughout — a metal shows nothing but what it
+// reflects, so this is the choice of what it reflects. (Step 53's first
+// version used a dim grey studio, and the body read bronze.) Every light is NEUTRAL
 // (D65, equal in linear R, G and B), which makes the render's RGB reflection
 // exact: the metal's colour was integrated against D65 spectrally, and white
 // times that colour is that colour. A coloured light would need the product of
@@ -242,7 +248,7 @@ struct Softbox {
 /// The key: a softbox beyond the lock, which the polished front face mirrors.
 /// Its peak radiance is chosen so a face mirroring it lands below white after
 /// the tone curve, keeping the gold's hue measurable. MODEL.
-let keyLight = Softbox(azimuthFromLockV: -24, elevation: 41, halfA: 9, halfB: 12, radiance: 0.95)
+let keyLight = Softbox(azimuthFromLockV: -27, elevation: 42.5, halfA: 8, halfB: 3.5, radiance: 1.75)
 /// A real softbox is brightest in the middle of its diffuser and dimmer at the
 /// edges; this is the fraction of the peak left at the edge, falling off as
 /// (1 − a²)(1 − b²) across it. MODEL. The table's irradiance uses the box's
@@ -253,16 +259,32 @@ let keyMeanFraction: Float = keyEdgeFraction + (1 - keyEdgeFraction) * 4 / 9
 /// white in the highlights, as a real strip light does on gold. MODEL.
 let stripLight = Softbox(azimuthFromLockV: 100, elevation: 22, halfA: 3.5, halfB: 20, radiance: 5.0)
 
-/// The backdrop's radiance: dim and neutral, a little brighter near the
-/// horizon than overhead, as a studio sweep is. MODEL.
-let backdropHorizon: Float = 0.085
-let backdropZenith: Float = 0.035
-let belowHorizon: Float = 0.02
+/// The tent's radiance: bright and neutral, brightest overhead where the
+/// lamps outside it are, falling towards the horizon, so a face sees a
+/// gradient rather than a flat white. Below the horizon is the table, which
+/// the rays meet before they could see this. MODEL.
+let backdropHorizon: Float = 0.42
+let backdropZenith: Float = 0.80
+let belowHorizon: Float = 0.30
 
-/// The table: plain, matte, neutral grey. Albedo MODEL.
-let tableAlbedo: Float = 0.85
-/// What the table receives from the backdrop, open sky: π × its mean radiance.
-let ambientIrradiance: Float = Float.pi * (backdropHorizon + backdropZenith) / 2
+/// Two black flags in the tent — dark cards, radiance a few per cent of the
+/// tent's — tall and narrow, one either side of the lock. The shackle and the
+/// body's rounded edges mirror them as dark lines. MODEL.
+let blackFlags: [Softbox] = [
+    Softbox(azimuthFromLockV: -30, elevation: 35.3, halfA: 40, halfB: 1.1, radiance: 0.03),
+    Softbox(azimuthFromLockV: 150, elevation: 20, halfA: 10, halfB: 24, radiance: 0.03),
+    Softbox(azimuthFromLockV: 80, elevation: 16, halfA: 8, halfB: 18, radiance: 0.03),
+    Softbox(azimuthFromLockV: -110, elevation: 16, halfA: 8, halfB: 18, radiance: 0.03),
+]
+
+/// The table: plain, matte, pale neutral grey. Albedo MODEL.
+let tableAlbedo: Float = 0.62
+/// What the table receives from the tent, open sky: π × the tent's mean
+/// radiance over the upper hemisphere, cosine-weighted, for the profile
+/// L = horizon + (zenith − horizon)·√sin(elevation) — whose cosine-weighted
+/// mean is horizon + (zenith − horizon)·4/5. The flags' few per cent of the
+/// sky are neglected. MODEL.
+let ambientIrradiance: Float = Float.pi * (backdropHorizon + (backdropZenith - backdropHorizon) * 4 / 5)
 
 /// How many times a ray may bounce between polished surfaces before it is
 /// given up as trapped (inside the keyway, say) and counted black. MODEL:
