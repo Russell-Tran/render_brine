@@ -51,7 +51,7 @@ let insetLookAt = SIMD3<Float>(1.9, 4.2, -1.0)
 let insetDirection: SIMD3<Float> = simd_normalize(SIMD3<Float>(-0.10, -0.24, -1.0))
 
 /// The molecule inset at the taste pore, in ångströms across its diameter:
-/// glucose, each with three waters, drifting into the pore (step 35's 24 Å
+/// sucrose drifting into the pore, one per touch (step 35's 24 Å
 /// field). Its bar is 0.5 nm.
 let moleculeCentre = SIMD2<Float>(1.545, 0.775)
 let moleculeRadius: Float = 0.176
@@ -1083,7 +1083,7 @@ struct Scene {
     let chemistry: CornChemistry
     let odourPaths: [OdourPath]
     let dome: (centre: SIMD3<Float>, radius: Float)
-    /// The glucose's drift direction in the taste inset: into the pore.
+    /// The sucrose's drift direction in the taste inset: into the pore.
     let drift: SIMD2<Float>
     /// The antenna as it rests on the juice.
     let contactAnt: AntModel
@@ -1135,7 +1135,7 @@ struct FrameState {
     var time: Float
     var phase: Float
     var lift: Float
-    var progress: Float             // glucose: one place per touch
+    var progress: Float             // sucrose: one place per touch
     var odourProgress: Float        // odour: steadily, in taps
     var ant: AntModel
     var crystal: CrystalFrame       // where the juice is, seen from the hairs
@@ -1313,7 +1313,7 @@ func renderAnt(width: Int, height: Int, samples: Int, scene: Scene, frame: Frame
 /// moving antennae and their shadows on the card project to over every frame,
 /// grown by `margin` mm for the soft edges of those shadows and the occlusion
 /// they cast (the kernel's gloss mirrors only the studio, never the ant);
-/// the micrometre inset and both molecule insets whole (step 50: the glucose
+/// the micrometre inset and both molecule insets whole (step 50: the sucrose
 /// moves). Outside these every frame is identical, so only these are
 /// rendered after the first frame; a test renders frames whole and checks
 /// that nothing outside them ever differs.

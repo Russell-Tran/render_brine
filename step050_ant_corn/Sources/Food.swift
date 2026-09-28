@@ -221,7 +221,7 @@ func fresnelF0(_ n1: Double, _ n2: Double) -> Float {
 /// that value is the one used across insect optics. No measurement of ant
 /// cuticle itself was found; the ant is taken to be chitin like the rest.
 let cuticleIndex: Double = 1.56
-/// The juice is mostly water (76 g per 100 g, below): its gloss is taken as
+/// The juice is "clear, watery" (NMSU, below): its gloss is taken as
 /// water's, n = 1.333. Its 13.2 °Brix of dissolved solids raise that a
 /// little — by how much was not checked, so it is not drawn. MODEL.
 let juiceIndex: Double = 1.333
@@ -229,28 +229,34 @@ let juiceIndex: Double = 1.333
 let cuticleF0: Float = fresnelF0(1.0, cuticleIndex)
 let juiceF0: Float = fresnelF0(1.0, juiceIndex)
 
-// MARK: - what the tip tastes: glucose
+// MARK: - what the tip tastes: sucrose
 
-// Raw yellow sweet corn, per 100 g: water 76.05 g, total sugars 6.26 g —
-// glucose 3.43, fructose 1.94, sucrose 0.89 — and starch 5.7 g (USDA
-// FoodData Central, SR Legacy, fdcId 169998, "Corn, sweet, yellow, raw").
-// Glucose is the largest of its sugars, so glucose is what the taste inset
-// shows entering the pore. Whether an ant tastes starch is not known (no ant
-// data found); sugars it does taste: Lasius niger workers prefer
-// disaccharides to monosaccharides but take both (Madsen, Sørensen &
-// Offenberg, *J Insect Physiol* 100: 140, 2017).
-let cornWater: Float = 76.05
-let cornGlucose: Float = 3.43
-let cornFructose: Float = 1.94
-let cornSucrose: Float = 0.89
-let cornStarch: Float = 5.7
+// An sh2 kernel stores sucrose. "Field corn contains approximately 4%
+// sucrose (sugar) in the immature milky stage, while 'standard' sweet corns
+// at the same stage may contain as much as 6% sucrose"; "'Super sweet'
+// corns contain the shrunken sh-2 gene, which causes sucrose levels two to
+// three times higher at harvest than standard sweet corns"; and "Fully ripe
+// kernels of sh-2 varieties will still possess a clear, watery juice" (NMSU
+// Cooperative Extension Guide H-223, "Home and Market Garden Sweet Corn
+// Production", pubs.nmsu.edu/_h/H223, read 2026-09-27). So sucrose is what
+// the taste inset shows entering the pore.
+let standardSweetCornSucrose: Float = 6          // %, "as much as", milky stage
+let sh2SucroseFactor: ClosedRange<Float> = 2...3 // × standard sweet corn, at harvest
 
-/// Molar masses, g/mol: C6H12O6 180.16, H2O 18.015.
-let hexoseMolarMass: Float = 180.16
-let waterMolarMass: Float = 18.015
-/// Waters per glucose in the kernel: about 220. Far too many to draw; the
-/// inset shows each glucose with three, and says so.
-let watersPerGlucose: Float = (cornWater / waterMolarMass) / (cornGlucose / hexoseMolarMass)
+// Supporting, not proof for sh2: in the super-sweet inbred T639 (from the
+// cultivar "Jinyinsu2"; the paper does not say which gene makes it super
+// sweet), "sucrose emerges as the most abundant soluble sugar", averaging
+// 260 mg/g against glucose's 61.157 and fructose's 31.581 mg/g across
+// kernel development (Feng et al., *iScience* 29: 116247, 2026,
+// doi:10.1016/j.isci.2026.116247; read 2026-09-27).
+let fengSucrose: Float = 260
+let fengGlucose: Float = 61.157
+let fengFructose: Float = 31.581
+
+// Whether an ant tastes starch is not known (no ant data found); sugars it
+// does taste, and Lasius niger workers prefer disaccharides such as sucrose
+// to monosaccharides (Madsen, Sørensen & Offenberg, *J Insect Physiol* 100:
+// 140, 2017).
 
 // MARK: - why it is smell as well as taste
 

@@ -1,7 +1,7 @@
 // Step 50: a new scene, animated from the start (there is no still). Step
 // 43's staging of a food bigger than the ant, with step 35's sugars: the
 // right antenna taps the juice on the cut face of a sweet-corn kernel, again
-// and again; one glucose goes into the taste pore at each touch, and the
+// and again; one sucrose goes into the taste pore at each touch, and the
 // smell of raw sweet corn keeps arriving at the smell hair. Everything else
 // holds still, apart from a much smaller sway of the left antenna.
 //
@@ -20,10 +20,10 @@
 //     0.096 mm thickness, and rests on it for 40% of each tap. "Off" is along
 //     the juice's outward normal, which on the upright cut face points
 //     straight back towards the ant: the tip draws back from the face.
-//   * The glucose: MODEL, schematic, as step 30's sucrose and step 35's
+//   * The sucrose: MODEL, schematic, as step 30's sucrose and step 35's
 //     sugars. Small molecules cross a few nanometres of water in nanoseconds;
 //     the inset makes no claim about speed. It shows the direction of travel
-//     — out of the juice and into the pore, one glucose per touch — and only
+//     — out of the juice and into the pore, one sucrose per touch — and only
 //     while the hair is in the juice, because only then is there a liquid path.
 //   * The odour: MODEL, schematic, as step 43's. A molecule crosses the few
 //     micrometres drawn here in about a microsecond; no watchable slow-down
@@ -31,7 +31,7 @@
 //     molecule reaches a wall pore of the smell hair each tap and goes in,
 //     while the next ones are on their way, touching or not.
 //
-// The loop is FORWARD: four whole taps; each touch takes each glucose a place
+// The loop is FORWARD: four whole taps; each touch takes each sucrose a place
 // further in, each odour molecule makes its trip once per loop, the four a
 // tap apart, and the odorant in its own inset turns once — so the last frame
 // runs straight on into the first. Never a rewind.
@@ -90,23 +90,22 @@ func smoothstep01(_ x: Float) -> Float {
     return c * c * rise
 }
 
-/// How many places the glucose has advanced: one per tap, moving only
+/// How many places the sucrose has advanced: one per tap, moving only
 /// while the hair is in the juice. Step 30's moleculeProgress.
 func sugarProgress(_ t: Float, mutant: Mutant) -> Float {
     let (phase, tap) = tapPhase(t, mutant: mutant)
     return Float(tap) + smoothstep01(phase / contactFraction)
 }
 
-/// Glucose spacing along the drift path, Å — one per tap. MODEL: step 35's
-/// 14 Å alternated fructose and glucose; with glucose after glucose it
-/// brought one's water within 1.85 Å of the next (a test caught it), so 15.
-let moleculeSpacing: Float = 15.0
-/// Glucose drawn at once: between touches one sits in the middle of the
+/// Sucrose spacing along the drift path, Å — one per tap. Step 30's 13 Å,
+/// for the same molecule; a test checks neighbours never come within 2 Å.
+let moleculeSpacing: Float = 13.0
+/// Sucrose drawn at once: between touches one sits in the middle of the
 /// 24 Å field with its neighbours cut by the edge; the fourth is the one
-/// arriving next. Step 35's.
+/// arriving next. Step 30's.
 let moleculeSlots: Int = 4
 
-/// One glucose (and its waters) in the molecule inset: its rotation and
+/// One sucrose in the molecule inset: its rotation and
 /// where its centroid is. Step 30's.
 struct MoleculePose {
     var rotation: simd_quatf
@@ -123,7 +122,7 @@ func driftDirection(hairAxis: SIMD3<Float>, insetRight: SIMD3<Float>, insetUp: S
     return simd_normalize(SIMD2<Float>(simd_dot(into, insetRight), simd_dot(into, insetUp)))
 }
 
-/// Every pose depends only on how far along the path that glucose is (and,
+/// Every pose depends only on how far along the path that sucrose is (and,
 /// for a small thermal wobble, on the tap phase) — so after one tap each
 /// stands exactly where the one ahead of it stood. Step 35's, with its
 /// inline arithmetic split into typed steps.

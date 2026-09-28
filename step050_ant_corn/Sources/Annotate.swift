@@ -202,12 +202,12 @@ func annotate(_ image: AntImage, scene: Scene, frame: FrameState) {
         let tw: CGFloat = textWidth(text, size: size, bold: bold)
         put(text, ctx, x: c.x - tw / 2, top: top, size: size, bold: bold, color: color, height: h)
     }
-    // The glucose crosses its inset, so its words sit outside it, below and
+    // The sucrose crosses its inset, so its words sit outside it, below and
     // to the left, as step 35's did — on a pale plate, since the kernel is
     // behind them here.
-    let mTitle = "glucose, C₆H₁₂O₆"
-    let mSub = "sweet corn's main sugar: one enters the pore per touch"
-    let mKey = String(format: "β-glucopyranose, shown with 3 of its ~%.0f waters", (watersPerGlucose / 10).rounded() * 10)
+    let mTitle = "sucrose, C₁₂H₂₂O₁₁"
+    let mSub = "what a super-sweet (sh2) kernel stores: one enters the pore per touch"
+    let mKey = "a glucose and a fructose ring, joined through one oxygen"
     let mNote = "schematic: shows the order of events, not their speed"
     let right: CGFloat = molC.x - molR * 0.80
     let top: CGFloat = molC.y + molR * 0.62
@@ -272,5 +272,5 @@ func annotate(_ image: AntImage, scene: Scene, frame: FrameState) {
                       slowdown, realStrokeRange.lowerBound, realStrokeRange.upperBound)
     put(rate, ctx, x: 60 * k, top: 106 * k, size: 16 * k, color: softInk, height: h)
     // On its own line: the long line ran onto the kernel.
-    put("Glucose and odour are schematic.", ctx, x: 60 * k, top: 130 * k, size: 16 * k, color: softInk, height: h)
+    put("Sucrose and odour are schematic.", ctx, x: 60 * k, top: 130 * k, size: 16 * k, color: softInk, height: h)
 }

@@ -1,10 +1,11 @@
 // Step 50: step 43's chemistry, copied, with the taste inset changed from
-// step 43's still salt and norbixin to step 35's moving sugars: glucose, the
-// largest of sweet corn's sugars (Food.swift), drifting into the taste pore
-// one per touch. The odorant is 1-octen-3-ol, turning rigidly once a loop,
-// and the odour dots at the smell hair travel as step 43's do.
+// step 43's still salt and norbixin to moving sugar, as in steps 30 and 35:
+// sucrose — what an sh2 ("super sweet") kernel stores (Food.swift) —
+// drifting into the taste pore one per touch. The odorant is 1-octen-3-ol,
+// turning rigidly once a loop, and the odour dots at the smell hair travel
+// as step 43's do.
 //
-// Organic molecules from real structure files, not drawn.
+// Molecules from real structure files, not drawn.
 
 import Foundation
 import simd
@@ -60,7 +61,7 @@ struct Molecule {
 enum LoadError: Error { case missing(String), malformed(String) }
 
 /// Reads an MDL molfile (V2000): the counts line, then atoms, then bonds with
-/// their orders. Both files here carry their own hydrogens, so nothing is
+/// their orders. The odorant's file carries its own hydrogens, so nothing is
 /// added or guessed.
 func loadMolfile(_ path: String) throws -> Molecule {
     guard let text = try? String(contentsOfFile: path, encoding: .utf8) else { throw LoadError.missing(path) }
@@ -87,21 +88,6 @@ func loadMolfile(_ path: String) throws -> Molecule {
     return Molecule(atoms: atoms, bonds: bonds, orders: orders)
 }
 
-// Water: O–H 0.9572 Å, H–O–H 104.52° (Hoy & Bunker 1979, as given in
-// Wikipedia "Properties of water").
-let waterOH: Float = 0.9572
-let waterAngle: Float = 104.52 * Float.pi / 180
-
-/// One water, O at `o`, turned by `turn` (step 35's).
-func waterMolecule(at o: SIMD3<Float>, turn: simd_quatf, view: Int) -> Molecule {
-    let half: Float = waterAngle / 2
-    let h1: SIMD3<Float> = o + turn.act(SIMD3<Float>(sin(half), cos(half), 0)) * waterOH
-    let h2: SIMD3<Float> = o + turn.act(SIMD3<Float>(-sin(half), cos(half), 0)) * waterOH
-    return Molecule(atoms: [Atom(element: "O", position: o, view: view), Atom(element: "H", position: h1, view: view),
-                            Atom(element: "H", position: h2, view: view)],
-                    bonds: [(0, 1), (0, 2)], orders: [1, 1])
-}
-
 /// Joins molecules into one list, renumbering the bonds.
 func merge(_ ms: [Molecule]) -> Molecule {
     var atoms: [Atom] = []
@@ -118,12 +104,75 @@ func merge(_ ms: [Molecule]) -> Molecule {
 
 // MARK: - the two insets' contents
 
-// Glucose in solution is mostly a ring, and mostly β-D-glucopyranose (about
-// 64%, the rest α — Wikipedia, "Glucose", as step 34 took it): drawn from the
-// RCSB Chemical Component Dictionary's ideal coordinates for BGC (β-D-
-// glucose), hydrogens included — step 35's file, copied verbatim into
-// Resources/.
-//
+// Sucrose as it sits in PDB 6S1T (β-fructofuranosidase from Schwanniomyces
+// occidentalis with sucrose, 2.09 Å; chain F = GLC 1 + FRU 2, an α-glucose
+// and a β-fructose joined through one oxygen, C1 of the glucose to C2 of the
+// fructose) — step 26's and step 30's file, copied verbatim into Resources/.
+// X-ray structures at this resolution have no hydrogens, so the 22 are
+// added as step 30 added them: C–H 1.09 Å, O–H 0.96 Å, tetrahedral angles;
+// the hydroxyl rotations are MODEL. Heavy-atom bonds from distance (< 1.75 Å).
+func loadSucrose(_ path: String) throws -> Molecule {
+    guard let text = try? String(contentsOfFile: path, encoding: .utf8) else { throw LoadError.missing(path) }
+    var heavy: [Atom] = []
+    for line in text.split(separator: "\n") where line.hasPrefix("HETATM") {
+        let s = Array(line)
+        func field(_ a: Int, _ b: Int) -> String { String(s[a..<min(b, s.count)]).trimmingCharacters(in: .whitespaces) }
+        let x: Float = Float(field(30, 38)) ?? 0
+        let y: Float = Float(field(38, 46)) ?? 0
+        let z: Float = Float(field(46, 54)) ?? 0
+        heavy.append(Atom(element: field(76, 78), position: SIMD3(x, y, z)))
+    }
+    var bonds: [(Int, Int)] = []
+    for i in 0..<heavy.count {
+        for j in (i + 1)..<heavy.count where simd_distance(heavy[i].position, heavy[j].position) < 1.75 {
+            bonds.append((i, j))
+        }
+    }
+    var atoms: [Atom] = heavy
+    func neighbours(_ i: Int) -> [Int] {
+        bonds.compactMap { $0.0 == i ? $0.1 : ($0.1 == i ? $0.0 : nil) }
+    }
+    let tet: Float = 109.47 * Float.pi / 180
+    for i in 0..<heavy.count {
+        let nb: [Int] = neighbours(i)
+        let p: SIMD3<Float> = heavy[i].position
+        let us: [SIMD3<Float>] = nb.map { simd_normalize(heavy[$0].position - p) }
+        var dirs: [SIMD3<Float>] = []
+        if heavy[i].element == "C" {
+            if nb.count == 3 {
+                let sum3: SIMD3<Float> = us[0] + us[1] + us[2]
+                dirs = [simd_normalize(-sum3)]
+            } else if nb.count == 2 {
+                let sum2: SIMD3<Float> = us[0] + us[1]
+                let bis: SIMD3<Float> = simd_normalize(-sum2)
+                let perp: SIMD3<Float> = simd_normalize(simd_cross(us[0], us[1]))
+                let half: Float = tet / 2
+                let a1: SIMD3<Float> = bis * cos(half)
+                let a2: SIMD3<Float> = perp * sin(half)
+                dirs = [a1 + a2, a1 - a2]
+            }
+            for d in dirs {
+                atoms.append(Atom(element: "H", position: p + d * 1.09))
+                bonds.append((i, atoms.count - 1))
+            }
+        } else if heavy[i].element == "O" && nb.count == 1 {
+            // Hydroxyl: C–O–H at the tetrahedral angle, anti to one of the
+            // carbon's other neighbours.
+            let c: Int = nb[0]
+            let u: SIMD3<Float> = simd_normalize(p - heavy[c].position)
+            let others: [Int] = neighbours(c).filter { $0 != i }
+            let w: SIMD3<Float> = simd_normalize(heavy[others[0]].position - heavy[c].position)
+            let along: Float = simd_dot(w, u)
+            let v: SIMD3<Float> = simd_normalize(u * along - w)
+            let cosT: Float = -cos(tet)
+            let d: SIMD3<Float> = u * cosT + v * sin(tet)
+            atoms.append(Atom(element: "H", position: p + d * 0.96))
+            bonds.append((i, atoms.count - 1))
+        }
+    }
+    return Molecule(atoms: atoms, bonds: bonds, orders: Array(repeating: 1, count: bonds.count))
+}
+
 // 1-Octen-3-ol: PubChem CID 18827 ("oct-1-en-3-ol", C8H16O), its computed
 // 3-D conformer with hydrogens, downloaded 2026-09-27 and copied verbatim
 // into Resources/. The CID is the compound without its stereocentre fixed;
@@ -131,10 +180,10 @@ func merge(_ ms: [Molecule]) -> Molecule {
 // checked, and the label does not say). Turns and positions MODEL — the
 // molecules tumble.
 
-/// The molecules as loaded: glucose (whole, as its file has it) and the
-/// odorant, placed in the smell inset.
+/// The molecules as loaded: sucrose (with its hydrogens) and the odorant,
+/// placed in the smell inset.
 struct CornChemistry {
-    var glucose: Molecule
+    var sucrose: Molecule
     var odorant: Molecule
 
     /// Step 43's: the odorant turned by `spin` about its own centre — a
@@ -150,24 +199,24 @@ struct CornChemistry {
 }
 
 func buildChemistry(resources: String, mutant: Mutant) throws -> CornChemistry {
-    var glc: Molecule = try loadMolfile(resources + "/glucose_BGC_ideal.sdf")
+    var suc: Molecule = try loadSucrose(resources + "/sucrose_6S1T.pdb")
     let oct: Molecule = try loadMolfile(resources + "/1-octen-3-ol_CID18827_3d.sdf")
     if mutant == .formula {
-        // Step 35's formula mutant: drop one hydroxyl hydrogen — C6H11O6,
-        // not a sugar, not neutral.
-        if let k = glc.atoms.lastIndex(where: { $0.element == "H" }) {
-            glc.atoms.remove(at: k)
-            let keep: [Int] = glc.bonds.indices.filter { glc.bonds[$0].0 != k && glc.bonds[$0].1 != k }
-            glc.orders = keep.map { glc.orders[$0] }
-            glc.bonds = keep.map { b -> (Int, Int) in
-                let (x, y) = glc.bonds[b]
+        // The formula mutant: drop one hydroxyl hydrogen — C12H21O11, not
+        // sucrose, not neutral.
+        if let k = suc.atoms.lastIndex(where: { $0.element == "H" }) {
+            suc.atoms.remove(at: k)
+            let keep: [Int] = suc.bonds.indices.filter { suc.bonds[$0].0 != k && suc.bonds[$0].1 != k }
+            suc.orders = keep.map { suc.orders[$0] }
+            suc.bonds = keep.map { b -> (Int, Int) in
+                let (x, y) = suc.bonds[b]
                 return (x > k ? x - 1 : x, y > k ? y - 1 : y)
             }
         }
     }
     let o: Molecule = alignLongAxis(oct).placed(turn: simd_quatf(angle: 0.6, axis: simd_normalize(SIMD3<Float>(1, 0.3, 0.2))),
                                                 at: SIMD3(0, -0.3, 0), view: 1)
-    return CornChemistry(glucose: glc, odorant: o)
+    return CornChemistry(sucrose: suc, odorant: o)
 }
 
 /// Turns a molecule so the line through its two most distant heavy atoms
@@ -187,37 +236,26 @@ func alignLongAxis(_ m: Molecule) -> Molecule {
     return out
 }
 
-// MARK: - glucose on its way into the taste pore
+// MARK: - sucrose on its way into the taste pore
 
-/// The juice has about 220 waters per glucose (Food.swift); each glucose is
-/// drawn with three of them, at step 35's three spots round its glucose,
-/// and the label says so. MODEL: the waters are not bound to one sugar; they
-/// travel with it here so that none appears or vanishes.
-let glucoseWaterSpots: [SIMD3<Float>] = [SIMD3(-3.4, -3.0, 4.0), SIMD3(3.2, 5.6, 2.0), SIMD3(-4.6, 1.4, 5.3)]
-/// The glucose's own turn, step 34's.
-let glucoseTurn = simd_quatf(angle: 2.1, axis: simd_normalize(SIMD3<Float>(1, 0.3, -0.4)))
+/// Each sucrose's own turn in the inset. MODEL: chosen so the two rings
+/// show side by side.
+let sucroseTurn = simd_quatf(angle: 2.1, axis: simd_normalize(SIMD3<Float>(1, 0.3, -0.4)))
 
-/// One glucose and its waters, moving as one rigid body.
+/// One sucrose, moving as a rigid body. No waters are drawn with it: no
+/// sourced water-to-sucrose ratio for this kernel's juice was found, so the
+/// inset's pale ground stands for the juice's water, as step 30's did.
 struct SugarUnit {
     var sugar: Molecule
-    var waters: [Molecule]
-    var molecules: [Molecule] { [sugar] + waters }
+    var molecules: [Molecule] { [sugar] }
 }
 
-/// A glucose and its waters, all turned by `turn` about the glucose's
-/// centroid and moved to `centre`. Step 35's sugarUnit, glucose only.
+/// A sucrose turned by `turn` about its centroid and moved to `centre`.
 func sugarUnit(chemistry: CornChemistry, turn: simd_quatf, centre: SIMD3<Float>) -> SugarUnit {
-    let sugar: Molecule = chemistry.glucose.placed(turn: turn * glucoseTurn, at: centre, view: 0)
-    let waters: [Molecule] = glucoseWaterSpots.enumerated().map { k, p in
-        let n: Float = Float(2 + k)
-        let axisY: Float = n - 2
-        let wTurn = simd_quatf(angle: 0.8 + 1.1 * n, axis: simd_normalize(SIMD3<Float>(1, axisY, 0.5)))
-        return waterMolecule(at: centre + turn.act(p), turn: turn * wTurn, view: 0)
-    }
-    return SugarUnit(sugar: sugar, waters: waters)
+    SugarUnit(sugar: chemistry.sucrose.placed(turn: turn * sucroseTurn, at: centre, view: 0))
 }
 
-/// Everything both molecule insets draw at one moment: the glucose drifting
+/// Everything both molecule insets draw at one moment: the sucrose drifting
 /// into the taste pore, and the odorant, turned.
 struct CornScene {
     var units: [SugarUnit]
@@ -225,12 +263,11 @@ struct CornScene {
 
     var all: Molecule { merge(units.flatMap { $0.molecules } + [odorant]) }
     var sugars: [Molecule] { units.map { $0.sugar } }
-    var waters: [Molecule] { units.flatMap { $0.waters } }
 }
 
-/// The corn scene at `t` seconds: each glucose at its pose along the drift
-/// path (Motion.swift) — all glucose, so a slot's relabelling after each
-/// touch changes nothing drawn — and the odorant at its turn.
+/// The corn scene at `t` seconds: each sucrose at its pose along the drift
+/// path (Motion.swift) — all alike, so a slot's relabelling after each touch
+/// changes nothing drawn — and the odorant at its turn.
 func buildCornScene(_ t: Float, chemistry: CornChemistry, direction d: SIMD2<Float>, mutant: Mutant) -> CornScene {
     let poses: [MoleculePose] = moleculePoses(t, mutant: mutant, direction: d)
     let units: [SugarUnit] = poses.map { sugarUnit(chemistry: chemistry, turn: $0.rotation, centre: $0.offset) }

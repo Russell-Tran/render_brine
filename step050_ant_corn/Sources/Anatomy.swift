@@ -1,6 +1,6 @@
 // Step 50: step 43's anatomy, copied — the ant, its antenna able to lift, and
 // its two sense hairs — with the macaroni swapped for a cut kernel of sweet
-// corn (Food.swift) and the salt for glucose (Chemistry.swift).
+// corn (Food.swift) and the salt for sucrose (Chemistry.swift).
 //
 // The ant and its two sense hairs as numbers. Nothing here touches the GPU;
 // it is the part a test can read against the literature.
@@ -34,8 +34,8 @@ enum Mutant: Int {
     case noOdour = 4      // the odour molecules taken away — but raw sweet corn smells
     case kernelSize = 5   // the kernel drawn at half its measured size
     case press = 6        // the tip pushed 0.02 mm into the juice at every touch-down
-    case rewind = 7       // the loop played forward then backward — the glucose flows back out of the pore
-    case formula = 8      // glucose one hydrogen short: C6H11O6
+    case rewind = 7       // the loop played forward then backward — the sucrose flows back out of the pore
+    case formula = 8      // sucrose one hydrogen short: C12H21O11
 }
 
 // MARK: - the ant: Lasius niger, worker

@@ -2,7 +2,7 @@
 // (the ant against the literature, the touch, the pores, the odour, the tap
 // as step 30 tests it — every touch-down, no penetration at any frame, a
 // clear lift, a forward loop — and the picture), step 35's tests of sugar
-// going into the taste pore, and tests of the corn itself: the kernel's size
+// (sucrose here) going into the taste pore, and tests of the corn itself: the kernel's size
 // against its patent, the cut face and its juice, the molecules' formulas.
 //
 // The anatomy is checked against the literature it cites, the contact and
@@ -216,16 +216,19 @@ test("it lies on the card, cut: a flat cut face with a film of juice on it, the 
     expect(simd_dot(n, SIMD3<Float>(-m.axis.x, 0, -m.axis.y)) > 0.99999, "the contact normal is not the face's")
 }
 
-test("the colours: yellow skin, paler endosperm; sweet corn's sugars and smell, from their sources") {
+test("the colours: yellow skin, paler endosperm; an sh2 kernel's sucrose and its smell, from their sources") {
     let y: SIMD3<Float> = pericarpAlbedo
     expect(y.x > y.y && y.y > y.z && y.z < 0.35 * y.x, "skin colour \(y) is not yellow")
     let e: SIMD3<Float> = endospermAlbedo
     expect(e.x + e.y + e.z > y.x + y.y + y.z && e.z > y.z, "endosperm \(e) is not paler")
-    // USDA 169998: glucose is the largest free sugar, and the juice is mostly water.
-    expect(cornGlucose > cornFructose && cornGlucose > cornSucrose)
-    expect(abs(cornGlucose + cornFructose + cornSucrose - 6.26) < 0.01)
-    print(String(format: "        %.0f waters per glucose in the kernel", watersPerGlucose))
-    expect(watersPerGlucose > 200 && watersPerGlucose < 240)
+    // NMSU H-223: sh2 sucrose is 2–3× standard sweet corn's (up to 6%) —
+    // more than field corn's 4% by any reading. Feng et al. (super sweet,
+    // supporting only): sucrose the most abundant sugar.
+    let low: Float = standardSweetCornSucrose * sh2SucroseFactor.lowerBound
+    print(String(format: "        NMSU: sh2 sucrose %.0f–%.0f× standard sweet corn's (up to %.0f%% at the milky stage); field corn ~4%%",
+                 sh2SucroseFactor.lowerBound, sh2SucroseFactor.upperBound, standardSweetCornSucrose))
+    expect(low > 4 && sh2SucroseFactor == 2...3)
+    expect(fengSucrose > fengGlucose && fengSucrose > fengFructose)
     expect(objectHasOdour)
 }
 
@@ -441,24 +444,47 @@ func dihedral(_ p0: SIMD3<Float>, _ p1: SIMD3<Float>, _ p2: SIMD3<Float>, _ p3: 
     return deg(atan2(simd_dot(simd_cross(n1, n2), simd_normalize(b2)), simd_dot(n1, n2)))
 }
 
-test("glucose is C6H12O6: 24 atoms, 24 bonds, one ring, an aldose — straight from its file") {
+test("sucrose is C12H22O11: 45 atoms, 46 bonds, two rings — a glucose (six-ring, aldose) and a fructose (five-ring, ketose) joined through one oxygen") {
     guard let s = scene else { expect(false); return }
-    let m: Molecule = s.chemistry.glucose
+    let m: Molecule = s.chemistry.sucrose
     let f: [String: Int] = m.formula
-    expect(f["C"] == 6 && f["H"] == 12 && f["O"] == 6 && f.count == 3, "glucose is \(f)")
-    expectEqual(m.atoms.count, 24)
-    expectEqual(m.bonds.count, 24)
-    expectEqual(m.rings, 1)
-    // The anomeric carbon — the one bonded to two oxygens — carries one
-    // carbon: an aldose, as glucose is (fructose's carries two).
-    let anomeric: [Int] = (0..<m.atoms.count).filter { i in
-        m.atoms[i].element == "C" && m.bonds.filter { ($0.0 == i && m.atoms[$0.1].element == "O") || ($0.1 == i && m.atoms[$0.0].element == "O") }.count == 2
+    expect(f["C"] == 12 && f["H"] == 22 && f["O"] == 11 && f.count == 3, "sucrose is \(f)")
+    expectEqual(m.atoms.count, 45)
+    expectEqual(m.bonds.count, 46)
+    expectEqual(m.rings, 2)
+    var nb: [[Int]] = Array(repeating: [], count: m.atoms.count)
+    for (a, b) in m.bonds { nb[a].append(b); nb[b].append(a) }
+    func count(_ i: Int, _ e: String) -> Int { nb[i].filter { m.atoms[$0].element == e }.count }
+    // The anomeric carbons: bonded to two oxygens. Exactly two, one an aldose's
+    // (one carbon neighbour: glucose C1), one a ketose's (two: fructose C2).
+    let anomeric: [Int] = (0..<m.atoms.count).filter { m.atoms[$0].element == "C" && count($0, "O") == 2 }
+    expectEqual(anomeric.count, 2)
+    expectEqual(anomeric.map { count($0, "C") }.sorted(), [1, 2])
+    // The glycosidic oxygen: bonded to both anomeric carbons.
+    let links: [Int] = (0..<m.atoms.count).filter { i in m.atoms[i].element == "O" && anomeric.allSatisfy { nb[i].contains($0) } }
+    expectEqual(links.count, 1)
+    guard let link = links.first else { return }
+    // Cut at that oxygen: two pieces of six carbons each, and their ring sizes
+    // are six (pyranose, glucose) and five (furanose, fructose).
+    func ringSize(from start: Int) -> Int {
+        // Shortest cycle through `start`, by breadth-first search skipping the link.
+        var best: Int = 99
+        for first in nb[start] where first != link {
+            var dist: [Int: Int] = [start: 0, first: 1]
+            var queue: [Int] = [first]
+            while !queue.isEmpty {
+                let x: Int = queue.removeFirst()
+                for y in nb[x] where y != link && m.atoms[y].element != "H" {
+                    if y == start && dist[x, default: 0] >= 2 { best = min(best, dist[x, default: 0] + 1) }
+                    if dist[y] == nil { dist[y] = dist[x, default: 0] + 1; queue.append(y) }
+                }
+            }
+        }
+        return best
     }
-    expectEqual(anomeric.count, 1)
-    if let c = anomeric.first {
-        let carbons: Int = m.bonds.filter { ($0.0 == c && m.atoms[$0.1].element == "C") || ($0.1 == c && m.atoms[$0.0].element == "C") }.count
-        expectEqual(carbons, 1)
-    }
+    let sizes: [Int] = anomeric.sorted { count($0, "C") < count($1, "C") }.map { ringSize(from: $0) }
+    print("        ring sizes at the anomeric carbons (aldose, ketose): \(sizes)")
+    expectEqual(sizes, [6, 5])
 }
 
 test("1-octen-3-ol is C8H16O: no ring, one C=C at the chain's end, the OH on the carbon next to it") {
@@ -485,7 +511,7 @@ test("1-octen-3-ol is C8H16O: no ring, one C=C at the chain's end, the OH on the
     for a in o.atoms { expectEqual(a.view, 1) }
 }
 
-test("every atom has its valence (bond orders summed): C 4, O 2, H 1 — glucose, waters and odorant, every frame") {
+test("every atom has its valence (bond orders summed): C 4, O 2, H 1 — sucrose and odorant, every frame") {
     var bad: Int = 0
     for f in frames {
         let all: Molecule = f.molecule
@@ -646,7 +672,7 @@ test("the taste hair meets the juice at touch-down, and leaves it when lifted �
     expect(abs(lowestLifted) < 3, "the inset juice and the main-view lift disagree by \(lowestLifted) µm")
 }
 
-section("glucose and odour in motion")
+section("sucrose and odour in motion")
 
 /// Each atom of `b` matched to the nearest atom of the same element and inset in `a`.
 func matchAtoms(_ a: Molecule, _ b: Molecule) -> [(from: Atom, to: Atom, d: Float)] {
@@ -682,7 +708,7 @@ func dotStep(_ a: FrameState, _ b: FrameState) -> (move: Float, grow: Float) {
     return (move, grow)
 }
 
-test("the loop is forward: the last frame runs on into the first; glucose and odour only go in") {
+test("the loop is forward: the last frame runs on into the first; sucrose and odour only go in") {
     guard let s = scene, let c = contactFrame else { expect(false); return }
     // Time L is time 0.
     let end: FrameState = s.frame(at: loopSeconds)
@@ -709,9 +735,9 @@ test("the loop is forward: the last frame runs on into the first; glucose and od
     print(String(format: "        seam step: tip %.4f mm, atoms %.3f Å, dots %.3f µm; largest inside the loop %.4f, %.3f, %.3f",
                  seam.tip, seam.atoms, seam.dots, biggest.tip, biggest.atoms, biggest.dots))
     expect(seam.tip <= biggest.tip * 1.01 + 1e-6, "the tip jumps at the seam")
-    expect(seam.atoms <= biggest.atoms * 1.01 + 1e-5, "the glucose jumps at the seam")
+    expect(seam.atoms <= biggest.atoms * 1.01 + 1e-5, "the sucrose jumps at the seam")
     expect(seam.dots <= biggest.dots * 1.01 + 1e-5, "the odour jumps at the seam")
-    // Forward: progress never falls, and a loop takes exactly one glucose in
+    // Forward: progress never falls, and a loop takes exactly one sucrose in
     // per tap and brings one tap of odour per tap.
     var lastSugar: Float = sugarProgress(0, mutant: s.mutant)
     var lastOdour: Float = odourProgress(0, mutant: s.mutant)
@@ -719,12 +745,12 @@ test("the loop is forward: the last frame runs on into the first; glucose and od
         let t: Float = frameTime(i, of: frames.count) - (i == frames.count ? 1e-4 : 0)
         let u: Float = sugarProgress(t, mutant: s.mutant)
         let o: Float = odourProgress(t, mutant: s.mutant)
-        expect(u >= lastSugar - 1e-5, "the glucose goes back at frame \(i): \(lastSugar) → \(u)")
+        expect(u >= lastSugar - 1e-5, "the sucrose goes back at frame \(i): \(lastSugar) → \(u)")
         expect(o >= lastOdour - 1e-5, "the odour goes back at frame \(i): \(lastOdour) → \(o)")
         lastSugar = u
         lastOdour = o
     }
-    expect(abs(lastSugar - Float(tapsPerLoop)) < 0.01, "the loop takes \(lastSugar) glucose in, not \(tapsPerLoop)")
+    expect(abs(lastSugar - Float(tapsPerLoop)) < 0.01, "the loop takes \(lastSugar) sucrose in, not \(tapsPerLoop)")
     expect(abs(lastOdour - Float(tapsPerLoop)) < 0.01, "the loop is \(lastOdour) taps of odour, not \(tapsPerLoop)")
     // Every shown dot only comes nearer its pore, frame to frame; and one
     // reaches its pore (life passes the arrival) in every tap, exactly one.
@@ -754,7 +780,7 @@ test("nothing pops: inside the circles every atom and odour dot moves or grows c
     // A millisecond apart, a moving atom goes a few hundredths of an ångström
     // and a dot a thousandth of a µm; one that appears or vanishes whole
     // would be far more. Check at every frame, either side of each instant
-    // the glucose slots relabel (each touch's end and start), each instant an
+    // the sucrose slots relabel (each touch's end and start), each instant an
     // odour trip starts again, and the loop's seam.
     var times: [Float] = (0..<frames.count).map { frameTime($0, of: frames.count) }
     for k in 0..<tapsPerLoop {
@@ -791,7 +817,7 @@ test("nothing pops: inside the circles every atom and odour dot moves or grows c
     expectEqual(pops, 0)
 }
 
-test("each touch takes one glucose a place into the pore; lifted, the glucose is still") {
+test("each touch takes one sucrose a place into the pore; lifted, the sucrose is still") {
     guard let s = scene else { expect(false); return }
     // One place per tap, all of it while touching.
     for k in 0..<tapsPerLoop {
@@ -802,18 +828,18 @@ test("each touch takes one glucose a place into the pore; lifted, the glucose is
     let h: Sensillum = s.hairs[0]
     let into: SIMD3<Float> = simd_normalize(h.base - h.tip)
     let screen = SIMD2<Float>(simd_dot(into, insetCamera.right), simd_dot(into, insetCamera.up))
-    expect(simd_dot(simd_normalize(screen), s.drift) > 0.999, "the glucose does not drift towards the pore")
+    expect(simd_dot(simd_normalize(screen), s.drift) > 0.999, "the sucrose does not drift towards the pore")
     guard let first = frames.first(where: { $0.lift > 0 }) else { expect(false); return }
     for f in frames where f.lift > 0 && Int(f.time / tapSeconds) == Int(first.time / tapSeconds) {
         for (a, b) in zip(f.corn.units, first.corn.units) {
             let ca: SIMD3<Float> = a.sugar.atoms.reduce(SIMD3<Float>(0, 0, 0)) { $0 + $1.position } / Float(a.sugar.atoms.count)
             let cb: SIMD3<Float> = b.sugar.atoms.reduce(SIMD3<Float>(0, 0, 0)) { $0 + $1.position } / Float(b.sugar.atoms.count)
-            expect(simd_distance(ca, cb) < 1e-4, "a glucose moves while the hair is lifted")
+            expect(simd_distance(ca, cb) < 1e-4, "a sucrose moves while the hair is lifted")
         }
     }
 }
 
-test("every frame: each glucose with its waters, and the odorant, move rigidly and never collide or leave their circles") {
+test("every frame: each sucrose, and the odorant, move rigidly and never collide or leave their circles") {
     guard let s = scene, let c = contactFrame else { expect(false); return }
     func distances(_ atoms: [Atom]) -> [Float] {
         var out: [Float] = []
@@ -825,7 +851,6 @@ test("every frame: each glucose with its waters, and the odorant, move rigidly a
     let o0: [Atom] = c.odorant.atoms
     let odorantReference: [Float] = distances(o0)
     var worstRigid: Float = 0
-    var worstWater: Float = 0
     var closest: Float = 1e9
     var worstOdorant: Float = 0
     var worstOut: Float = -9
@@ -833,10 +858,6 @@ test("every frame: each glucose with its waters, and the odorant, move rigidly a
         expectEqual(f.corn.units.count, moleculeSlots)
         for u in f.corn.units {
             for (x, y) in zip(distances(u.molecules.flatMap { $0.atoms }), reference) { worstRigid = max(worstRigid, abs(x - y)) }
-            for w in u.waters {
-                worstWater = max(worstWater, abs(simd_distance(w.atoms[0].position, w.atoms[1].position) - waterOH),
-                                 abs(simd_distance(w.atoms[0].position, w.atoms[2].position) - waterOH))
-            }
         }
         // No two atoms of different molecules closer than 2 Å.
         let parts: [Molecule] = f.corn.units.flatMap { $0.molecules }
@@ -853,10 +874,9 @@ test("every frame: each glucose with its waters, and the odorant, move rigidly a
         expect(det0 * det1 > 0, "the odorant is mirrored")
         for a in o { worstOut = max(worstOut, simd_length(SIMD2<Float>(a.position.x, a.position.y)) + 0.4 - odourField / 2) }
     }
-    print(String(format: "        %d frames: glucose units rigid to %.1e Å, water O–H to %.1e Å, closest atoms of two molecules %.2f Å; odorant rigid to %.1e Å, its reach past its circle %.2f Å",
-                 frames.count, worstRigid, worstWater, closest, worstOdorant, worstOut))
-    expect(worstRigid < 1e-3, "a glucose or its waters deform by \(worstRigid) Å")
-    expect(worstWater < 1e-3)
+    print(String(format: "        %d frames: sucrose rigid to %.1e Å, closest atoms of two sucroses %.2f Å; odorant rigid to %.1e Å, its reach past its circle %.2f Å",
+                 frames.count, worstRigid, closest, worstOdorant, worstOut))
+    expect(worstRigid < 1e-3, "a sucrose deforms by \(worstRigid) Å")
     expect(closest > 2.0, "two molecules come within \(closest) Å")
     expect(worstOdorant < 1e-3, "the odorant deforms by \(worstOdorant) Å")
     expect(worstOut < 0, "the odorant leaves its circle by \(worstOut) Å")
