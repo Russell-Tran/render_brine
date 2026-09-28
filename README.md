@@ -551,6 +551,20 @@ A Holstein, 63 mm long, built at 1:33 from a measured herd (Paksoy et al. 2026):
 
 The cow's walk is the one best supported by measurement. Usherwood & Smith (2018) recorded cattle, grazing or walking, stepping in exactly this lateral sequence with each foot down about 65% of the stride. The waking is fiction and the rest is kept true. In all three animations the toy walks small in a wide, mostly empty frame, and its waking head-turn is modest; the walk is where the motion reads. Code: [`step063_toy_cow_alive/`](step063_toy_cow_alive/)
 
+### Step 64: Bruxism
+
+![Step 20's lower dental arch after about fifty years of night-time grinding: every tooth ground flat on top, the canine tip flattened, yellow dentine exposed inside rims of enamel, with labels for the flattened canine, exposed dentine and wear facets; an inset shows a to-scale cut through the worn central incisor](showcase/bruxism.png)
+
+Step 20's lower arch, same teeth, camera and light, after about **fifty years of night-time grinding**. Every tooth is ground 2.25 mm at 45 µm a year, the rate measured in untreated nocturnal bruxists (Korkut et al. 2020), against 15–29 µm a year for ordinary chewing. Each surface is scored on the **Smith & Knight Tooth Wear Index**: 3 on incisal edges and canines, 2 on premolars and molars. A test surveys the drawn teeth back out of the renderer and confirms every score. The wear facets are flat to under a micrometre, sharp-edged, and lean by a stated angle. Dentine shows only where the enamel cap is worn through, always inside an enamel rim, and a to-scale inset cuts through the worn incisor using measured enamel thicknesses.
+
+The build corrected my brief in three ways that matter clinically. **Grinding leaves dentine flat and flush with the facet, not cupped.** Cupping comes from abrasion and erosion (Kaidonis 2008), so a `scooped` mutant must fail. Bruxists wear only about 1.5–3× faster than normal chewing, not "much faster", which is why severe wear takes decades. And a 2024 review found weak or no link between tooth wear and bruxism, so worn teeth alone don't prove grinding. Abfraction notches aren't drawn, because their link to biting forces is undetermined. The enamel thickness of the back teeth, which decides where their dentine shows, and the dentine's colour are MODEL, since no measurement could be reached. Code: [`step064_bruxism/`](step064_bruxism/)
+
+### Step 65: Bruxism, year by year
+
+![Looping animation of the lower dental arch with the camera held still while fifty years of grinding wear the teeth down; a year counter and bar run from 0 to 50, freshly worn surfaces glow blue, and labels for wear facets, exposed dentine and the flattened canine appear as each forms; an inset cut through the incisor wears with them](showcase/bruxism_progression.gif)
+
+The same view with the camera held exactly still, while fifty years of grinding happen in twelve seconds. The caption's year always equals the drawn depth divided by the measured rate, and no tooth ever grows back. Wear is a small geometric change, so step 29's lesson was built in from the start. Surface ground away in the last five years is tinted **blue**, labelled as a teaching aid rather than anatomy. Labels fade in as each feature forms: wear facets at year 2, dentine through the incisal edges and a flat canine at year 22, dentine in the premolars at year 35. A test requires every second of wear to change a clear share of the tooth pixels. The loop closes with a dissolve captioned "Restarting at year 0 — worn teeth never grow back", never by un-wearing. Limits: the facets don't really glint under step 20's lighting, so the blue tint does that job; there is some palette banding; and the year numbers ghost during the dissolve. Code: [`step065_bruxism_progression/`](step065_bruxism_progression/)
+
 ### Step 66: Upper dental arch
 
 ![A still render of an upper dental arch seen from below and in front: wide ivory central incisors, smaller laterals, yellower canines, premolars and molars back to both wisdom teeth, coral gums, and the pink vault of the hard palate with its transverse ridges behind the front teeth](showcase/upper_arch.png)
