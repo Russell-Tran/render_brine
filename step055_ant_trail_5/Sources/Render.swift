@@ -29,7 +29,9 @@ let frameAspect: Float = 0.2
 /// come one loop apart, so that crossing must take exactly `fileCount` loops:
 /// W = fileCount · spacing − (stops in view) · cruise · dabLoss. (A test
 /// counts them.)
-let frameWorldWidth: Float = Float(fileCount) * spacing - Float(dabSites.count) * cruise * dabLoss
+private let fileLength: Float = Float(fileCount) * spacing            // typed apart: the mini's
+private let stopsLoss: Float = Float(dabSites.count) * cruise * dabLoss // compiler hit 5 ms inline
+let frameWorldWidth: Float = fileLength - stopsLoss
 /// The camera looks from the ants' right side, 32° above the ground, square
 /// to the trail. MODEL.
 let cameraElevation: Float = 32 * Float.pi / 180
