@@ -15,7 +15,7 @@ BUILD := .build
 
 # Plastic, Toy, Scene, Render, Still and Annotate are the toy-boat renderer
 # (steps 73–75 each carry a copy, grown from steps 58–63's: a hull and a
-# profile plate added, the animal rig taken out); RowBoat.swift is this
+# profile plate added, the animal rig taken out); Sailboat.swift is this
 # step's boat.
 SOURCES := Sources/Plastic.swift Sources/Toy.swift Sources/Scene.swift Sources/Render.swift Sources/Still.swift \
            Sources/Annotate.swift Sources/Sailboat.swift

@@ -298,8 +298,13 @@ func testStillPicture(_ renderer: ToyRenderer?, setup s: StillSetup, caption: Ca
         let total: Double = Double(img.width * img.height)
         let span: Double = Double(maxX - minX) / Double(img.width)
         let spanY: Double = Double(maxY - minY) / Double(img.height)
+        let toyShare: Double = Double(toyPx) / total * 100
+        let tableShare: Double = Double(table) / total * 100
+        let mirrored: Double = specSum / max(diffSum, 1e-9)
+        let widthShare: Double = span * 100
+        let heightShare: Double = spanY * 100
         print(String(format: "        toy %.1f%% of the frame, %.0f%% of its width, %.0f%% of its height; table %.1f%%; mirrored/diffuse %.3f; %d sheen pixels; worst F error %.2e",
-                     Double(toyPx) / total * 100, span * 100, spanY * 100, Double(table) / total * 100, specSum / max(diffSum, 1e-9), sheen, fWorst))
+                     toyShare, widthShare, heightShare, tableShare, mirrored, sheen, fWorst))
         expect(Double(toyPx) / total > 0.05 && Double(toyPx) / total < 0.4, "toy covers \(Double(toyPx) / total)")
         expect(span > 0.4 || spanY > 0.6, "the toy should span 40% of the frame's width or 60% of its height: \(span), \(spanY)")
         expect(minX > 2 && minY > 2 && maxY < img.height - 3, "the toy runs off the frame")
