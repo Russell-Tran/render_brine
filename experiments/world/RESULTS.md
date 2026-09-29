@@ -33,8 +33,11 @@ predict**, and they are the real lessons (below).
 2. **Renders from the record are near-identical, not bit-identical, across GPUs.** Three of
    four reference frames match to 1/255. Frame 1799, the close-up with the refracting sugar
    crystals large in frame, has rare pixels off by up to 10/255, outside the max < 8 tolerance
-   I set beforehand. The test stays as recorded and fails on the mini (47/48). The outlier
-   count and location are pending the laptop's analysis. **Future films** adopt a two-part
+   I set beforehand. The test stays as recorded and fails on the mini (47/48). **Located
+   (0e166d0):** in frame 1799 only 29 pixel-channels differ at all, and just **2 single pixels** exceed
+   2/255 (off by 10 and 8). **Both are inside the sugar pile**, where rays refract through the
+   crystals. None is on an ant, a caption or the field. Everywhere else the GPUs agree to
+   1/255 or better. See `step079_ant_world/records/refs_mini/COMPARISON.md` and `1799_diff.png`. **Future films** adopt a two-part
    tolerance, stated before the second machine renders: the 99.9th percentile ≤ 2/255, and the
    max ≤ 16/255, reported with a count.
 3. **The shared ant can't back up.** Free-roaming ants meet head-on, which scripted trails
