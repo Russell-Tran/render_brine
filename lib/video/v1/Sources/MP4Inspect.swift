@@ -61,7 +61,9 @@ private func loadBasics(_ asset: AVURLAsset) throws -> VideoTrackBasics {
     return try videoBlocking { () async throws -> VideoTrackBasics in
         let tracks: [AVAssetTrack] = try await asset.loadTracks(withMediaType: .video)
         let trackCount: Int = tracks.count
-        guard trackCount == 1, let track = tracks.first else {
+        // "Exactly one track", written without `==`: with AVFoundation in scope every
+        // `==` here took 5 ms to type-check on the mini's compiler.
+        guard let track = tracks.first, tracks.dropFirst().isEmpty else {
             throw MP4WriterError.writerFailed("expected 1 video track, found \(trackCount)")
         }
         let formats: [CMFormatDescription] = try await track.load(.formatDescriptions)

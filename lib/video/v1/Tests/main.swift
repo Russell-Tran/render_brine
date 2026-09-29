@@ -101,7 +101,8 @@ func decodeIndex(_ px: [UInt8]) -> Int {
 
 // MARK: - write it once
 
-print("lib/video/v1 tests" + (videoMutant == .none ? "" : "  (MUTANT \(videoMutant.rawValue))"))
+let mutantNote: String = videoMutant == .none ? "" : "  (MUTANT \(videoMutant.rawValue))"   // typed apart: 5 ms inline on the mini
+print("lib/video/v1 tests" + mutantNote)
 let inputs: [[UInt8]] = (0..<clipFrames).map(syntheticFrame)
 var clipBytes: Int = 0
 var writeSeconds: Double = 0
