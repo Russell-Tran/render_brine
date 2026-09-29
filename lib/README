@@ -1,10 +1,12 @@
 lib/ — shared, version-pinned code that more than one step compiles in.
 
-The versioning rule. A folder lib/<name>/vN/ is frozen once committed: nothing
-in it is ever edited again. A change of any kind, even a fix, makes
-lib/<name>/v(N+1)/ beside it, and a step moves to the new version by changing
-its own Makefile. A step that uses vN keeps building and drawing exactly what
-it did.
+The versioning rule. A folder lib/<name>/vN/ is frozen once any step imports
+it: from then on nothing in it is ever edited again. Before that, fixes are
+allowed only if they keep every value identical (e.g. splitting an expression
+for the compiler), and the module's tests must still pass. A change of any
+kind after a step imports it, even a fix, makes lib/<name>/v(N+1)/ beside it,
+and a step moves to the new version by changing its own Makefile. A step that
+uses vN keeps building and drawing exactly what it did.
 
 This bends the project's copy-don't-modify rule only as far as it must. Old
 steps are untouched and keep their own copies; only a step that names a lib
