@@ -35,7 +35,25 @@ to match. It has to be **recorded**, simulated once and rendered from the record
 changes the P5 plan: splitting one film's frames across machines only works from a
 shared record. Requested of the laptop before the film is rendered.
 
-## P4, a shared ant: **partly right so far** (lib/ant/v1, b5384ba, fixed in b43a47f)
+## P3, ant-count scaling: **partly right** (step 79 part 4, aac3701)
+
+One 1080p frame at 4 samples per pixel. Measured on **both** machines.
+
+| Mini, 40 ants | wide shot | close-up |
+|---|---|---|
+| no speed-up | 61.9 s/frame (31 h per 1800-frame film) | 243.7 s/frame (122 h) |
+| per-ant bounding spheres | **1.3 s/frame (0.7 h)** | **8.2 s/frame (4.1 h)** |
+
+- **Linear:** right. On the mini, frame time grows about 1.5 s per ant (wide) and 6 s per
+  ant (close) without the speed-up.
+- **"Impractical at 20–40 ants":** wrong. It's already impractical at **10 ants** (7–26 h
+  per film on the mini; the laptop's figures are similar).
+- **"Needs an acceleration structure":** wrong in a good way. The shared ant library's
+  per-ant bounding spheres, a simple skip, are **30–47× faster with bit-identical pixels**,
+  and nothing more elaborate is needed. The laptop measures 1.2–4.3 s per frame at 40
+  ants, and the mini's close-up is about 2× slower.
+
+## P4, a shared ant: **right** (lib/ant/v1, b5384ba, fixed in b43a47f; used by step 79 in aac3701)
 
 - The versioned module exists and builds on both toolchains. Its shapes match step
   55's to 1.4 × 10⁻⁶ mm over 1600 poses. Verified here: 24 tests, 3 mutants.
@@ -44,10 +62,10 @@ shared record. Requested of the laptop before the film is rendered.
 - **New limits the scripted trails never hit:** the gait holds only down to a 5 mm turn
   radius, and a frame is final only once the track runs a stride ahead. v1 ants **can't
   back up**, so head-on ants squeeze past each other (2–3% overlap away from the food).
-- Still to show: step 79's film actually building against the module.
+- Step 79 builds against the module (Metal plus poses) and links lib/video/v1. Whether this was "the biggest change to how we work" is Russell's judgement.
 - Process change adopted: `lib/README`, where a version freezes once any step imports it.
 
 ## Still to come
 
-P3 (ant-count scaling), P5 (render time and resume), P6 (can a stranger tell a trail
+P5 (render time and resume, plus whether the recorded world renders the same on both machines), P6 (can a stranger tell a trail
 formed on its own).
