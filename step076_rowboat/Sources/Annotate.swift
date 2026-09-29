@@ -129,7 +129,7 @@ func captionLines(_ l: Layout, _ b: Buoyancy) -> [String] {
     let oarFeet: Float = l.oars[0].length / inch / 12
     return [
         "Newfound Woodworks' 16 ft 8 in Whitehall, cedar strip: 5080 mm long, 1067 mm beam, 16.2 in deep amidships, 28 in at the bow, 113 lb.",
-        String(format: "A few clean shapes to those numbers: the hull with its keel and full skeg, two rowing thwarts and a stern seat, two pairs of oarlocks ([NW] \"double oarlocks\"),"),
+        String(format: "A few clean shapes to those numbers: the hull with its keel and full skeg, two rowing thwarts and a stern seat, two pairs of oarlocks (Newfound: \"double oarlocks\"),"),
         String(format: "and one pair of %.0f-ft spruce oars at rest, blades trailing 1 cm clear of the water (length by Shaw & Tenney's rule from the %.0f-mm span).", oarFeet, l.span),
         "The lines are a model fitted to Newfound's waterline length, waterline beam and full-load draft; the transom is simplified (a U, not a wineglass).",
     ]
