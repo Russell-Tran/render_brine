@@ -351,7 +351,9 @@ extension AntV1 {
         let clypeus: SIMD3<Float> = headCentre + clypeusForward - clypeusDown
         s.append(.blob(.head, clypeus, SIMD3(0.14, 0.13, 0.20), x: headForward, y: headUp))
         for sgn in [Float(1), Float(-1)] {
-            let eyeSide: SIMD3<Float> = side * (sgn * (headWidth / 2 - 0.035))
+            let eyeInset: Float = headWidth / 2 - 0.035   // typed apart, same order: 7 ms
+            let eyeReach: Float = sgn * eyeInset           // inline on the mini's compiler
+            let eyeSide: SIMD3<Float> = side * eyeReach
             let eyeBack: SIMD3<Float> = headForward * 0.03
             let eyeUp: SIMD3<Float> = headUp * 0.06
             let c: SIMD3<Float> = headCentre - eyeBack + eyeUp + eyeSide
