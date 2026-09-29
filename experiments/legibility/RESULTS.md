@@ -3,7 +3,7 @@
 Pre-registration: [`PREREGISTRATION.md`](PREREGISTRATION.md), committed at 5856d60
 (2026-09-28 19:15:57 -0700), before any viewer looked. Everything in part 1 follows that
 file's rules. Parts 2 and 3 were **not** pre-registered and are labelled as such.
-Part 4 is still waiting on Russell's ratings.
+Part 4, the human check, was dropped (see below).
 
 ## 1. Pre-registered result: the hypothesis is **rejected**
 
@@ -65,11 +65,16 @@ What the controls suggest, as an observation only:
 - Step 53's problem was never legibility. The viewer got its point. It was **how it
   looked** (bronze, not gold). A reader-for-meaning won't catch that kind of failure.
 
-## 4. Validation against Russell: *pending*
+## 4. Validation against a person: **dropped**
 
-Russell rates 10 items (seed 20260929) on the real GIFs and stills. If his ratings and
-the grader's disagree on more than 3 of the 10 (a fail/pass mismatch on the change
-question), the conclusions above are marked unreliable.
+The plan was for Russell to rate 10 items (seed 20260929) on the real GIFs. He
+pointed out, correctly, that he has studied every render too long to judge them as a
+stranger would, so his ratings would be biased towards "legible". On 2026-09-28 he
+decided to **drop the human check**. No ratings were collected.
+
+**So every conclusion here rests on AI viewers alone and has not been validated
+against a person.** A model reading six frames may see differently from a person
+watching a GIF, and this experiment can't tell how much.
 
 ## What I now think
 
