@@ -30,7 +30,11 @@ func renderTests() {
 
     // Not a test (it depends on the machine): does this machine's run of seed
     // 79 reproduce the recorded world?
-    let reproduces: Bool = mutant == .none && film.sim.encoded() == rec.encoded()
+    // Without `==`: AVFoundation in this module makes every `==` slow to type-check.
+    let unmutated: Bool
+    switch mutant { case .none: unmutated = true; default: unmutated = false }
+    let sameRecord: Bool = film.sim.encoded() == rec.encoded()   // (5 ms inline on the mini)
+    let reproduces: Bool = unmutated && sameRecord
     print(reproduces ? "        this machine's run of seed 79 reproduces the recorded world bit for bit"
                      : "        this machine's run of seed 79 is NOT the recorded world (expected on another machine, or under a mutant)")
 
