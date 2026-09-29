@@ -18,7 +18,9 @@ func renderTests() {
         if let s = saved {
             expectEqual(s.frameCount, 1800)
             expectEqual(s.sim.config.seed, UInt64(79))
-            expect(s.sim.config.mutant == .none, "the film's record must be made without a mutant")
+            if case .none = s.sim.config.mutant {} else {
+                expect(false, "the film's record must be made without a mutant")
+            }
         }
     }
     guard let film = saved else {
@@ -219,4 +221,6 @@ func renderTests() {
         expect(with > 2000, "only \(with) blue pixels on the formed trail")
         print("        blue pixels at the last frame: \(with) of \(480 * 270); with no field: \(without)")
     }
+
+    filmTests(film)
 }

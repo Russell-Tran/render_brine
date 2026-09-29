@@ -1,5 +1,5 @@
 // Tests for step 79's simulation (prediction P2: does a trail emerge?), then
-// (Render.swift) its recorded world and renderer (part 4).
+// (RenderTests.swift) its recorded world and renderer (part 4).
 //
 // Everything is measured from the RECORD the film will read — positions,
 // headings, distances, states, the dabs and the replayed field — not from the

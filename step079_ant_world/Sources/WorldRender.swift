@@ -28,9 +28,16 @@ import Metal
 import UniformTypeIdentifiers
 import simd
 
-// MARK: - light (step 55's, which is step 32's)
+// MARK: - light (step 55's, which is step 32's, turned round)
 
-let worldKeyDirection: SIMD3<Float> = simd_normalize(SIMD3<Float>(-0.35, 1.0, 0.50))
+/// The key light, towards it. Step 55's softbox, colour and size, but brought
+/// round to the far side (−z) and the left: step 55's came from the camera's
+/// side, so every shadow fell behind its ant, out of sight. From here the
+/// shadows fall towards the camera and to the right, where they read. MODEL.
+let worldKeyDirection: SIMD3<Float> = simd_normalize(SIMD3<Float>(-0.55, 1.0, -0.45))
+/// The fill, towards it: from the camera's side, so the faces the camera sees
+/// are not left in the key's shade. MODEL.
+let worldFillDirection: SIMD3<Float> = simd_normalize(SIMD3<Float>(0.3, 0.9, 0.75))
 let worldKeyColour: SIMD3<Float> = SIMD3<Float>(1.0, 0.985, 0.96) * 1.6
 let worldFillColour: SIMD3<Float> = SIMD3<Float>(0.96, 0.97, 1.0) * 0.55
 let worldKeyDisc: Float = 0.975
@@ -96,7 +103,7 @@ func worldMetal(_ v: SIMD3<Float>) -> String { "float3(\(v.x), \(v.y), \(v.z))" 
 /// The scene's kernel text (after AntV1.metalSource).
 func worldKernelSource() -> String {
     let keyRad: SIMD3<Float> = worldDiscRadiance(worldKeyColour, cosine: worldKeyDisc)
-    let fillDir: SIMD3<Float> = simd_normalize(SIMD3<Float>(0.3, 1.0, -0.6))
+    let fillDir: SIMD3<Float> = worldFillDirection
     let fillRad: SIMD3<Float> = worldDiscRadiance(worldFillColour, cosine: worldFillDisc)
     return """
     struct WorldParams {
@@ -117,6 +124,8 @@ func worldKernelSource() -> String {
     constant float FILL_DISC = \(worldFillDisc);
     constant float CARD = \(worldCardAlbedo);
     constant float3 SOIL = \(worldMetal(worldSoilAlbedo));
+    constant float RING_WIDTH = \(worldNestRingWidth);
+    constant float CRUMB = \(worldCrumbSize);
     constant float3 TRAIL = \(worldMetal(worldTrailColour));
     constant float TRAIL_MAX = \(worldTrailMax);
     constant float TRAIL_SCALE = \(worldTrailScale);
@@ -369,6 +378,17 @@ func worldKernelSource() -> String {
             alb = SOIL * exp(p.y / 1.5);
         } else {
             alb = float3(CARD) * float3(1.0, 0.99, 0.975);
+            // The excavated soil round the entrance: crumbs, densest at the
+            // rim, thinning out over RING_WIDTH (MODEL, WorldScene.swift).
+            float u = (rho - nest.z) / RING_WIDTH;
+            if (u < 1.4) {
+                float3 q = float3(p.x, 0.0, p.z) / CRUMB;
+                float grain = antv1_noise3(q);
+                float edge = 1.0 - smoothstep(0.25, 1.15, u + 0.30 * (antv1_noise3(q * 0.37 + 11.0) - 0.5));
+                float cover = edge * smoothstep(0.42, 0.58, grain + 0.35 * edge);
+                float3 crumb = SOIL * (1.6 + 1.2 * antv1_noise3(q * 2.1 + 5.0));
+                alb = mix(alb, crumb, clamp(cover, 0.0, 1.0));
+            }
             float c = fieldAt(p.xz, s);
             float tint = TRAIL_MAX * (1.0 - exp(-c / TRAIL_SCALE));
             alb = mix(alb, TRAIL * CARD, tint);

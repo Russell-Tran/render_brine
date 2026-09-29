@@ -81,6 +81,14 @@ let worldCardAlbedo: Float = 0.80
 let worldNestDepth: Float = 6.0
 /// Soil in the hole, linear albedo. MODEL: a dark loam.
 let worldSoilAlbedo = SIMD3<Float>(0.060, 0.045, 0.034)
+/// Excavated soil round the entrance: Lasius niger nests in soil and carries
+/// the diggings out of the entrance; here a flat scatter of crumbs on the
+/// card, densest at the rim and gone `worldNestRingWidth` mm out. MODEL (no
+/// measured crater size for a lab colony's entrance; drawn flat, so it adds
+/// no geometry the ants would have to walk over). Crumbs about
+/// `worldCrumbSize` mm, coarse enough to survive the film's bit rate.
+let worldNestRingWidth: Float = 4.0
+let worldCrumbSize: Float = 0.35
 
 // MARK: - the pheromone, drawn
 

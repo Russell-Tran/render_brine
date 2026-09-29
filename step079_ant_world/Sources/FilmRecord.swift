@@ -86,30 +86,14 @@ struct FilmRecord {
     /// `fromStored` picks an earlier stored field to start from (index into
     /// `fieldFrames`), for the tests.
     func field(atFrame f: Int, fromStored start: Int? = nil) -> [Float] {
-        precondition(f >= 0 && f < frameCount, "frame \(f) outside the film")
+        FilmFieldCursor(film: self).field(atFrame: f, fromStored: start)
+    }
+
+    /// Index into `fieldFrames` of the last stored field at or before `f`.
+    func storedIndex(atFrame f: Int) -> Int {
         var k: Int = 0
         while k + 1 < fieldFrames.count && fieldFrames[k + 1] <= f { k += 1 }
-        if let s = start, s >= 0, s <= k { k = s }
-        let base: Int = fieldFrames[k]
-        let q: Float = FilmRecord.fieldQuantum
-        var cur: [Float] = fields[k].map { Float($0) * q }
-        let from: Int = sim.ticks[base]
-        let to: Int = sim.ticks[f]
-        if to <= from { return cur }
-        var next: [Float] = cur
-        var d: Int = 0
-        while d < sim.dabs.count && Int(sim.dabs[d].tick) < from { d += 1 }
-        for t in from..<to {
-            var batch: [SimDabEvent] = []
-            while d < sim.dabs.count && Int(sim.dabs[d].tick) == t {
-                batch.append(sim.dabs[d])
-                d += 1
-            }
-            filmDeposit(&cur, width: gridWidth, height: gridHeight, dabs: batch)
-            filmSpread(cur, into: &next, width: gridWidth, height: gridHeight, alpha: alpha, decay: decay)
-            swap(&cur, &next)
-        }
-        return cur
+        return k
     }
 
     // MARK: - the file
@@ -305,5 +289,56 @@ func filmSpread(_ src: [Float], into dst: inout [Float], width w: Int, height h:
                 }
             }
         }
+    }
+}
+
+/// The field frame after frame, for a renderer walking through the film: it
+/// carries on from the frame before when that frame started from the same
+/// stored field and is not later, and otherwise starts again from the stored
+/// field. Either way the operations from the stored field are the same, in
+/// the same order, so the result is bit for bit `FilmRecord.field(atFrame:)`
+/// (a test renders frames in order, out of order and resumed, and compares).
+final class FilmFieldCursor {
+    let film: FilmRecord
+    private var stored: Int = -1
+    private var tick: Int = -1
+    private var dab: Int = 0
+    private var cur: [Float] = []
+    private var next: [Float] = []
+
+    init(film: FilmRecord) {
+        self.film = film
+    }
+
+    func field(atFrame f: Int, fromStored start: Int? = nil) -> [Float] {
+        precondition(f >= 0 && f < film.frameCount, "frame \(f) outside the film")
+        var k: Int = film.storedIndex(atFrame: f)
+        if let s = start, s >= 0, s <= k { k = s }
+        let target: Int = film.sim.ticks[f]
+        if k != stored || target < tick {
+            stored = k
+            let q: Float = FilmRecord.fieldQuantum
+            cur = film.fields[k].map { Float($0) * q }
+            next = cur
+            tick = film.sim.ticks[film.fieldFrames[k]]
+            dab = 0
+            let dabs: [SimDabEvent] = film.sim.dabs
+            while dab < dabs.count && Int(dabs[dab].tick) < tick { dab += 1 }
+        }
+        let dabs: [SimDabEvent] = film.sim.dabs
+        let w: Int = film.gridWidth
+        let h: Int = film.gridHeight
+        while tick < target {
+            var batch: [SimDabEvent] = []
+            while dab < dabs.count && Int(dabs[dab].tick) == tick {
+                batch.append(dabs[dab])
+                dab += 1
+            }
+            filmDeposit(&cur, width: w, height: h, dabs: batch)
+            filmSpread(cur, into: &next, width: w, height: h, alpha: film.alpha, decay: film.decay)
+            swap(&cur, &next)
+            tick += 1
+        }
+        return cur
     }
 }

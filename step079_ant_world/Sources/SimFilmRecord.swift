@@ -74,7 +74,10 @@ extension SimFilmRecord {
     /// point as `track.append(distance: p.distance, AntV1.Ground(SIMD2(p.x,
     /// p.z), heading: p.yaw))`. Distances strictly increase.
     func trackPoints(ant i: Int, outing k: Int) -> [SimTrackPoint] {
-        tracks[i].filter { Int($0.outing) == k }
+        // Typed apart (5 ms on the mini's compiler inline); the same points.
+        guard k >= 0 else { return [] }
+        let want: UInt32 = UInt32(k)
+        return tracks[i].filter { $0.outing == want }
     }
 
     /// How many outings ant `i` made (including one still under way).
