@@ -1,0 +1,15 @@
+lib/ — shared, version-pinned code that more than one step compiles in.
+
+The versioning rule. A folder lib/<name>/vN/ is frozen once committed: nothing
+in it is ever edited again. A change of any kind, even a fix, makes
+lib/<name>/v(N+1)/ beside it, and a step moves to the new version by changing
+its own Makefile. A step that uses vN keeps building and drawing exactly what
+it did.
+
+This bends the project's copy-don't-modify rule only as far as it must. Old
+steps are untouched and keep their own copies; only a step that names a lib
+version in its Makefile uses it. Each version carries its own tests and
+mutants (make test, make mutants, make typecheck, with SDK= as in the steps).
+
+lib/ant/v1/  The black garden ant, Lasius niger worker, from steps 44/55-57,
+             posed by a simulation. First used by step 79.
