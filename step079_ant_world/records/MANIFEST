@@ -1,0 +1,14 @@
+# step 79's recorded world. The film renders from this file only; re-running the
+# simulation on another machine gives a different world (see Sources/FilmRecord.swift).
+file records/world79.rec
+sha256 685c05997449220de5ce2b72181e3495aa0d3e867e4dcb5c78834a7e0b76cc28
+bytes 7967992
+uncompressed 60033796
+seed 79
+frames 1800
+stored_fields 181 (every 10 frames and the last; quantum 0.0001 marks/mm2; peak 3.6561513)
+trail_formed film frame 1431 = film 47.7 s = ant time 716 s
+dabs 485
+rebuild_vs_live worst 4.8862683e-05 marks/mm2; drawn tint worst 0.00034037838, mean 2.3865827524220182e-05 over 10 frames
+made_on M3 Max laptop (Swift 5.10 toolchain, macOS 14.5)
+regenerate: make record SDK=$(xcrun --show-sdk-path)   (on the laptop only; elsewhere it is a different world)

@@ -1,4 +1,5 @@
-// Tests for step 79's simulation (prediction P2: does a trail emerge?).
+// Tests for step 79's simulation (prediction P2: does a trail emerge?), then
+// (Render.swift) its recorded world and renderer (part 4).
 //
 // Everything is measured from the RECORD the film will read — positions,
 // headings, distances, states, the dabs and the replayed field — not from the
@@ -11,6 +12,8 @@
 //                 forward-only tests fail
 //   tightTurn   — the turning cap is 3 mm instead of 5 → the turn-radius test
 //                 fails
+//   shrunkBounds — every ant's bounding sphere at half its radius (renderer)
+//                 → "bounds on or off draw the same picture" fails
 //
 // `.build/tests report` prints the P2 numbers (with and without pheromone, and
 // formation times over several seeds) instead of testing.
@@ -20,7 +23,8 @@ import simd
 
 let mutant: SimMutant = SimMutant.fromEnvironment()
 let argv: [String] = CommandLine.arguments
-let args: [String] = Array(argv.dropFirst())
+var args: [String] = argv
+if !args.isEmpty { args.removeFirst() }
 
 func fmt(_ x: Double, _ d: Int = 2) -> String { String(format: "%.\(d)f", x) }
 
@@ -29,6 +33,8 @@ let lastFrame: Int = SimClock.film.frameCount - 1
 let checkFrames: Set<Int> = [0, 450, 900, 1350, 1499, lastFrame]
 let started: Date = Date()
 let film: SimRunResult = try simFilmRun(seed: 79, mutant: mutant, keepFieldsAt: checkFrames)
+/// The same run, under a name the renderer's tests can see past their own `film`.
+let filmLive: SimRunResult = film
 let runSeconds: Double = Date().timeIntervalSince(started)
 let rec: SimFilmRecord = film.record
 let cfg: SimWorldConfig = rec.config
@@ -471,5 +477,9 @@ test("only ants that have fed are ever seen dabbing, and only carrying food home
         expect(a.layer == 1, "a dab by a non-layer")
     }
 }
+
+// MARK: - the recorded world and its renderer (part 4)
+
+renderTests()
 
 finish()
