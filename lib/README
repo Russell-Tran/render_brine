@@ -15,3 +15,10 @@ mutants (make test, make mutants, make typecheck, with SDK= as in the steps).
 
 lib/ant/v1/  The black garden ant, Lasius niger worker, from steps 44/55-57,
              posed by a simulation. First used by step 79.
+
+Cross-machine renders (from step 79). A simulated world is recorded once and every
+machine renders from the record; renders on different GPUs are near-identical, not
+bit-identical (step 79: 1/255 almost everywhere, two refracting-crystal pixels at 8-10/255).
+For a future film rendered on more than one machine, state this tolerance BEFORE the second
+machine renders: per channel, the 99.9th percentile of |diff| <= 2/255, and the max
+<= 16/255, reported with the count of pixels over 2/255. Step 79 keeps its own recorded test.
