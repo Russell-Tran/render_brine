@@ -1,0 +1,4 @@
+[
+  {"id": "control1", "subject": 1, "change": 1, "where": 1, "reason": "The viewer sees the tube appear but says it does not grow after frame 2, and describes the yellow line spreading along the spiral as subtle and hard to follow, so the key's main motion (tube growing down the style, glow travelling to the ovule) is reported as too subtle to follow, with the clock the only change clearly read."},
+  {"id": "control2", "subject": 1, "change": 2, "where": 1, "reason": "The viewer's main point matches the key: a true-to-scale cross-section of 0.5 um gold over 3 um nickel over brass next to a cotton fibre, plus the chart where gold's reflectance rises above about 500 nm while silver's stays flat."}
+]

@@ -1,0 +1,527 @@
+[
+ {
+  "id": "item01",
+  "subject": 1,
+  "change": 2,
+  "where": 1,
+  "reason": "Viewer describes the vine rising with flowers giving way to small pods that fatten lower down, matching the flowering-to-pod time-lapse."
+ },
+ {
+  "id": "item02",
+  "subject": 1,
+  "change": 2,
+  "where": 1,
+  "reason": "Viewer's point that the toy is solid moulded plastic, shown by the leg cross-section with parting-line bumps, matches the key."
+ },
+ {
+  "id": "item03",
+  "subject": 1,
+  "change": 2,
+  "where": 1,
+  "reason": "Viewer follows the enzyme close-up through lactose binding, glucose leaving, galactose bonded to the protein and water breaking the bond, matching the key's sequence."
+ },
+ {
+  "id": "item04",
+  "subject": 1,
+  "change": 1,
+  "where": 1,
+  "reason": "Viewer catches the sun-glint path on the water but not the key's main point that the sea now reflects the pale sky, brighter toward the horizon."
+ },
+ {
+  "id": "item05",
+  "subject": 1,
+  "change": 2,
+  "where": 1,
+  "reason": "Viewer names tendrils wrapping the trellis and twisting into coils with labelled perversions as the plant grows, matching the key."
+ },
+ {
+  "id": "item06",
+  "subject": 1,
+  "change": 2,
+  "where": 1,
+  "reason": "Viewer describes glucose and six O2 breaking apart and re-forming as six CO2 and six H2O, exactly the key's rearrangement."
+ },
+ {
+  "id": "item07",
+  "subject": 1,
+  "change": 2,
+  "where": 1,
+  "reason": "Viewer sees the coloured ring turning once in its plane, matching the key."
+ },
+ {
+  "id": "item08",
+  "subject": 1,
+  "change": 2,
+  "where": 1,
+  "reason": "Viewer describes the camera moving from the front incisors back along the arch to the last molars and returning, matching the key's glide."
+ },
+ {
+  "id": "item09",
+  "subject": 1,
+  "change": 2,
+  "where": 1,
+  "reason": "Viewer sees the taste hair touching and lifting off the wet grain and odour dots reaching the smell hair, i.e. the tapping shown in the inset."
+ },
+ {
+  "id": "item10",
+  "subject": 1,
+  "change": 2,
+  "where": 1,
+  "reason": "Viewer names the plant climbing the pole as the view rises and the free tip swinging around, matching the twining time-lapse."
+ },
+ {
+  "id": "item11",
+  "subject": 1,
+  "change": 2,
+  "where": 1,
+  "reason": "Viewer sees the space-filling helix spinning about its axis so the major and minor grooves slide along, matching the key."
+ },
+ {
+  "id": "item12",
+  "subject": 1,
+  "change": 2,
+  "where": 1,
+  "reason": "Viewer names the tip growing, tendrils wrapping trellis bars in coils with perversion labels as the camera rises, matching the key, though not the catch itself."
+ },
+ {
+  "id": "item13",
+  "subject": 1,
+  "change": 2,
+  "where": 1,
+  "reason": "Viewer sees the pig walking a loop on the floor with legs stepping, matching the key's walk in a small circle."
+ },
+ {
+  "id": "item14",
+  "subject": 1,
+  "change": 2,
+  "where": 1,
+  "reason": "Viewer identifies the up-and-down tapping cycle, with the taste hair touching and lifting from the film and sucrose appearing in the inset, matching the key."
+ },
+ {
+  "id": "item15",
+  "subject": 1,
+  "change": 2,
+  "where": 1,
+  "reason": "Viewer describes the camera swinging from the front incisors round to the back teeth and returning, matching the key's glide along the arch."
+ },
+ {
+  "id": "item16",
+  "subject": 1,
+  "change": 2,
+  "where": 1,
+  "reason": "Viewer's point that the ant tastes the salt by contact, with the taste hair on the film, the smell hair with nothing to catch, and ions leaving the lattice, matches the key."
+ },
+ {
+  "id": "item17",
+  "subject": 1,
+  "change": 2,
+  "where": 1,
+  "reason": "Viewer sees the mandibles opening and closing on the flesh and juice travelling to the crop, matching the key."
+ },
+ {
+  "id": "item18",
+  "subject": 1,
+  "change": 2,
+  "where": 1,
+  "reason": "Viewer names the polarimeter angle falling steadily through zero to negative alongside the enzyme's active-site close-up, matching the key."
+ },
+ {
+  "id": "item19",
+  "subject": 1,
+  "change": 2,
+  "where": 1,
+  "reason": "Viewer sees the ball-and-stick DNA turning about its long axis, matching the key."
+ },
+ {
+  "id": "item20",
+  "subject": 1,
+  "change": 2,
+  "where": 1,
+  "reason": "Viewer names the ants walking single file along the trail with legs stepping, the key's main motion, though not the pause to lay pheromone."
+ },
+ {
+  "id": "item21",
+  "subject": 1,
+  "change": 2,
+  "where": 1,
+  "reason": "Viewer names the ants walking with alternating legs and one pausing low to lay a fresh mark, matching the key."
+ },
+ {
+  "id": "item22",
+  "subject": 1,
+  "change": 2,
+  "where": 1,
+  "reason": "Viewer describes the gold/orange pollen tube growing around the spiral to the ovules as the clock counts up, matching the key."
+ },
+ {
+  "id": "item23",
+  "subject": 1,
+  "change": 2,
+  "where": 1,
+  "reason": "Viewer's point that the toy is solid painted PVC, shown by the leg cross-section with paint layer and parting-line bumps, matches the key."
+ },
+ {
+  "id": "item24",
+  "subject": 1,
+  "change": 2,
+  "where": 1,
+  "reason": "Viewer's point about the ant touching sugar, with the taste hair's single tip pore beside a many-pored smell hair and a sucrose molecule, matches the key."
+ },
+ {
+  "id": "item25",
+  "subject": 1,
+  "change": 2,
+  "where": 1,
+  "reason": "Viewer names the ultra-thin gold over nickel over brass in the section and the gold-versus-silver reflectance curve, matching the key."
+ },
+ {
+  "id": "item26",
+  "subject": 1,
+  "change": 2,
+  "where": 1,
+  "reason": "Viewer names the ants walking single file along the trail with legs stepping, the key's main motion, though not the pause to lay pheromone."
+ },
+ {
+  "id": "item27",
+  "subject": 1,
+  "change": 2,
+  "where": 1,
+  "reason": "Viewer's point about neuron anatomy (dendrites, cell body with nucleus, broken axon ending in knobs) matches the key."
+ },
+ {
+  "id": "item28",
+  "subject": 1,
+  "change": 2,
+  "where": 1,
+  "reason": "Viewer describes sugars absorbed with lactase versus left in the lumen while water moves in, and gas bubbles and loose contents in the lower colon, matching the key's contrast."
+ },
+ {
+  "id": "item29",
+  "subject": 1,
+  "change": 2,
+  "where": 1,
+  "reason": "Viewer's point of a round electric brush head pressed against a premolar at the gumline matches the key, though not the splayed tufts."
+ },
+ {
+  "id": "item30",
+  "subject": 1,
+  "change": 2,
+  "where": 1,
+  "reason": "Viewer sees a plain vertical sky-blue-to-navy gradient with nothing else, which is exactly what the key describes."
+ },
+ {
+  "id": "item31",
+  "subject": 1,
+  "change": 2,
+  "where": 1,
+  "reason": "Viewer's point that the ant both smells and tastes the yolk, with odour reaching the smell hair and the taste hair on the yolk, matches the key."
+ },
+ {
+  "id": "item32",
+  "subject": 1,
+  "change": 2,
+  "where": 1,
+  "reason": "Viewer sees the Stegosaurus walking around a loop with legs stepping and returning to its start pose, matching the key."
+ },
+ {
+  "id": "item33",
+  "subject": 1,
+  "change": 1,
+  "where": 1,
+  "reason": "Viewer recognises the lower arch but makes crowded, out-of-line front teeth its main point, which only partly matches the key's plain anatomical render."
+ },
+ {
+  "id": "item34",
+  "subject": 1,
+  "change": 2,
+  "where": 1,
+  "reason": "Viewer sees GFP turning and the wall opening to reveal the chromophore in frames 3-4, matching the key."
+ },
+ {
+  "id": "item35",
+  "subject": 1,
+  "change": 2,
+  "where": 1,
+  "reason": "Viewer's point of the upper teeth with the palate behind, including the yellower canine, matches the key's anatomical render."
+ },
+ {
+  "id": "item36",
+  "subject": 1,
+  "change": 2,
+  "where": 1,
+  "reason": "Viewer explains the sock level by level (knit loops, twisted fibres with one highlighted, kidney-shaped section, cellulose chain), matching the key."
+ },
+ {
+  "id": "item37",
+  "subject": 1,
+  "change": 2,
+  "where": 1,
+  "reason": "Viewer describes the baseplate flipping from dome to flat star, fibres splaying onto the membrane and the needle appearing in the envelope, matching the key."
+ },
+ {
+  "id": "item38",
+  "subject": 1,
+  "change": 2,
+  "where": 1,
+  "reason": "Viewer sees the taste hair touching and lifting off the yolk film and odour dots arriving at the smell hair, i.e. the tapping shown in the inset."
+ },
+ {
+  "id": "item39",
+  "subject": 1,
+  "change": 2,
+  "where": 1,
+  "reason": "Viewer follows arabinose arriving, the grip moving, the loop opening, polymerase arriving and the loop re-forming, matching the key."
+ },
+ {
+  "id": "item40",
+  "subject": 1,
+  "change": 2,
+  "where": 1,
+  "reason": "Viewer sees both barrels turning and portholes revealing a green and a red chromophore, matching the key."
+ },
+ {
+  "id": "item41",
+  "subject": 1,
+  "change": 2,
+  "where": 1,
+  "reason": "Viewer describes stress building under an oblique load, a crack running from the cusp through the enamel and stopping at the junction, matching the key."
+ },
+ {
+  "id": "item42",
+  "subject": 1,
+  "change": 2,
+  "where": 1,
+  "reason": "Viewer notes the bus interior stays fixed while the roadside streams past, with near posts blurred and the distance barely moving, matching the key."
+ },
+ {
+  "id": "item43",
+  "subject": 1,
+  "change": 2,
+  "where": 1,
+  "reason": "Viewer names the antenna tapping the honey, with the taste hair entering and leaving the honey and a sugar molecule appearing in the inset, matching the key."
+ },
+ {
+  "id": "item44",
+  "subject": 1,
+  "change": 2,
+  "where": 1,
+  "reason": "Viewer's point that the ant senses water by touch, with the taste hair on the water, the smell hair with nothing to smell, the humidity sensillum and hydrogen-bonded waters, matches the key."
+ },
+ {
+  "id": "item45",
+  "subject": 1,
+  "change": 2,
+  "where": 1,
+  "reason": "Viewer sees the round brush head rotating back and forth with the bristle tips moving on the tooth, matching the key's oscillation."
+ },
+ {
+  "id": "item46",
+  "subject": 1,
+  "change": 2,
+  "where": 1,
+  "reason": "Viewer names the paired limbs beating in a travelling wave and specks drifting, matching the key."
+ },
+ {
+  "id": "item47",
+  "subject": 1,
+  "change": 2,
+  "where": 1,
+  "reason": "Viewer's point that the toy is solid painted PVC with a parting line, shown by the leg section, matches the key."
+ },
+ {
+  "id": "item48",
+  "subject": 1,
+  "change": 2,
+  "where": 1,
+  "reason": "Viewer sees the book opening, pages fanning over and the cover closing, matching the key."
+ },
+ {
+  "id": "item49",
+  "subject": 1,
+  "change": 2,
+  "where": 1,
+  "reason": "Viewer describes the shoot emerging and greening into a leaf, roots spreading, and the spongy ball filling the cavity, matching the key."
+ },
+ {
+  "id": "item50",
+  "subject": 1,
+  "change": 2,
+  "where": 1,
+  "reason": "Viewer's point of the printer with a true-scale inset of a letter edge as toner dots on a 600-dpi grid over paper fibres matches the key."
+ },
+ {
+  "id": "item51",
+  "subject": 1,
+  "change": 2,
+  "where": 1,
+  "reason": "Viewer sees the H+ leave and the two oxygens come to share the charge with equal bonds as bicarbonate forms, matching the key."
+ },
+ {
+  "id": "item52",
+  "subject": 1,
+  "change": 2,
+  "where": 1,
+  "reason": "Viewer follows glucose gaining two phosphates and splitting between carbons 3 and 4 into two three-carbon halves, matching the key."
+ },
+ {
+  "id": "item53",
+  "subject": 1,
+  "change": 2,
+  "where": 1,
+  "reason": "Viewer sees the taste hair touching and lifting off the juice, odour dots reaching the smell hair and sucrose appearing, i.e. the tapping shown in the insets."
+ },
+ {
+  "id": "item54",
+  "subject": 1,
+  "change": 2,
+  "where": 1,
+  "reason": "Viewer describes a yellow glow travelling along the axon, across the gap, to the end knobs and fading, matching the key."
+ },
+ {
+  "id": "item55",
+  "subject": 1,
+  "change": 2,
+  "where": 1,
+  "reason": "Viewer sees the antenna lift off and land on the rice (clearest in the hair inset) with faint odour reaching the smell hair, matching the key."
+ },
+ {
+  "id": "item56",
+  "subject": 1,
+  "change": 2,
+  "where": 1,
+  "reason": "Viewer names the antenna tapping the leaf, shown by the leaf surface appearing and disappearing under the taste hair, matching the key."
+ },
+ {
+  "id": "item57",
+  "subject": 1,
+  "change": 2,
+  "where": 1,
+  "reason": "Viewer's point that the ant both smells and tastes honey, with odorant at the smell hair's pores and the taste hair on the sugars, matches the key."
+ },
+ {
+  "id": "item58",
+  "subject": 1,
+  "change": 2,
+  "where": 1,
+  "reason": "Viewer names the antenna tip lifting off the droplet and touching down again, the key's tapping, while calling it subtle."
+ },
+ {
+  "id": "item59",
+  "subject": 1,
+  "change": 2,
+  "where": 1,
+  "reason": "Viewer describes the year counter running to 50 as the teeth flatten, with facets and dentine appearing, labels fading in and the inset wearing, matching the key."
+ },
+ {
+  "id": "item60",
+  "subject": 1,
+  "change": 2,
+  "where": 1,
+  "reason": "Viewer's point that the ant smells and tastes the cheese sauce, with butanoic acid, salt ions and norbixin, matches the key."
+ },
+ {
+  "id": "item61",
+  "subject": 1,
+  "change": 2,
+  "where": 1,
+  "reason": "Viewer's point of 50 years of grinding (flat teeth, flattened canine, exposed dentine, wear facets, incisor section) matches the key."
+ },
+ {
+  "id": "item62",
+  "subject": 1,
+  "change": 2,
+  "where": 1,
+  "reason": "Viewer names the limbs beating under the thorax and marine-snow particles drifting downward past a fixed camera, matching the key."
+ },
+ {
+  "id": "item63",
+  "subject": 1,
+  "change": 2,
+  "where": 1,
+  "reason": "Viewer's point of sunlight glinting in a path on the waves beneath the sun toward the horizon matches the key."
+ },
+ {
+  "id": "item64",
+  "subject": 1,
+  "change": 2,
+  "where": 1,
+  "reason": "Viewer names the ants walking single file along the trail across the board with legs stepping, matching the key's motion."
+ },
+ {
+  "id": "item65",
+  "subject": 1,
+  "change": 2,
+  "where": 1,
+  "reason": "Viewer's point of how a hardback cover is built, as shown in the fore-edge cross-section, matches the key."
+ },
+ {
+  "id": "item66",
+  "subject": 1,
+  "change": 2,
+  "where": 1,
+  "reason": "Viewer sees the cow walking and turning around the floor with legs stepping in sequence, matching the key."
+ },
+ {
+  "id": "item67",
+  "subject": 1,
+  "change": 2,
+  "where": 1,
+  "reason": "Viewer's point that the taste hair touches the waxy leaf surface beside a stoma, with the hentriacontane wax molecule, matches the key."
+ },
+ {
+  "id": "item68",
+  "subject": 1,
+  "change": 2,
+  "where": 1,
+  "reason": "Viewer describes crypt secretion in the close-up (chloride through the cells, sodium between them, water following), thin fluid and squeeze waves, matching the key."
+ },
+ {
+  "id": "item69",
+  "subject": 1,
+  "change": 2,
+  "where": 1,
+  "reason": "Viewer names the taste hair touching and lifting off the sauce with odour dots reaching the smell hair, i.e. the tapping shown in the inset."
+ },
+ {
+  "id": "item70",
+  "subject": 1,
+  "change": 2,
+  "where": 1,
+  "reason": "Viewer describes the vine climbing as the view rises and the ladybirds moving about, with the inset following one, matching the key."
+ },
+ {
+  "id": "item71",
+  "subject": 1,
+  "change": 2,
+  "where": 1,
+  "reason": "Viewer sees the supercoiled plasmid sinking onto the E. coli membrane until contact, matching the key."
+ },
+ {
+  "id": "item72",
+  "subject": 1,
+  "change": 2,
+  "where": 1,
+  "reason": "Viewer's point of the cut-open bean flower with coiled keel/style, row of ovules and a pollen grain sending a tube down matches the key."
+ },
+ {
+  "id": "item73",
+  "subject": 1,
+  "change": 2,
+  "where": 1,
+  "reason": "Viewer follows CO2 and water forming carbonic acid with a helper water, then bicarbonate and hydronium, matching the key."
+ },
+ {
+  "id": "item74",
+  "subject": 1,
+  "change": 2,
+  "where": 1,
+  "reason": "Viewer sees the antenna tapping the salt, the taste hair touching and lifting from the film and ions rearranging at the lattice surface, matching the key."
+ },
+ {
+  "id": "item75",
+  "subject": 1,
+  "change": 2,
+  "where": 1,
+  "reason": "Viewer names ants arriving at the apple block with the front ant's antenna touching it and odour and juice changes in the insets, matching the key."
+ }
+]

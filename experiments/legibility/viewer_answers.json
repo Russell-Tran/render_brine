@@ -1,0 +1,452 @@
+[
+ {
+  "id": "item01",
+  "what": "A 3D-rendered garden pea plant (labelled Pisum sativum) climbing a wooden trellis, with white flowers near the top, green pods lower down, and curly tendrils gripping the trellis, plus explanatory captions.",
+  "change_or_point": "The whole plant slides downward through the frame from frame to frame, as if the camera rises or the plant grows upward: new leaves and white flower buds appear at the top, flowers that were at the top move down and are replaced by small pods, and pods grow fatter and larger as they reach the bottom, where they leave the frame. Tendrils coil around the trellis bars; the 'perversion' labels ride along with the coils, and a 'pollinated in the bud' label appears near a flower in frames 3 and 5 (fading in frame 5). The trellis also shifts down. Frame 6 matches frame 1, so it loops.",
+  "where": "The plant's centre-right, following a single node from white flower (top) down to pod (bottom); especially the upper-right flower/small-pod node and the coiled tendrils on the trellis at left and right."
+ },
+ {
+  "id": "item02",
+  "what": "A labelled 3D rendering of a small white plastic toy Holstein cow with black patches and a pink nose, standing on a grey floor. On the right is an inset showing a cross-section of one of its front legs.",
+  "change_or_point": "It shows that the toy is solid moulded plastic. The leg cross-section is a filled beige circle with a thin paint layer and no hollow inside. Tiny bumps on the left and right edges of the circle mark the mould's parting line. A 'parting line' label also points to a seam along the cow's back.",
+  "where": "The circled spot on the cow's front leg (lower middle-left) and the large circle in the boxed inset on the right it links to. The parting-line bumps on that circle's left and right edges are very small and hard to see."
+ },
+ {
+  "id": "item03",
+  "what": "A big protein made of four colored subunits (gray, tan, white, blue) drawn as packed spheres, labeled beta-galactosidase, the enzyme that cuts lactose; the middle frames zoom deep into a pocket to show a few small ball-and-stick molecules.",
+  "change_or_point": "Frame 1: whole enzyme from outside, with a small purple patch in the middle where the white and blue subunits meet. Frames 2-5: the camera is inside a tunnel of gray clipped spheres, looking at orange, blue and white stick side chains. Frame 2: an orange/gray molecule sits near the top, and the caption says lactose binds at a shallow site. Frame 3: a yellow sugar cluster appears on the left, touching a green sugar (caption: glycosylation, Glu537 attacks, glucose leaves, inversion 1 of 2). Frame 4: the yellow piece has moved off to the lower left and the green sugar stays bonded in the middle (caption: galactose bonded to the protein). Frame 5: the yellow piece is gone, and the green sugar has a blue atom added near it (caption: deglycosylation, inverts back). Frame 6: back to the outside view of the whole enzyme, identical to frame 1 ('Free enzyme again'). The atom-level changes are small and hard to follow without reading the captions, and the gray clipped disks around the view are visually noisy.",
+  "where": "In the close-up frames, the center of the frame, where the green sugar sits between the orange and blue side chains, and the yellow piece on the left that leaves. In the wide frames, the small purple patch at the lower center where the white and blue subunits meet."
+ },
+ {
+  "id": "item04",
+  "what": "A computer-rendered open ocean under a pale blue sky, with a plain white disc (a sun or moon) high in the sky above the horizon. There's no text and no other object.",
+  "change_or_point": "It shows a calm, gently rippled water surface stretching to a hazy horizon. A line of small white glints (sun glitter) runs down the water from the horizon toward the viewer, below the white disc. Near the viewer the ripples are larger and blurred. They get finer and denser toward the horizon.",
+  "where": "The center line of the picture: the white disc at the top-center and the trail of bright glints on the water directly below it, from the horizon down to the lower-center."
+ },
+ {
+  "id": "item05",
+  "what": "A labelled 3D illustration of a sweet pea plant (Lathyrus odoratus) climbing a tan bamboo-like trellis. It has a central green stem, paired oval leaves, thin curling tendrils, and a caption saying it is a time-lapse of about 24 hours shown in 10 s.",
+  "change_or_point": "The view scrolls down the plant: the trellis and the leaves slide downward from frame to frame while new leaf pairs and tendrils come into view at the top, as if the camera were following the growing tip upward. In frames 2 and 4 a small new leaf bud shows at the very top of the stem. Thin tendrils reach out to the trellis bars, wrap around them (small coils at the tie points), and then twist into springy corkscrew coils. Where a coil reverses direction there is a 'perversion' label (left and right sides). Frame 6 matches frame 1, so the loop closes. The coiling itself is small and hard to follow between frames.",
+  "where": "The thin light-green tendrils where they meet the trellis bars, mainly the coiled ones labelled 'perversion' at mid-left and lower-right, and the stem tip at the top centre where new growth appears."
+ },
+ {
+  "id": "item06",
+  "what": "A ball-and-stick molecular animation, captioned, of glucose reacting with six O2 molecules to give six CO2 and six H2O (red = oxygen, dark grey = carbon, white = hydrogen), with gold numbers giving each carbon's oxidation state.",
+  "change_or_point": "Frames 1-2: a ring-shaped glucose molecule sits in the centre with six red O2 pairs around it, each carbon labelled with a number (0, 0, 0, 0, +1, -1); it tumbles slightly and the O2s drift. Frame 3: the bonds disappear and the atoms float loose with a faint glow; the caption changes to 'Carbon hands its electrons to oxygen... 24 electrons move from carbon to oxygen'. Frame 4: the loose atoms have spread out and regrouped into C-with-two-O and O-with-two-H clusters, still without bonds. Frames 5-6: bonds reappear as six linear CO2 molecules (each labelled +4) in a ring around six bent H2O molecules; the caption reads '6 CO2 + 6 H2O + energy', ~2,880 kJ/mol released. Between 5 and 6 the products settle into a more symmetric arrangement. I could not clearly see the gold/cyan glow the legend mentions, only a faint bluish halo around the atoms in frames 3-4.",
+  "where": "The centre, where the glucose ring breaks apart and its carbons end up as CO2. Read the gold oxidation-state numbers next to the carbons (0/-1/+1 at first, +4 at the end) along with the caption bar at the bottom."
+ },
+ {
+  "id": "item07",
+  "what": "A thin ring-shaped tube, seen tilted from above against a blue gradient, split into coloured arcs (green, violet, amber, blue, with grey between them). The caption calls it pGLO, a plasmid that makes E. coli glow, and says green is GFP, violet the arabinose switch, amber ampicillin resistance, and blue the origin.",
+  "change_or_point": "The ring turns in its own plane, so the coloured arcs travel round it. The green arc starts at the bottom left, then moves to the left side, the top, the upper right and the lower right, and in frame 6 it is back at the bottom left. That makes one full turn per loop, clockwise on screen. The ring's shape, size and viewing angle stay the same, and the caption does not change. The ring is so thin that no finer detail (such as the helix) is visible.",
+  "where": "The coloured arcs on the ring, green in particular, together with the colour key in the bottom caption line that says what each colour means."
+ },
+ {
+  "id": "item08",
+  "what": "A 3D model of a lower jaw's teeth and pink gums (lower dental arch), with a pink tongue showing behind the front teeth. No text or labels.",
+  "change_or_point": "The camera moves around the arch. Frame 1 is a straight-on front view of the lower incisors and canines. Frame 2 swings to the right side and shows the canine and premolars. Frame 3 is a lower side view along the premolars and molars. Frames 4 and 5 close in on the back molars (frame 5 shows the last molars and the gum at the back end of the arch). Frame 6 is back at the front view, the same as frame 1. The teeth themselves do not seem to move or change. Only the viewpoint does. Nothing else stands out as changing, and I can't tell if anything in particular is being pointed out.",
+  "where": "It is unclear. The camera spends the most time on the back molars on the right side of the arch (frames 3 to 5), so probably there. With no labels, a viewer would just follow the teeth."
+ },
+ {
+  "id": "item09",
+  "what": "A black ant (labelled Lasius niger) touching a large cream-coloured grain of cooked barley with its antenna, with three circular magnified insets: a hexanal odour molecule, a microscopic close-up of a taste hair and a smell hair on the antenna tip, and a beta-glucan fibre molecule.",
+  "change_or_point": "The main ant view looks almost identical in every frame; the antenna tip moves only very slightly against the grain (too small to see clearly at full scale). In the large upper-right inset, the taste hair's tip touches the wet grain surface in frames 1, 4, 5 and 6, but in frames 2 and 3 the grain surface is gone and a label reads 'wet grain 53 \u00b5m away' (the tip has lifted off). Small orange 'odour molecule' dots drift between the two hairs toward the smell hair's circled pores, in different positions each frame. The hexanal molecule in the top inset rotates/tumbles. The beta-glucan molecule in the lower inset does not visibly change.",
+  "where": "The upper-right magnified circle, at the lower tip of the taste hair (the small circled pore) where it meets or leaves the wet grain surface, and the orange dots approaching the dotted smell hair; the ant's antenna tip at the grain (small circle, centre) is the source but its motion is barely visible."
+ },
+ {
+  "id": "item10",
+  "what": "A pole bean plant (Phaseolus vulgaris, per the caption) with a green stem spiralling up a vertical wooden pole, with heart-shaped leaves. The caption calls it a time-lapse.",
+  "change_or_point": "The whole plant slides downward in the frame from frame to frame while the pole stays fixed, so the stem seems to climb the pole. The winding pattern and leaves move down, the large leaves at the bottom leave the frame, and new coils and leaves appear near the top. The growing tip at the top swings around: it hooks out to the left in frames 1 and 6, leans right in frame 2, curls in close to the pole in frame 3, and hooks right in frame 5. Frame 6 matches frame 1.",
+  "where": "The top of the pole, where the free growing tip of the stem curls around searching before it wraps. The coils where the stem wraps the pole in the middle also matter."
+ },
+ {
+  "id": "item11",
+  "what": "A straight DNA double helix, 40 base pairs, drawn as space-filling atoms: cream backbone, teal and rust colored grooves, lying horizontally.",
+  "change_or_point": "The helix spins about its long horizontal axis, so the teal (major groove) and rust (minor groove) bands appear to slide along its length from frame to frame. The ends also shift a little. Nothing else changes, and the caption stays the same. Frames 1 and 6 are identical.",
+  "where": "The middle of the helix, where you can compare the wide teal grooves with the narrower rust grooves between the cream backbone strands."
+ },
+ {
+  "id": "item12",
+  "what": "An illustrated pea plant (labelled 'Pisum sativum, garden pea') climbing a tan grid trellis. It has paired leaves and thin curly tendrils, and the caption says this is a time-lapse of about 24 hours in 10 s.",
+  "change_or_point": "The whole plant and trellis slide steadily downward in the frame, as if the camera rises with the growing tip. The grid lines drop from frame to frame, and the lower leaf pairs move toward and off the bottom edge. New growth appears at the top of the stem. In frame 2 a small folded bud with tendrils is at the tip, in frame 4 a smaller bud, and by frames 5-6 there are full leaf pairs at the top. Tendrils wrap around the trellis bars in small coils. The 'perversion' labels, which mark a spot where a coiled tendril reverses, move down with their tendrils, and one fades out in frame 5. Frame 6 looks the same as frame 1, so it loops. I can't clearly see a single tendril reaching out and catching a bar. At this size the tendril movement is subtle.",
+  "where": "The top-center, where the stem tip unfolds new leaves. After that, the small coiled tendrils wrapped around the vertical trellis bars on the left and right, at the 'perversion' labels."
+ },
+ {
+  "id": "item13",
+  "what": "A pink toy pig, a rigid plastic toy figure, walking on a plain grey floor. Text explains it is a fictional 'toy comes to life' with joints at the hips, knees and neck. A footfall timing chart (LH, LF, RH, RF bars) sits in the upper right and a 10 mm scale bar in the lower left.",
+  "change_or_point": "The pig walks around in a loop on the floor. In frame 1 it faces left at upper centre. In frame 2 its legs are bent mid-step. In frame 3 it has turned and is lower-left, facing right toward the viewer. In frame 4 it is seen from behind at centre-right, walking away. In frame 5 it faces left again, and frame 6 is identical to frame 1. The legs are in different positions in each frame. The footfall chart in the corner doesn't change, and I can't see any marker on it showing the current moment.",
+  "where": "The pig's four legs and feet, and the small dark foot shadows under it, compared against the footfall bar chart in the upper right."
+ },
+ {
+  "id": "item14",
+  "what": "A labelled 3D illustration of a black ant (Lasius niger) tapping clear sugar crystals with an antenna, with two circular zoom insets: one of the antenna's taste hair and smell hair at 5 um, and one of a sucrose molecule at 0.5 nm.",
+  "change_or_point": "The main ant hardly moves. The antenna tip on the crystal (in the small black circle) shifts only a tiny amount, if at all. The change shows up in the upper-right inset. In frames 1, 4 and 5 the tip of the taste hair touches a thin wet film, and a small puddle/shadow shows under it. In frames 2, 3 and 6 the hair is lifted, the film is gone, and frames 2-3 add the text 'sugar and film 53 um below'. In the lower inset, one sucrose molecule sits in the middle, jiggling and rotating slightly. In frame 5, two sucrose molecules appear, one near the top and one at the bottom edge, and it goes back to one in frame 6. A small red-white molecule (water?) sits at the top edge of that inset. So it's an up-and-down tapping cycle that shows mainly in the zoom.",
+  "where": "The upper-right circular inset, at the tip of the 'taste hair' (small white circle) where it touches or lifts off the sugar film. The main view gives little sign of the tapping."
+ },
+ {
+  "id": "item15",
+  "what": "A 3D model of an upper set of teeth with pink gums, like a dental model, seen from the front and slightly below.",
+  "change_or_point": "The camera moves around the arch. Frame 1 is straight on at the front incisors. By frame 2 it has swung a little to the viewer's right, and one tooth on the right looks a bit yellower. By frames 3 to 5 it has moved further round to the side and closer in, showing the premolars and molars with their bumpy chewing surfaces, and in frame 5 the back end of the arch and empty white background are visible. Frame 6 is the same front view as frame 1, so the view jumps or swings back. The teeth themselves do not seem to move. There is no text or labels.",
+  "where": "The centre at the start, on the two big front teeth, then the right side of the arch where the back teeth and their chewing surfaces come into view. Nothing is marked as the thing to look at, so the intended focus is unclear."
+ },
+ {
+  "id": "item16",
+  "what": "A labelled scientific illustration of a black ant (Lasius niger worker) touching a small clear salt cube with the tip of one antenna. Two circular zoom insets at the right show the antenna tip and the salt at the molecular level.",
+  "change_or_point": "It shows that the ant detects salt by taste (contact), not smell. The subtitle says 'Salt has no smell either. The ant tastes it.' The first inset (5 \u00b5m scale) shows two hairs on the antenna: a 'taste hair' with one pore at the tip, touching a thin liquid film, and a 'smell hair' with many wall pores and 'nothing to catch'. The second inset (1 nm scale) shows the sodium chloride crystal lattice (violet Na+, green Cl-), with ions and water molecules leaving the crystal face into the film.",
+  "where": "The right antenna tip resting on the top of the nearest salt cube (circled, lower middle-right), then the upper inset where the taste hair's tip (small circle) touches the liquid film, then the lower inset where ions leave the crystal."
+ },
+ {
+  "id": "item17",
+  "what": "A black ant (labelled Lasius niger) biting the cut edge of a piece of peeled yellow apple, with a magnified top-down inset of its mandibles and a schematic cut-away diagram 'Where a bite goes' showing juice going to the crop and flesh going to an infrabuccal pocket.",
+  "change_or_point": "In the circular mandible inset, the two toothed mandibles are closed against the apple flesh in frames 1, 3 and 6 (caption 'closed on the flesh, as far as it lets them') and swung open in frames 2, 4 and 5 (caption 'each turned 75\u00b0/59\u00b0/52\u00b0 out from rest'), so they open and close twice per loop. In the schematic diagram, blue juice dots travel along the gut line from the mouth toward the large blue crop in the gaster, reaching it by frame 5, and the brown flesh pellet in the head pocket changes slightly. In the main ant view the mandibles at the apple show small changes and the antenna shifts slightly; the ant's body does not move.",
+  "where": "The upper-right circular inset showing the two toothed mandibles meeting the apple flesh; secondarily the blue dots moving along the gut in the left diagram."
+ },
+ {
+  "id": "item18",
+  "what": "A two-panel scientific animation titled 'Invert sugar'. On the left is a space-filling 3D model of an enzyme (invertase, grey with a blue and orange part). On the right is a 'polarimeter': a wireframe tube full of small yellow and green balls, with orange light passing through it and a large readout in degrees.",
+  "change_or_point": "The left panel starts with a view of the whole ring-shaped octamer ('draining the cell'). It then zooms into one dimer and active site, where small coloured clusters sit in a pocket, with captions 'Asp23 attacks C2 \u00b7 Glu204 protonates', 'sucrose binding' and 'free enzyme'. It zooms back out to the whole ring ('\u03b2-D-fructose leaves'). In the right panel the angle readout falls steadily: -10.87\u00b0 (100% split), +31.74\u00b0 (6%), +20.85\u00b0 (30%), +10.44\u00b0 (53%), +0.02\u00b0 (76%), -10.39\u00b0 (99%). The orange slider dot moves from left to right along the scale in step, and its number turns from yellow to blue when it goes negative. The counter at the bottom climbs from 6 to 95 of 96 molecules split. The yellow ring at the tube's right end seems to show a tilted line that changes, but I can't clearly see it rotate. I can't see the balls in the tube change in any readable way.",
+  "where": "The big degree number and slider under the polarimeter (right middle), which go from positive to negative. Second, the active-site pocket in the middle of the left panel's close-up, where the small bright coloured clusters sit."
+ },
+ {
+  "id": "item19",
+  "what": "A short piece of B-form DNA (12 base pairs, the Dickerson dodecamer) drawn ball-and-stick: gray carbon, red oxygen, blue nitrogen, orange phosphorus, white hydrogen.",
+  "change_or_point": "The molecule turns in place (it looks like a rotation about its long axis), so the two backbone strands and the base-pair rungs swing around and its outline changes from frame to frame. The atoms themselves don't change, and neither does the caption. Frames 1 and 6 are identical. The rotation is hard to follow because the ball-and-stick tangle looks busy.",
+  "where": "The center of the molecule, where the base pairs span between the two backbones (thin dashed hydrogen bonds between blue and white atoms). The orange phosphates on the outer edge trace the two strands."
+ },
+ {
+  "id": "item20",
+  "what": "Three black ants (labelled 'Lasius niger workers') walking in single file to the right along a faint pale-blue line, which is labelled 'trail pheromone, invisible in life'. The lower right has a static footfall bar chart for the two tripods of legs.",
+  "change_or_point": "The ants shift position from frame to frame. The gaps between them change: in some frames two ants are close together and the third is far off, in others they're evenly spaced. Ants go off one edge and come back in at the other (a partial ant at the left or right edge). The leg positions change between frames, which suggests stepping. I can't tell for sure which way they travel from these samples, but they all face right. I couldn't clearly see an ant stop and press its abdomen to the trail. There may be a slightly brighter spot on the blue line in frame 5 near the left, but it's very faint. The footfall chart doesn't change.",
+  "where": "The middle band where the ants walk along the faint blue line, especially the back tips of their abdomens touching the line. Second, the footfall chart in the lower right."
+ },
+ {
+  "id": "item21",
+  "what": "A side view of five black ants (Lasius niger) walking in single file from left to right along a faint blue line labelled as the trail pheromone, which is invisible in real life. A tripod-gait footfall chart is at lower right and a 1 mm scale bar at lower left.",
+  "change_or_point": "The ants move rightward along the trail, and their legs alternate position from frame to frame. The ants are not evenly spaced and the spacing changes: in frames 1 and 2 the second ant (around x=420) stays in the same place while the others move on, apparently stopped with its abdomen low to lay a mark. A small brighter blue spot shows up on the trail at points where an ant has been (e.g. frame 1 near x=1470, frame 3 near x=420), a 'fresh mark'. Ants leave at the right edge and new ones come in at the left. The footfall chart doesn't change. The legs and bright spots are small and subtle at this size.",
+  "where": "The blue trail line under the ants, especially the second ant from the left while it pauses, and the small bright spots on the trail behind it."
+ },
+ {
+  "id": "item22",
+  "what": "A time-lapse, cut-open diagram of a bean flower's (Phaseolus vulgaris) coiled style and ovary, showing a pollen tube (drawn as an orange line) growing from the stigma down to the ovules. A circular magnified inset follows the tube's tip.",
+  "change_or_point": "An orange line grows along the spiral style. Frame 1 (0 h 00 min): no tube yet; the inset shows yellow pollen grains on the stigma at x10.3. Frame 2 (1 h 20 min): a short orange arc starts from the pollen near the centre of the spiral. Frame 3 (4 h 10 min): it has gone about one full turn around the coil. Frame 4 (6 h 40 min): about two turns, now near the outer coil. Frame 5 (9 h 30 min): it has run out of the coil and along the straight part to the entrance of the ovary, next to the row of six white ovules. Frame 6 resets to 0 h. The small circle marking the tip moves with it, and the inset shows the tip as an orange circle inside a green channel (x4.1-4.2). The time readout counts up.",
+  "where": "The orange line and its small circled tip moving around the spiral in the centre-right of the flower, plus the circular inset at upper right and the time counter under it."
+ },
+ {
+  "id": "item23",
+  "what": "An infographic of a green plastic toy Stegosaurus with orange back plates and cream tail spikes. It has a title, a paragraph of text, a 10 mm scale bar, and a boxed inset showing a cross-section of one leg.",
+  "change_or_point": "The toy is one solid piece of painted PVC. A small circle on the left foreleg is linked by lines to the inset, which shows a cut across that leg at true scale: a solid green disc labelled 'solid PVC, no hollow inside', a paint layer of 25 \u00b5m (model), and tiny bumps on the left and right edges marked as the parting line where the two halves of the mould met. The parting line is also labelled on the toy's back.",
+  "where": "The small circle on the left foreleg near the bottom left, then the cross-section inset on the right, especially the tiny notches on either side of the disc (the parting line). These notches are very small and easy to miss."
+ },
+ {
+  "id": "item24",
+  "what": "A labelled illustration of a black ant (Lasius niger worker) touching a clear sugar crystal with its antenna tip. It has the same layout as a salt version: two circular zoom insets at the right.",
+  "change_or_point": "It shows that the ant detects sugar by touch and taste, not smell. The subtitle says 'Sucrose has no vapour to smell. The ant touches it.' The upper inset shows a taste hair (one pore at the tip) touching a film, next to a smell hair (many pores in the wall). The lower inset (0.5 nm scale) shows sucrose molecules (ball-and-stick: grey carbon, red oxygen, white hydrogen) 'dissolving into the film, into the pore'.",
+  "where": "The antenna tip on the nearest sugar crystal (circled, lower middle-right), then the taste-hair tip in the upper inset, then the sucrose molecules in the lower inset."
+ },
+ {
+  "id": "item25",
+  "what": "A 3D-rendered gold-plated padlock with a true-to-scale cross-section panel of its surface layers and a reflectance graph comparing gold with silver.",
+  "change_or_point": "The gold colour is computed from gold's measured optical properties, and the gold plating is extremely thin: the cross-section shows a 0.5 \u00b5m gold layer (a thin orange stripe) over 3 \u00b5m of nickel over the brass body, drawn next to a 15 \u00b5m cotton-fibre circle for scale. The graph shows gold's reflectance dropping below about 508 nm (blue absorbed) while silver stays near 100%. Note: the section heading says 'at the ring' but the white marker circle sits on the flat top face of the lock body, not on the shackle.",
+  "where": "The right-hand cross-section panel, specifically the thin orange gold stripe just below the dashed fibre circle labelled 'gold, 0.5 \u00b5m'; then the graph's gold curve dipping left of the dashed 508 nm line."
+ },
+ {
+  "id": "item26",
+  "what": "A long, narrow strip showing seven black ants (Lasius niger, per the title) walking in single file to the right along a faint blue line, labelled a pheromone trail. A footfall timing chart is in the lower right.",
+  "change_or_point": "The ants move right across the strip over the frames. Some wrap around: ants leave at the right edge and re-enter at the left, and frame 6 matches frame 1. Their legs change position between frames (walking gait). The spacing between ants shifts a little. Faint brighter spots on the blue line (e.g. near x\u2248215 and x\u22481665 in frame 2, and near x\u2248975 in frame 5) come and go, which may be the 'fresh marks'. They are very faint and hard to see. I could not see any ant clearly stop and press its abdomen to the trail. The footfall chart does not change.",
+  "where": "The row of ants along the blue line in the middle of the strip, especially their legs and the rear tips where they meet the line. The footfall chart at the lower right explains the leg pattern."
+ },
+ {
+  "id": "item27",
+  "what": "A smooth, simplified model of a single nerve cell (neuron), in teal on a white background: a round cell body with a blue nucleus, many branching dendrites on the left, and one long axon ending in a few knobbed terminals on the right.",
+  "change_or_point": "It shows neuron anatomy: a bushy dendrite tree around the cell body, and a single long axon (with a break mark showing it is shortened) ending in terminal boutons. There is a 50 um scale bar but no labels.",
+  "where": "The cell body with its blue nucleus on the left center, then the long axon running right to the four knobbed terminals at the far right."
+ },
+ {
+  "id": "item28",
+  "what": "A two-panel cutaway diagram of the gut (small intestine, cecum, colon, rectum) comparing 'lactase working' (top) with 'lactase missing: osmotic diarrhea' (bottom). It has a legend, notes, and a close-up of brush-border cells at the bottom left.",
+  "change_or_point": "Squeeze waves (constrictions) travel along the tubes. In the top colon a constriction moves rightward, labelled 'squeeze \u2192 relaxes ahead', and the brown formed stool mass shifts toward the rectum. Later, a squeeze appears in the top small intestine. In the bottom panel constrictions move through the small intestine and colon too, and the rectum segment narrows and widens. In the bottom panel, colored dots (green/yellow lactose, red SCFAs, pale gas bubble rings, bacteria) drift through a watery colon, and gas bubbles collect in the rectum. In the close-up, the left cells (lactase present) take in glucose/galactose pairs with small purple Na+ dots that move down into the cells. On the right cells (no lactase), the sugar pairs stay in the lumen above while blue water dots move into and through the cells. Frame 6 matches frame 1.",
+  "where": "The close-up box at the lower left, which compares sugars entering the left cells with sugars staying outside the right cells while water moves. After that, the colon and rectum on the right of each panel, where firm brown stool in the top contrasts with the loose, bubbly contents in the bottom."
+ },
+ {
+  "id": "item29",
+  "what": "A close-up 3D render of a model of a lower human jaw: cream-coloured teeth set in pink gums with the tongue behind, and a round electric toothbrush head with blue and light-blue bristle tufts pressed against a premolar in the foreground.",
+  "change_or_point": "An oscillating (round-head) electric toothbrush brushing the outer side of a lower tooth at the gumline. There is no text, so the exact point beyond 'brushing technique or contact' isn't clear.",
+  "where": "The lower centre, where the blue bristle tufts of the white round brush head touch the premolar and the gum just below it."
+ },
+ {
+  "id": "item30",
+  "what": "An empty picture: a smooth vertical gradient from light sky blue at the top to dark navy at the bottom, with nothing else in it.",
+  "change_or_point": "I can't see any subject, text or object. It just looks like a blank background, maybe a render with nothing in it.",
+  "where": "Nowhere in particular; no region stands out. The whole frame is a uniform gradient."
+ },
+ {
+  "id": "item31",
+  "what": "An infographic of a shiny black ant (labelled Lasius niger) with one antenna touching a lumpy yellow blob of cooked egg yolk. It has three circular zoom-ins: a hexanal molecule (the yolk's smell in the air), a close-up of the antenna tip showing a 'taste hair' and a pore-covered 'smell hair' with small orange dots (odour molecules), and an oleic acid molecule with water molecules.",
+  "change_or_point": "The ant both smells and tastes the yolk. Odour molecules from the yolk reach the smell hair's wall pores, and the taste hair's single tip pore touches the yolk's moist film. The zoom-ins explain this from the millimetre scale (ant) down to micrometres (hairs) and nanometres (molecules).",
+  "where": "The antenna tip where it touches the yolk (the small circle at the lower middle right), and the large circular zoom-in at the upper right, where the taste hair meets the yellow surface and the orange dots sit near the smell hair."
+ },
+ {
+  "id": "item32",
+  "what": "A green toy Stegosaurus with orange back plates walking on a grey floor. Title: 'A toy Stegosaurus comes to life'. At the top right is a footfall chart showing when each foot (LH, LF, RH, RF) is on the ground during one stride.",
+  "change_or_point": "The dinosaur walks, and the camera or the animal turns around. In frames 1 and 2 it faces left in side view, and its legs are in different positions. In frame 3 it has turned to face the lower right. In frame 4 it is seen from behind, heading away up the screen (tail spikes nearest the viewer). In frame 5 it faces left again, slightly shifted, with its legs mid-step. Frame 6 matches frame 1. The footfall chart and the text do not change. There is no moving marker on the chart that I can see, so it's hard to link the leg poses to the chart.",
+  "where": "The legs and feet of the dinosaur in the centre-left, where the step sequence happens. The footfall chart at the top right explains the order."
+ },
+ {
+  "id": "item33",
+  "what": "A 3D-rendered close-up of a lower dental arch (a model of teeth set in pink gums) with a pink textured tongue behind the back teeth, seen at a low angle from the front-left.",
+  "change_or_point": "No text or labels. It appears to show the row of teeth and gums; the front incisors at the left look crowded and overlapping/out of line (one canine or incisor stands forward and is more yellow than the others), while the molars on the right sit evenly. I cannot tell what specific point is intended beyond the tooth arrangement.",
+  "where": "The left side of the image, where the front teeth overlap and one yellower tooth stands forward of the curve of the arch."
+ },
+ {
+  "id": "item34",
+  "what": "A rotating space-filling 3D model of green fluorescent protein: a barrel-shaped cluster of coloured spheres, blue through teal and yellow to orange, on a blue background.",
+  "change_or_point": "The protein turns about a vertical axis, showing different faces, and frame 6 matches frame 1. In frames 3 and 4 the barrel's wall appears cut open or see-through, revealing a small bright-green ball-and-stick molecule inside. The caption changes to 'inside: the chromophore, which GFP builds from three of its own amino acids'. In the other frames the caption describes the eleven-stranded barrel, and the inside is hidden.",
+  "where": "The centre of the barrel in frames 3 and 4, where the small bright-green chromophore shows through the opened wall."
+ },
+ {
+  "id": "item35",
+  "what": "A 3D model of an upper dental arch (maxilla) seen from below: pink gums and palate, with a full row of cream-colored teeth.",
+  "change_or_point": "It shows the upper teeth and the roof of the mouth. The front incisors look flat-edged and slightly different in shade, and the tooth on the upper right (canine area) is more yellow. There are no labels, so I can't tell what specific point is intended beyond the anatomy.",
+  "where": "The front teeth at the top center, and the ridged palate just behind them; possibly the yellower canine at the upper right."
+ },
+ {
+  "id": "item36",
+  "what": "A labelled scientific illustration titled 'A cotton sock, close up'. It shows knitted loops of cream-colored yarn with loose fuzz fibers, plus zoom-in circles.",
+  "change_or_point": "It explains a sock level by level. The knit loops are made of yarn (1 mm scale). The yarn is made of twisted fibers, and one fiber is highlighted in yellow as 'one fibre = one cell' (100 \u00b5m circle, which also marks a twist 'reversal' and 'convolutions'). The fiber's kidney-shaped cross-section is shown (10 \u00b5m circle). Cellulose is shown as a chain of glucose rings (0.5 nm circle). The text says \u03b2 links are why we can't digest cotton.",
+  "where": "The small ringed spot in the middle of the knit (around the center-left), then the large circle on the right with the single yellow twisted fiber lying on the yarn bundle. After that, the two smaller circles at the lower right (cellulose molecule and fiber cross-section)."
+ },
+ {
+  "id": "item37",
+  "what": "A molecular (space-filling atom) model of a bacteriophage T4 baseplate: a blue protein assembly with a pink-purple tail tube on top and orange fibres, sitting on a layered bacterial cell envelope (two orange membrane slabs with a green mesh of peptidoglycan between). Captions say 'Loaded', 'The baseplate flips', 'Fired', 'Reset'.",
+  "change_or_point": "In frame 1 the baseplate is compact and dome-shaped ('Loaded', hexagon). In frame 2 it spreads wider and flatter (24%, hexagon to star). In frame 3 it is fully spread out ('Fired'), the tail tube has dropped lower into the baseplate, and the orange fibres lie across the outer membrane. In frames 4 and 5 the tube above has disappeared and a short purple needle segment shows inside the membrane/mesh layers below the baseplate. The top box switches from 'MEASURED' (green) to 'MODEL' (orange) because the needle's path through the wall is inferred. In frame 6 it snaps back to the compact loaded shape ('Reset'). The sudden disappearance of the whole tail tube between frames 3 and 4 is a little confusing.",
+  "where": "The centre, where the tail tube and hub meet the top membrane, and then the region inside the membrane layers directly beneath the baseplate where the purple needle appears."
+ },
+ {
+  "id": "item38",
+  "what": "A labelled 3D illustration of a black ant (Lasius niger) tapping a lump of cooked egg yolk with an antenna. It has three circular insets: a hexanal odour molecule (top), a close-up of the taste hair and pore-covered smell hair with yellow 'odour molecule' dots (right), and an oleic acid molecule with three waters (bottom right).",
+  "change_or_point": "The main ant looks almost the same in every frame. The antenna tip on the yolk (black circle) moves only very slightly. In the big right inset, the background alternates between a golden yolk surface with the taste-hair tip touching a wet film (frames 1, 4, 5) and grey, with the tip lifted and the note 'yolk and film 53 um below' (frames 2, 3). Frame 6 is golden but lifted. Small yellow odour dots move toward and around the smell hair within the white circle; their positions differ in each frame. The hexanal and oleic acid insets look static to me.",
+  "where": "The large circular inset on the right, where the smell hair's white circle shows odour dots arriving and the taste-hair tip touches or lifts off the yolk film."
+ },
+ {
+  "id": "item39",
+  "what": "A molecular-scale scene against a blue gradient: a strand of DNA double helix forms a loop with a purple protein cluster at its base. The captions say it is AraC on the pGLO arabinose switch (pGLO 992\u20131281, 290 bp).",
+  "change_or_point": "The frames go through labelled stages. Frame 1, 'Switched off': a purple protein holds the DNA in a closed loop. Frame 2, 'Arabinose arrives': a tiny green sugar molecule appears just above the protein. Frame 3, 'The grip moves': the protein is now in several purple lobes, the loop has grown larger, and one side of it has shifted. Frames 4 and 5, 'pBAD can be read': the loop has opened into a free-hanging arc with its end loose at the upper right, and a large grey blobby shape (labelled RNA polymerase, drawn as a shape) arrives on the right; between frames 4 and 5 it moves from just above the DNA to further right and away. Frame 6, 'And back': the closed loop and the single protein clump are back as in frame 1. The green sugar is very small and hard to see.",
+  "where": "The bottom centre of the loop, where the purple protein grips the DNA, including the tiny green sugar just above it. In the later frames, also the loose end of the DNA at the upper right and the grey polymerase blob on the right. The caption bar at the bottom tells you which stage you are seeing."
+ },
+ {
+  "id": "item40",
+  "what": "Two proteins side by side, drawn as space-filling models (clusters of coloured spheres): GFP (S65T), which 'emits 510 nm', on the left and mCherry, which 'emits 610 nm', on the right, on a blue background with a caption bar.",
+  "change_or_point": "Both proteins rotate. In frames 3 and 4 they turn so you look down into the barrel, and a small bright chromophore appears inside each: green in GFP, red in mCherry. At the same time the caption changes from 'Why one is green and one is red' to 'One bond further', which explains that the N1-CA1 bond is 1.47 \u00c5 (single) in GFP and 1.30 \u00c5 (double) in mCherry, so mCherry's pi system is 2 atoms longer (0.399 eV apart). In frames 1, 2, 5 and 6 you see the outside surface only. The chromophore in mCherry looks more stretched out in frame 4.",
+  "where": "The centre of each barrel in frames 3 and 4, where the small bright green (left) and red (right) chromophore clusters sit, plus the caption text at the bottom."
+ },
+ {
+  "id": "item41",
+  "what": "A 2D cross-section diagram of a single tooth set in bone (titled 'The neck of a tooth'), showing white enamel, tan dentin, a red pulp canal, and thin outer layers, with a stress colour scale.",
+  "change_or_point": "The frames step through a story. Frame 1: plain unloaded section, caption 'enamel thins to a knife edge at the neck'. Frame 2: labels appear (enamel, dentino-enamel junction, pulp, the neck - CEJ, dentin, cementum, ligament, alveolar bone) and a stress colour bar; 'ordinary chewing, 100 N', nothing near failing, no visible colour. Frame 3: 'bruxing, 1000 N off-axis' - orange/red stress colour appears, strongest along the left side at the neck and near the top-right cusp. Frame 4: a black crack appears, running diagonally from the top cusp down through the enamel toward the junction, with a red hotspot at its tip ('enamel cracks, because enamel is brittle'). Frame 5: the crack reaches the enamel-dentin junction and stops there, red glow at the junction ('and the junction stops them'); labels return. Frame 6: back to the plain unloaded section. In several frames the bottom caption text overlaps the legend text and is hard to read.",
+  "where": "The upper-right of the crown, where the black crack runs from the top cusp through the white enamel and stops at the enamel-dentin boundary; secondarily the red-orange band on the left side at the neck."
+ },
+ {
+  "id": "item42",
+  "what": "A view down the aisle from the back of an empty school bus, with rows of blue-grey seats and windows on both sides. Grass, buildings and posts are visible outside. A data panel at the bottom says 'Inside a moving schoolbus' and lists angular speeds for objects at different distances.",
+  "change_or_point": "The bus interior stays fixed in every frame. Only the scenery outside the windows changes. Buildings on the left side change position and identity between frames, and a vehicle appears on the left in frame 5. A dark, blurry vertical smear (a nearby post, motion-blurred) moves between window positions on the right side. The distant horizon and road ahead look essentially unchanged. The top-left 'MEASURED' label box changes from translucent to dark after frame 1. The numbers in the panel do not change. Only a few snapshots are shown, so it's hard to see the parallax, i.e. near things moving faster than far things, directly.",
+  "where": "The side windows, especially the right-hand windows, where the dark blurred post streaks past, and the left windows, where buildings slide by. Compare them with the nearly static far distance at the end of the aisle."
+ },
+ {
+  "id": "item43",
+  "what": "A labeled scientific illustration of a black ant (Lasius niger) touching a drop of honey with its antenna, with zoom-in circles showing antenna hairs at micrometer scale and molecules at nanometer scale.",
+  "change_or_point": "The ant's right antenna tip moves slightly between touching the honey drop and lifting just above it (a tap). In the big circle, the background turns honey-yellow when the taste hair is in the honey (frames 1, 4, 5) and gray with the note 'honey 53 um below' when it is lifted (frames 2, 3), and it turns yellowish again in frame 6. Small yellow odour dots drift around the smell hair. In the lower circle, a sugar molecule and water molecules shift position, and in frame 5 a second sugar appears near the bottom. The ant body doesn't move. The antenna motion itself is very small at full scale.",
+  "where": "The antenna tip touching the honey drop at the lower center-right (black circle), and the upper-right magnified circle where the taste hair's tip pore meets the honey."
+ },
+ {
+  "id": "item44",
+  "what": "A black ant (labelled 'Lasius niger worker') on a pale surface, touching a small clear water droplet with the tip of one antenna. Zoom-in circles show sensory hairs and water molecules.",
+  "change_or_point": "It shows how the ant senses water. The subtitle says water has no smell but insects can taste it. The antenna tip touching the droplet is zoomed to show a 'taste hair' with one pore at its tip touching the water, a pored 'smell hair' with 'nothing to smell', and a humidity sensillum. A further zoom shows five hydrogen-bonded water molecules at the taste pore.",
+  "where": "The lower-center-right, where the ant's front antenna tip (circled) touches the clear droplet. Then the upper-right circle, at the open tip of the 'taste hair' (circled at its bottom)."
+ },
+ {
+  "id": "item45",
+  "what": "The same 3D model of a lower jaw as the toothbrush picture: cream teeth, pink gums, tongue, with a round white electric toothbrush head with dark-blue and light-blue bristle tufts on a premolar. Text says the oscillating head is slowed about 290x.",
+  "change_or_point": "The round brush head rotates back and forth. You can tell mostly because the dark-blue and light-blue tufts swap places around the ring (e.g. frame 2 shows more light-blue tufts at the front, frame 4 more dark-blue) and the rectangular notch on the white head shifts left and right. The bristle tips move slightly along the tooth surface. The motion is fairly subtle, and I can't clearly see the tuft the caption says 'hangs free' over the gap between teeth.",
+  "where": "The lower centre, the blue bristle tufts where they touch the premolar and the gap between that tooth and the canine to its left."
+ },
+ {
+  "id": "item46",
+  "what": "A rendered model of an adult female brine shrimp (Artemia franciscana) swimming, seen from above in transmitted light on a pale blue background. It lies diagonally, head (with two black stalked eyes) at upper right and forked tail at lower left.",
+  "change_or_point": "The body, head and tail stay in place. The feathery paired leg-like paddles (phyllopods) along the front half of the body sway back and forth, and their angles change from frame to frame in a travelling wave. The caption says the wave runs from tail to head, but in 6 frames I could only see that the legs change angle; I couldn't really follow the direction. Tiny green specks in the background drift slightly. Frame 6 looks almost the same as frame 1.",
+  "where": "The fan of translucent feathery legs on both sides of the body between the head (upper right) and the dark egg sac mid-body."
+ },
+ {
+  "id": "item47",
+  "what": "A 3D render of a pink plastic toy pig, with a true-to-scale cross-section through its left front leg.",
+  "change_or_point": "The toy is one solid piece of injection-moulded PVC with a thin coat of paint, and it is not hollow. A parting line runs along it where the two halves of the mould met, and it shows up as tiny bumps on the leg cross-section.",
+  "where": "The cross-section panel on the right (a solid pink disc), which the circle on the front leg points to, plus the 'parting line' label along the pig's back. The 25 um paint layer and the parting-line bumps at the left and right edges of the disc are barely visible."
+ },
+ {
+  "id": "item48",
+  "what": "A blue hardcover book lying on a grey surface. Title: 'The blue book turns its own pages'.",
+  "change_or_point": "The book opens, its pages turn, and it closes again. Frame 1 is closed. In frame 2 it is open flat, showing two blank pages. In frames 3 and 4 many pages fan up and arc over the spine (frames 3 and 4 look almost identical). In frame 5 the front cover stands nearly upright as the book closes, with the page block on the left. Frame 6 is closed again, the same as frame 1. The pages are blank.",
+  "where": "The spine and fanning pages in the middle-right, where the pages bend over."
+ },
+ {
+  "id": "item49",
+  "what": "A 2D cross-section diagram of a coconut lying half-buried in soil (titled 'A coconut sprouting - Cocos nucifera in section'), with labelled layers from husk to coconut water and a month counter.",
+  "change_or_point": "Across the frames the coconut germinates over about four months (counter goes 0.0, 1.0, 2.3, 3.7, 4.0, then back to 0.0). Frame 1: dormant, cavity full of pale-blue water, small embryo at the soft eye. Frame 2: a pale shoot pushes out through the husk on the right and a small cream ball (haustorium) appears inside the water. Frame 3: a green spear rises and roots spread down into the soil; the cream ball fills most of the cavity, leaving a ring of water. Frame 4-5: a tall green stem with a first leaf at the top, more roots, and the cavity almost entirely filled with the cream haustorium (the white meat layer looks thinner). Frame 6: returns to the dormant state. The husk/shell outline itself stays the same.",
+  "where": "Two places: inside the central cavity, where the cream haustorium grows and replaces the blue water, and at the right side of the nut, where the shoot, green spear, leaf and roots emerge."
+ },
+ {
+  "id": "item50",
+  "what": "A labelled 3D rendering of a small black HP LaserJet P1102w laser printer with paper in its open input tray. On the right is an inset showing a magnified printed letter edge.",
+  "change_or_point": "It shows the printer's real size and how laser printing looks up close. The inset shows the edge of a 12-point 'A' at true scale. Black toner particles are heaped in dots on a 600-dpi grid (blue crosses) over a mat of paper fibres, and the toner edge is jagged and lumpy.",
+  "where": "The right-hand inset, where the black toner mass meets the white fibrous paper along its stepped, blobby edge."
+ },
+ {
+  "id": "item51",
+  "what": "A single carbonic acid molecule (H2CO3), ball-and-stick: a central gray carbon, three red oxygens and two white hydrogens.",
+  "change_or_point": "Frames 1-2: intact carbonic acid, wobbling slightly. Frame 3: the left hydrogen starts to glow, labeled H+, with faint -1/2 labels appearing on two oxygens. Frame 4: that hydrogen has detached and moved away to the upper left, glowing gold as H+, and the two oxygens now glow cyan with -1/2 each (the double bond now looks shared between them). Frames 5-6: the H+ keeps drifting to the upper-left corner and the rest is labeled bicarbonate HCO3-. The bond-length numbers in the caption change from 1.22/1.36/1.36 to 1.25/1.25/1.36.",
+  "where": "The left oxygen-hydrogen bond in the middle-left, where the H+ breaks off and drifts to the upper-left corner, plus the two cyan-glowing oxygens that share the negative charge."
+ },
+ {
+  "id": "item52",
+  "what": "A ball-and-stick molecule with numbered carbons (1-6) on a blue gradient background. The caption bar walks through the first steps of glycolysis (glucose \u2192 phosphorylated sugars \u2192 split into two three-carbon pieces), with an ATP/NADH tally on the right.",
+  "change_or_point": "Each frame shows a different reaction stage with its own caption. Frame 1 is glucose as a six-membered ring (hexokinase step, net 0). Frame 2 has an orange phosphate group attached to carbon 6, and the caption says the six-sided ring becomes five-sided (net -1). In this frame the ring still looks six-sided to me. Frame 3 shows a five-membered ring (fructose form) with one phosphate, while a loose phosphate group labelled 'ATP' floats in at the upper right (net -1). Frame 4 shows the ring opened into a chain with phosphates at both ends (net -2). Frame 5 shows the chain split into two separate three-carbon pieces, left (carbons 4-6) and right (carbons 1-3), captioned 'Two identical halves' (net -2). The two halves still look somewhat different in shape in this frame. Frame 6 returns to plain glucose (net 0), and the counter resets.",
+  "where": "The molecule in the center: the orange phosphate groups attaching at the ends and the break between carbons 3 and 4. Also the 'net' ATP counter at the lower right."
+ },
+ {
+  "id": "item53",
+  "what": "A labelled illustration of a black ant (Lasius niger) touching the cut face of a large yellow sweet-corn kernel with its antenna. Three circular zoom insets show a smell molecule (1-octen-3-ol) in the air, a micro close-up of a taste hair and a pored smell hair on the antenna, and sucrose molecules.",
+  "change_or_point": "The ant's body doesn't move, and its antenna tip barely moves at full size. The big middle inset alternates: in frames 1, 4, 5 and 6 the taste hair tip is touching the yellow juice surface (yellow background), and in frames 2 and 3 it has lifted away (grey background, label '\u2193 juice 53 \u00b5m away'). Small yellow odour dots drift toward and into the smell hair's pores. The odour molecule in the top inset tumbles and rotates from frame to frame. In the bottom inset the sucrose molecules shift slightly, and in frame 5 they are rearranged, with a second one lower down. Frame 6 matches frame 1.",
+  "where": "The large upper-right inset: the tip of the taste hair (lower-left of the inset, circled) touching and lifting off the juice, and the odour dots at the circled pores of the smell hair."
+ },
+ {
+  "id": "item54",
+  "what": "A 3D model of a nerve cell (neuron) in teal: a branching cell body with a nucleus on the left and a long axon running right to a few terminal knobs. The axon has a gap in the middle that stands for a long, cut-out stretch.",
+  "change_or_point": "A yellow glow (the nerve impulse) travels along the axon. Frame 1: all teal, no signal. Frame 2: yellow shading on the first half of the axon, brightest just before the gap. Frame 3: a yellow band on the second half, past the gap, with a fading trail behind it. Frame 4: the yellow has reached the terminal branches and knobs at the far right. Frames 5-6: all teal again. The cell body and dendrites don't visibly light up.",
+  "where": "The long horizontal axon from the cell body to the terminal branches at the right, where the yellow band travels, especially across the gap in the middle."
+ },
+ {
+  "id": "item55",
+  "what": "An infographic of a black ant (labelled Lasius niger) touching the tip of its antenna to a large cream-coloured grain of raw white rice. It has zoom-ins of a hexanal molecule, the antenna's taste and smell hairs, and an amylose (starch) chain.",
+  "change_or_point": "The ant's body and the rice grain look almost the same in every frame, so the tap itself is barely visible at full scale. The antenna tip seems to lift very slightly off the grain in frames 2 and 3 and touch it again in the others. The clearest change is in the hair zoom-in: in frames 2 and 3 the grain surface below is gone and a note reads '\u2193 grain 53 \u00b5m away', while in the other frames the hair tip sits on the grain's textured surface. A small orange odour dot moves near and into the smell hair's circled pore area from frame to frame, and the hexanal molecule in the top circle tumbles and rotates. The amylose molecule stays still. The text says there is nothing to taste (the taste hair's pore: 'nothing enters') and only a faint smell.",
+  "where": "The large upper-right zoom-in: the taste hair's tip, which lifts off and lands back on the grain, and the orange dot near the circled pores of the smell hair. After that, the small tumbling hexanal molecule in the top circle. The ant's antenna tip on the rice (the small circle at the centre right) shows hardly any visible motion."
+ },
+ {
+  "id": "item56",
+  "what": "A labelled illustration of a black ant (Lasius niger worker) tapping its antenna on a green banana leaf, with two zoom insets at the right (antenna hairs over the leaf surface; a hentriacontane wax molecule).",
+  "change_or_point": "The antenna tip taps the leaf. The main ant looks almost unchanged. The antenna tip moves very slightly (frames 2 and 3 sit a bit higher and left of the leaf edge), and that is hard to see at full size. The clearest change is in the upper inset. In frames 1, 4, 5 and 6 the leaf surface (green, bumpy epicuticular wax, a stoma) is right under the taste hair, with the 'stoma' and 'epicuticular wax' labels shown (frame 6 has the leaf but without those labels). In frames 2 and 3 the background is plain grey with the note 'leaf 53 \u00b5m below', meaning the antenna has lifted off. The wax molecule inset does not change.",
+  "where": "The upper-right inset around the taste-hair tip (small circle), where the leaf surface appears and disappears. In the main scene, the circled antenna tip at the leaf edge (middle right)."
+ },
+ {
+  "id": "item57",
+  "what": "A 3D-rendered black ant (labelled Lasius niger worker) touching a yellow drop of honey with the tip of its antenna, with zoomed-in circles showing antenna hairs and molecules.",
+  "change_or_point": "The ant both smells and tastes honey through its antenna. A smell hair with many wall pores picks up an airborne honey odorant (phenylacetaldehyde), and a taste hair with a single tip pore touches the honey's sugars (fructose and glucose). Zoom circles go from 1 mm down to 5 um down to 0.5 nm.",
+  "where": "The antenna tip where it touches the honey drop (circled), then the large zoom circle on the right showing the taste hair and the smell hair. The tiny orange odour dots in that circle are small but you can see them."
+ },
+ {
+  "id": "item58",
+  "what": "A large 3D model of a black ant (Lasius niger) with one antenna touching a small dome-shaped water droplet. Two circular magnified insets on the right show the antenna tip's sensory hairs (taste hair, smell hair, humidity sensillum) at the 5 \u00b5m scale and a cluster of five hydrogen-bonded water molecules at the 0.5 nm scale.",
+  "change_or_point": "Almost nothing visibly changes. The antenna tip lifts very slightly off the droplet in frames 2 and 3 and touches it again in frames 1, 4, 5 and 6. The circle marking the tip shifts a few pixels. In frames 2 and 3 a faint note appears in the upper inset: '\u2193 water surface 48 \u00b5m below'. The water molecules and the rest of the ant look unchanged. The tapping motion is so small I would likely miss it without comparing frames closely.",
+  "where": "The lower-middle-right, where the circled tip of the ant's right antenna meets the droplet. Also the tip of the taste hair in the upper-right inset, where the small note appears."
+ },
+ {
+  "id": "item59",
+  "what": "A 3D close-up of lower teeth and gums illustrating bruxism (tooth grinding) over 50 years, with a year counter, a progress bar and a cross-section inset of an incisor.",
+  "change_or_point": "The counter runs from year 0 to 10, 24, 37 and 50 (0.00 to 2.25 mm ground off). The tooth tips get flatter: blue-outlined wear facets appear on the cusps, then tan dentine patches show through on the incisor edges, the canine tip and later the premolars and molars. Labels fade in (wear facets, dentine bared on incisal edges, canine tip ground flat, dentine on the premolars). In the inset, the gray ground-away cap on the incisor tip grows. Frame 6 resets to year 0 with a 'Restarting at year 0, worn teeth never grow back' note.",
+  "where": "The biting edges of the front teeth on the left and the cusp tips of the premolars in the center, where the flat facets and tan dentine patches grow; and the upper-right inset showing how much of the tooth is gone."
+ },
+ {
+  "id": "item60",
+  "what": "A black ant (labelled 'Lasius niger worker') touching a large orange macaroni tube in cheese sauce with its antenna tip. Zoom-in circles show sensory hairs, an odor molecule (butanoic acid), and salt ions and norbixin.",
+  "change_or_point": "It shows that the ant both smells and tastes the cheese sauce. The pored smell hair has small orange dots (odour molecules) arriving at its wall pores. The taste hair's tip pore touches the sauce and tastes salt and fat. Extra circles show the odorant butanoic acid in the air, and salt ions with water plus the pigment norbixin (labelled as color, not taste).",
+  "where": "The circled antenna tip at the left-center, where it touches the macaroni. Then the large upper-right circle, looking at the orange dots at the smell hair's pores and the taste hair's tip touching the orange surface."
+ },
+ {
+  "id": "item61",
+  "what": "A labelled 3D render of a lower jaw with severely worn teeth, titled 'Bruxism, ~50 years on'. The biting surfaces are ground flat, with yellow exposed dentine patches. A cross-section diagram of a worn incisor is inset at upper right.",
+  "change_or_point": "It shows what about 50 years of tooth grinding does: 2.25 mm is ground off each lower tooth. The canine tip is ground flat, yellow dentine is exposed flush with the flat facets, and there are sharp-edged wear facets. The inset cross-section shows the ground-away tip (pale blue), the enamel shell, the dentine, and the pulp, which is 5.2 mm below the original edge and not drawn.",
+  "where": "The flat-topped canine and premolars in the lower centre-left with their yellow dentine patches (the three callout labels point there), then the incisor cross-section inset at upper right."
+ },
+ {
+  "id": "item62",
+  "what": "A rendered model of an adult female mysis shrimp (Mysis diluviana) swimming, shown as a translucent blue darkfield image on black, with labels for the hepatopancreas (orange oval near the head), the marsupium (brood pouch under the thorax) and the statocyst (two small circles in the tail fan).",
+  "change_or_point": "The shrimp's body stays still and the caption says the camera never moves. The thin legs under the thorax, around the marsupium, beat and change angle from frame to frame. Round bubbles/particles in the background move a lot. Between frames they drift downward across the black background (e.g. from upper right in frame 1, through the middle in frame 3, to the lower part in frames 4-5) and come back in at the top by frame 6. That suggests water moving past the animal, i.e. the shrimp swimming forward. The antennae and tail barely change.",
+  "where": "The legs under the front of the body near the 'marsupium' label, and the background bubbles drifting past on the right."
+ },
+ {
+  "id": "item63",
+  "what": "An open ocean under a clear, pale blue sky, with a pale sun high up in the centre and a hazy horizon.",
+  "change_or_point": "Sunlight reflecting off the rippled water. There is a bright glittering path (sun glint) running from the horizon straight down towards the viewer beneath the sun, and softer blue and teal wave patterns across the rest of the water. There is no text and no other object.",
+  "where": "The centre strip below the sun, where the bright white glints trail from the horizon down to the bottom middle of the picture."
+ },
+ {
+  "id": "item64",
+  "what": "Several black ants (Lasius niger workers) walking in a line from left to right along a faint blue-grey pheromone trail across a pine board with light and dark grain stripes. There is a lot of explanatory text, and a tripod-gait footfall chart at the bottom right.",
+  "change_or_point": "The ants walk to the right along the trail, stepping their legs as they go, and new ants enter from the left while others leave on the right. Their spacing and positions change from frame to frame. The text mentions ants pressing their gaster tip to lay pheromone and 'bright spots: fresh marks'. I may see a faint brighter spot on the trail in frame 2 near the middle ant's gaster, but it is very subtle and I couldn't clearly see any ant lowering its abdomen. The leg movements are too small to check against the tripod chart.",
+  "where": "The horizontal band across the middle where the ants walk along the blue-grey trail line. Especially the ants' rear ends touching the trail, and their legs."
+ },
+ {
+  "id": "item65",
+  "what": "A 3D render of a closed blue clothbound hardback book, with a true-to-scale cross-section diagram of the cover edge.",
+  "change_or_point": "How a hardback cover is built: woven cotton cloth glued over a 2.5 mm greyboard, turned in around the edge, with the cover overhanging the page block by a 3.17 mm 'square'. The pages are thin 0.10 mm leaves and the fore-edge is concave.",
+  "where": "The cross-section panel on the right (cloth, glue, greyboard, turn-in, square), which the small circle on the book's top cover edge points to. The book on its own mainly gives context."
+ },
+ {
+  "id": "item66",
+  "what": "A white toy Holstein cow with black patches, shown small from a high angle on a large grey floor. It is titled 'A toy cow comes to life', with a footfall timing chart at the top right.",
+  "change_or_point": "The cow walks: its legs bend at hips and knees and step in sequence, and it turns and wanders around the floor. In frames 1, 2 and 5 it faces left in the upper middle. In frame 3 it has turned to face right, in the lower middle. In frame 4 it is walking away from the camera at the right, seen from behind. Frame 6 matches frame 1. The head also dips and turns. The cow is small in the frame, so the individual leg joints are hard to make out. The footfall chart does not change.",
+  "where": "The cow itself, especially its legs and hooves where they meet the floor. It is small and moves around the middle of the picture, so you have to follow it."
+ },
+ {
+  "id": "item67",
+  "what": "A 3D-rendered black ant (labelled Lasius niger worker) touching a green banana leaf with its antenna tip, with zoom circles of the antenna hairs on the leaf surface and a wax molecule.",
+  "change_or_point": "A leaf is wax, not food. The ant's taste hair touches the waxy leaf cuticle (0.2 um roughness) and its smell hair has little to smell. The wax is made of long alkane chains such as hentriacontane, C31H64. A stoma (leaf pore) can be seen in the zoom.",
+  "where": "The antenna tip on the leaf (circled), then the upper-right zoom circle where the taste hair meets the wax. The bottom-right circle shows the long wax molecule. The wax bumps in the zoom are subtle and hard to make out."
+ },
+ {
+  "id": "item68",
+  "what": "A two-panel cutaway diagram of the gut comparing 'normal' (top) with 'secretory diarrhea (cholera-type)' (bottom). It has a close-up of one crypt wall's cells in cholera at the lower left and a numbered 3-step explanation.",
+  "change_or_point": "Squeeze waves travel along the tubes: 'squeeze \u2192 relaxes ahead' constrictions move through the top colon and later the top small intestine. The bottom small intestine, colon, and rectum also constrict and relax. In the top panel the brown stool mass shifts toward the rectum. The bottom panel stays full of thin fluid with many dots (green Cl-, purple Na+, blue water), and more arrows point into the lumen. The close-up steps through the numbered sequence, with the current step highlighted in the text on the right. Frame 2 (step 1) shows green Cl- balls leaving the cells at the top through CFTR, and 'lumen negative' appears. Frame 3 (step 3 highlighted) shows blue water balls moving into the cells and between them. Frame 4 shows green Cl- balls entering the cells from the bottom (at NKCC1). Frame 5 (step 2) shows purple Na+ dots passing between the cells, with 'lumen negative' shown again. Frame 6 has step 3 highlighted with an empty close-up. The loop order of the steps isn't fully clear from these samples.",
+  "where": "The close-up box at the lower left, which shows chloride leaving through the cell tops, sodium slipping between cells, and water following. Also the numbered steps beside it and the bottom small intestine, where the crypts pour out fluid."
+ },
+ {
+  "id": "item69",
+  "what": "A labelled illustration of a black ant (Lasius niger) tapping a large orange, sauce-coated macaroni tube with its antenna. The same three zoom insets are used: a butanoic acid cheese odour molecule, the taste hair and smell hair on the antenna, and salt ions with norbixin.",
+  "change_or_point": "The ant's antenna tip shifts very slightly at the circled spot. In the big middle inset, frames 1, 4, 5 and 6 show the taste hair tip touching the orange sauce (orange background), and in frames 2 and 3 it lifts away (grey background, '\u2193 sauce 53 \u00b5m away'). Small orange odour dots drift toward the smell hair. The butanoic acid molecule in the top inset rotates and tumbles. I can't see any change in the bottom inset (salt ions and norbixin).",
+  "where": "The large upper-right inset, at the taste-hair tip (circled at its lower left) where it contacts or leaves the sauce, and the circled pores on the smell hair."
+ },
+ {
+  "id": "item70",
+  "what": "An illustrated pole bean plant (Phaseolus vulgaris) twining up a wooden pole, with leaves, white flowers and pods, and tiny red seven-spot ladybirds on it. A circular inset at upper right magnifies one ladybird about 8-9x.",
+  "change_or_point": "The vine seems to scroll or climb. Leaves, flowers and pods sit at different heights in each frame and move downward past the view, as if the camera is rising with the growing tip or the plant is growing up the pole. The caption calls it a ~10-hour time-lapse of the climb. The tiny ladybirds on the stem and leaves are in different places in each frame. The inset shows the ladybird in a different pose each time: side view on a leaf, head-on on the stem, hanging sideways, top view on a stalk, walking on a leaf. The leader line from the inset points to a different spot. Frame 6 matches frame 1, so it loops. The ladybirds in the main view are very small and hard to pick out.",
+  "where": "The circular ladybird inset at upper right and the tiny red dot it points to on the vine. Also the twining green stem around the pole in the centre, which moves as the plant climbs."
+ },
+ {
+  "id": "item71",
+  "what": "A molecular-scale cross-section. At the top is a large, flattened, supercoiled loop of blue beaded DNA (twisted strands, dotted with small yellow ions). Below it is a thick orange-and-tan layered membrane, labelled the E. coli outer membrane. The caption reads 'A plasmid reaches the cell' (pGLO, supercoiled, Ca\u00b2\u207a shown hydrated).",
+  "change_or_point": "The supercoiled DNA sinks down towards the membrane. In frames 1 and 2 it is high up, with a gap readout of 33 nm and then 30 nm. In frame 3 it is lower, at 12 nm. In frame 4 its bottom strand touches the top of the membrane, at 1 nm. In frames 5 and 6 it rests on the membrane and the readout says 'contact'. The coil's shape also rearranges a little as it comes down. The membrane does not visibly change.",
+  "where": "The bottom strand of the blue coil and the top surface of the orange membrane just under it, across the middle of the picture, where the gap closes. The 'gap' readout at the right of the caption bar gives the distance."
+ },
+ {
+  "id": "item72",
+  "what": "A cutaway illustration of a Phaseolus vulgaris (common bean) flower or ovary. A long pale structure contains a row of oval ovules and connects to a coiled, snail-shell spiral section. There is a circular zoom inset (x10.3, 100 \u00b5m scale) at the right.",
+  "change_or_point": "It shows the inside of a bean flower: ovules lined up in the ovary, and the coiled keel/style. The zoom inset shows yellow pollen grains near hair-like white brushes on the green style/stigma, with one pollen grain sending a thin tube down, which suggests pollination. A dotted leader line goes from the ovary to a faint blurred green shape below, labelled 'the same ovary, ~14 days later' (apparently a ghostly pod shape). It is very blurry and hard to read as anything.",
+  "where": "The small circled spot in the centre of the spiral where the yellow pollen sits, shown magnified in the right-hand inset (the pollen tube growing down). Secondarily, the row of ovules in the lower-left part of the ovary."
+ },
+ {
+  "id": "item73",
+  "what": "A ball-and-stick molecular animation, 'CO2 meets water': one carbon dioxide molecule and two water molecules (one labelled 'helper H2O') on a blue background, with reaction equations in the caption bar.",
+  "change_or_point": "Frame 1: CO2 (straight, top) and two separate waters. Frame 2: they drift together toward the centre; caption 'CO2 + H2O -> H2CO3', O-C-O angle 180\u00b0. Frame 3: the CO2 has bent (133\u00b0) and bonded to the water oxygen, forming a carbonic acid shape, with the helper water linked by thin lines passing a hydrogen across. Frame 4: a finished carbonic acid (C with one double-bonded O and two OH groups) and a separate water at upper left; caption 'H2CO3 + H2O -> HCO3- + H3O+'. Frame 5: one hydrogen has moved to the water, which now glows gold as 'H3O+', and the carbonic acid has lost an H, with two oxygens glowing cyan labelled '-1/2' (bicarbonate). Frame 6: the caption says 'Bicarbonate and hydronium drift off', but the picture shows the starting set (straight CO2 and two labelled waters) again, so I did not actually see them drift off.",
+  "where": "The centre of the frame where the CO2 carbon meets the water oxygen (frames 2-3), then the upper-left hydronium glowing gold and the cyan '-1/2' oxygens on the bicarbonate (frame 5)."
+ },
+ {
+  "id": "item74",
+  "what": "A large 3D model of a black ant (Lasius niger) touching one antenna to a clear cube, a salt crystal among several cubes. Two circular insets on the right show the antenna's taste and smell hairs at 5 \u00b5m and a sodium chloride crystal lattice (green and violet balls) with water molecules above it at 1 nm.",
+  "change_or_point": "The antenna tip lifts slightly off the salt cube in frames 2 and 3 and presses down again in the other frames. In the upper inset the taste-hair tip touches a grey film in frames 1, 4 and 5, with a small dark spot under the tip. In frames 2 and 3 the tip is raised, with the note '\u2193 salt and film 53 \u00b5m below'. In frame 5 the lower inset's lattice view shifts noticeably: the crystal surface drops lower and the loose ions and water molecules above it are rearranged. The other lattice frames look nearly the same. The main-view antenna movement is very small.",
+  "where": "The lower right. The circled antenna tip on the salt cube, the taste-hair tip in the upper inset, and the lattice surface in the lower inset, where one violet ion and one green ion float free among water molecules above the crystal."
+ },
+ {
+  "id": "item75",
+  "what": "A labeled illustration of black ants (Lasius niger) at a block of peeled apple, with zoom circles showing odour molecules (2-hexenal, butyl acetate), antenna taste and smell hairs, and fructose molecules.",
+  "change_or_point": "One ant stays at the lower-right corner of the apple block with its antenna touching it (the circled tip) in frames 1, 2 and 6. Other ants walk in: frame 1 shows one ant facing away toward the upper middle; frame 2 shows two ants coming from the left edge; frames 3-5 show two ants at the block's front edge in the middle, and the lower-right ant is gone from view; frame 6 matches frame 1. In the upper small circle the two odour molecules tumble and rotate. In the big antenna circle, small dots drift near the smell hair, and the label changes from no label to 'juice far away' to 'juice 6 um away'. The fructose circle barely changes. The ant positions jump a lot between frames, so it's hard to follow which ant is which.",
+  "where": "The lower-right ant's antenna tip where it touches the apple (black circle), and the big upper-right magnified circle of the taste and smell hairs."
+ }
+]
