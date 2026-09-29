@@ -1,0 +1,1087 @@
+[
+ {
+  "step": "48",
+  "title": "The garden pea flowers and sets pods",
+  "file": "showcase/pea_flowers_pods.gif",
+  "alt": "Looping time-lapse of the same garden pea vine with white papilionaceous flowers near the top, withering flowers with young pods lower down, and full green pods with peas bulging through near the bottom",
+  "kind": "animation",
+  "id": "item01",
+  "frames": [
+   "item01_frame1.png",
+   "item01_frame2.png",
+   "item01_frame3.png",
+   "item01_frame4.png",
+   "item01_frame5.png",
+   "item01_frame6.png"
+  ]
+ },
+ {
+  "step": "62",
+  "title": "A plastic toy cow",
+  "file": "showcase/toy_cow.png",
+  "alt": "A small black-and-white plastic toy Holstein cow on a grey table, with a pink muzzle, an udder with four teats and dark cloven hooves, its parting line labelled; an inset cuts across a foreleg to show solid PVC",
+  "kind": "still",
+  "id": "item02",
+  "frames": [
+   "item02_still.png"
+  ]
+ },
+ {
+  "step": "17",
+  "title": "Lactose cut into glucose and galactose",
+  "file": "showcase/lactase.gif",
+  "alt": "Looping animation: a space-filling protein tetramer turns against a dark field, then a round porthole opens in its surface onto a ball-and-stick active site. Lactose moves in, two glutamate side chains take it apart, glucose leaves, the galactose stays bonded to the protein, then a water breaks that bond and galactose leaves too",
+  "kind": "animation",
+  "id": "item03",
+  "frames": [
+   "item03_frame1.png",
+   "item03_frame2.png",
+   "item03_frame3.png",
+   "item03_frame4.png",
+   "item03_frame5.png",
+   "item03_frame6.png"
+  ]
+ },
+ {
+  "step": "5",
+  "title": "The sea mirrors the sky",
+  "file": "showcase/reflections.png",
+  "alt": "The same sea as step 3, now reflecting the pale sky, brighter toward the horizon, with sharp glints from the sun's reflection",
+  "kind": "still",
+  "id": "item04",
+  "frames": [
+   "item04_still.png"
+  ]
+ },
+ {
+  "step": "46",
+  "title": "A sweet pea climbs by tendrils",
+  "file": "showcase/sweetpea_tendrils.gif",
+  "alt": "Looping time-lapse of a sweet pea growing up garden netting: pairs of leaflets on a winged stem, and tendrils at the leaf tips that sweep the air, catch a string, curl round it, then draw the free length into a spring with a labelled perversion where the coil reverses handedness",
+  "kind": "animation",
+  "id": "item05",
+  "frames": [
+   "item05_frame1.png",
+   "item05_frame2.png",
+   "item05_frame3.png",
+   "item05_frame4.png",
+   "item05_frame5.png",
+   "item05_frame6.png"
+  ]
+ },
+ {
+  "step": "7",
+  "title": "Glucose meets oxygen",
+  "file": "showcase/respiration.gif",
+  "alt": "Ball-and-stick animation: one glucose molecule and six O\u2082 molecules rearrange into six CO\u2082 and six H\u2082O",
+  "kind": "animation",
+  "id": "item06",
+  "frames": [
+   "item06_frame1.png",
+   "item06_frame2.png",
+   "item06_frame3.png",
+   "item06_frame4.png",
+   "item06_frame5.png",
+   "item06_frame6.png"
+  ]
+ },
+ {
+  "step": "8a",
+  "title": "pGLO, whole and up close",
+  "file": "showcase/plasmid_ring.gif",
+  "alt": "Looping animation: the pGLO plasmid as a coloured ring turning once, with green GFP, violet arabinose switch, amber ampicillin resistance and blue origin against grey for the rest",
+  "kind": "animation",
+  "id": "item07",
+  "frames": [
+   "item07_frame1.png",
+   "item07_frame2.png",
+   "item07_frame3.png",
+   "item07_frame4.png",
+   "item07_frame5.png",
+   "item07_frame6.png"
+  ]
+ },
+ {
+  "step": "21",
+  "title": "Along the lower arch",
+  "file": "showcase/arch_pan.gif",
+  "alt": "Looping animation: the camera starts square in front of the two lower central incisors and glides back along one side of the lower arch, past the canine, premolars and molars, until it faces the wisdom tooth, holds, and dissolves back to the start",
+  "kind": "animation",
+  "id": "item08",
+  "frames": [
+   "item08_frame1.png",
+   "item08_frame2.png",
+   "item08_frame3.png",
+   "item08_frame4.png",
+   "item08_frame5.png",
+   "item08_frame6.png"
+  ]
+ },
+ {
+  "step": "51",
+  "title": "The ant taps a grain of cooked barley",
+  "file": "showcase/ant_barley.gif",
+  "alt": "Looping animation of a black garden ant tapping a large, pale grain of cooked pearled barley, twice the ant's height; insets show hexanal arriving at the smell hair while the taste hair touches the grain's thin wet film, and a short chain of barley \u03b2-glucan labelled as fibre, not a taste",
+  "kind": "animation",
+  "id": "item09",
+  "frames": [
+   "item09_frame1.png",
+   "item09_frame2.png",
+   "item09_frame3.png",
+   "item09_frame4.png",
+   "item09_frame5.png",
+   "item09_frame6.png"
+  ]
+ },
+ {
+  "step": "45",
+  "title": "A pole bean climbs by twining",
+  "file": "showcase/bean_twining.gif",
+  "alt": "Looping time-lapse of a pole bean winding up a wooden pole: the free growing tip sweeps a slow circle in the air above, the stem below lays a new turn round the pole and tightens onto it, and three-part leaves unfold at the nodes as the camera rises with the tip",
+  "kind": "animation",
+  "id": "item10",
+  "frames": [
+   "item10_frame1.png",
+   "item10_frame2.png",
+   "item10_frame3.png",
+   "item10_frame4.png",
+   "item10_frame5.png",
+   "item10_frame6.png"
+  ]
+ },
+ {
+  "step": "8b",
+  "title": "The grooves are real",
+  "file": "showcase/grooves.gif",
+  "alt": "Looping animation: a length of DNA double helix drawn space-filling, every atom a sphere at its full van der Waals radius, turning slowly so the major and minor grooves spiral past as real channels in the surface",
+  "kind": "animation",
+  "id": "item11",
+  "frames": [
+   "item11_frame1.png",
+   "item11_frame2.png",
+   "item11_frame3.png",
+   "item11_frame4.png",
+   "item11_frame5.png",
+   "item11_frame6.png"
+  ]
+ },
+ {
+  "step": "47",
+  "title": "A garden pea climbs by tendrils",
+  "file": "showcase/pea_tendrils.gif",
+  "alt": "Looping time-lapse of a garden pea climbing netting: big leafy stipules clasping a round stem, two pairs of rounded bluish-green leaflets, and several branched tendrils per leaf that sweep, catch a string, curl round it and spring into coils with labelled perversions",
+  "kind": "animation",
+  "id": "item12",
+  "frames": [
+   "item12_frame1.png",
+   "item12_frame2.png",
+   "item12_frame3.png",
+   "item12_frame4.png",
+   "item12_frame5.png",
+   "item12_frame6.png"
+  ]
+ },
+ {
+  "step": "61",
+  "title": "The toy pig comes to life",
+  "file": "showcase/toy_pig_alive.gif",
+  "alt": "Looping animation of the plastic toy pig waking, walking a small circle on its rigid legs in a lateral-sequence walk, and settling back into its moulded pose; a footfall diagram shows the step order",
+  "kind": "animation",
+  "id": "item13",
+  "frames": [
+   "item13_frame1.png",
+   "item13_frame2.png",
+   "item13_frame3.png",
+   "item13_frame4.png",
+   "item13_frame5.png",
+   "item13_frame6.png"
+  ]
+ },
+ {
+  "step": "30",
+  "title": "The ant taps the sugar",
+  "file": "showcase/ant_tapping.gif",
+  "alt": "Looping animation of step 26's black garden ant with its right antenna tip lifting and tapping down on a sugar grain; insets show the taste hair touching the moisture film, and a sucrose molecule drifting from the film into the pore once per touch",
+  "kind": "animation",
+  "id": "item14",
+  "frames": [
+   "item14_frame1.png",
+   "item14_frame2.png",
+   "item14_frame3.png",
+   "item14_frame4.png",
+   "item14_frame5.png",
+   "item14_frame6.png"
+  ]
+ },
+ {
+  "step": "67",
+  "title": "Along the upper arch",
+  "file": "showcase/upper_arch_pan.gif",
+  "alt": "Animation: the camera glides from between the upper central incisors back along the patient's left side, past the canine and premolars, to the upper wisdom tooth #16, holds, and fades back to the start",
+  "kind": "animation",
+  "id": "item15",
+  "frames": [
+   "item15_frame1.png",
+   "item15_frame2.png",
+   "item15_frame3.png",
+   "item15_frame4.png",
+   "item15_frame5.png",
+   "item15_frame6.png"
+  ]
+ },
+ {
+  "step": "32",
+  "title": "An ant tastes table salt",
+  "file": "showcase/ant_salt.png",
+  "alt": "The black garden ant from step 26, touching a small cubic grain of table salt with one antenna tip; the first inset shows the taste hair touching the moisture film while the smell hair has nothing to catch, and the second shows the rock-salt lattice of violet sodium and green chloride ions, with ions leaving the crystal face into the water film",
+  "kind": "still",
+  "id": "item16",
+  "frames": [
+   "item16_still.png"
+  ]
+ },
+ {
+  "step": "69",
+  "title": "An ant bites the apple",
+  "file": "showcase/ant_bites_apple.gif",
+  "alt": "Looping animation of one black garden ant at the cut edge of a peeled apple, its mandibles swinging open and closing on the flesh, with a magnified view of the mandibles from above and a cut-away diagram of the ant showing juice going to the crop and bits of flesh going to a pocket in the mouth",
+  "kind": "animation",
+  "id": "item17",
+  "frames": [
+   "item17_frame1.png",
+   "item17_frame2.png",
+   "item17_frame3.png",
+   "item17_frame4.png",
+   "item17_frame5.png",
+   "item17_frame6.png"
+  ]
+ },
+ {
+  "step": "18",
+  "title": "Sucrose cut into glucose and fructose",
+  "file": "showcase/invertase.gif",
+  "alt": "Looping animation in two panels: on the left a space-filling enzyme with a porthole onto its active site, where sucrose is taken apart; on the right a polarimeter, its beam twisting through a cell of solution and a dial reading the angle, which falls through zero and goes negative as the reaction proceeds",
+  "kind": "animation",
+  "id": "item18",
+  "frames": [
+   "item18_frame1.png",
+   "item18_frame2.png",
+   "item18_frame3.png",
+   "item18_frame4.png",
+   "item18_frame5.png",
+   "item18_frame6.png"
+  ]
+ },
+ {
+  "step": "8",
+  "title": "DNA, slowly turning",
+  "file": "showcase/dna.gif",
+  "alt": "Looping ball-and-stick animation: a DNA double helix lying diagonally turns once about its own axis, with grey carbons, blue nitrogens, red oxygens, orange phosphorus and faint dashed hydrogen bonds between the paired bases",
+  "kind": "animation",
+  "id": "item19",
+  "frames": [
+   "item19_frame1.png",
+   "item19_frame2.png",
+   "item19_frame3.png",
+   "item19_frame4.png",
+   "item19_frame5.png",
+   "item19_frame6.png"
+  ]
+ },
+ {
+  "step": "44",
+  "title": "Three ants on a pheromone trail",
+  "file": "showcase/ant_trail.gif",
+  "alt": "Looping animation of three black garden ants walking in single file along a faint blue pheromone trail, legs moving in alternating tripods, each ant pausing in turn to press the tip of its abdomen to the trail; a footfall diagram shows the two tripods taking turns",
+  "kind": "animation",
+  "id": "item20",
+  "frames": [
+   "item20_frame1.png",
+   "item20_frame2.png",
+   "item20_frame3.png",
+   "item20_frame4.png",
+   "item20_frame5.png",
+   "item20_frame6.png"
+  ]
+ },
+ {
+  "step": "55",
+  "title": "Five ants on a pheromone trail",
+  "file": "showcase/ant_trail_5.gif",
+  "alt": "Looping animation of five black garden ants walking in single file along a faint blue pheromone trail, legs in alternating tripods, each pausing in turn to press its abdomen tip to the trail; a footfall diagram shows the two tripods taking turns",
+  "kind": "animation",
+  "id": "item21",
+  "frames": [
+   "item21_frame1.png",
+   "item21_frame2.png",
+   "item21_frame3.png",
+   "item21_frame4.png",
+   "item21_frame5.png",
+   "item21_frame6.png"
+  ]
+ },
+ {
+  "step": "29",
+  "title": "The pollen tube grows",
+  "file": "showcase/bean_growing.gif",
+  "alt": "Looping animation of step 25's cut-open bean bud: a bright gold line, the pollen tube drawn five times wider than life, grows from the grain on the stigma round the spiral keel to an ovule, while a magnified inset follows its tip through the cut-open style; a clock under the inset counts the hours",
+  "kind": "animation",
+  "id": "item22",
+  "frames": [
+   "item22_frame1.png",
+   "item22_frame2.png",
+   "item22_frame3.png",
+   "item22_frame4.png",
+   "item22_frame5.png",
+   "item22_frame6.png"
+  ]
+ },
+ {
+  "step": "58",
+  "title": "A plastic toy Stegosaurus",
+  "file": "showcase/toy_stegosaurus.png",
+  "alt": "A small green plastic toy Stegosaurus with rust-orange plates on a grey table, its faint mould parting line labelled; an inset cuts across a foreleg to show solid PVC with a thin paint layer and the seam's tiny bump",
+  "kind": "still",
+  "id": "item23",
+  "frames": [
+   "item23_still.png"
+  ]
+ },
+ {
+  "step": "26",
+  "title": "An ant tastes sugar",
+  "file": "showcase/ant.png",
+  "alt": "A black garden ant on a pale surface touching a glassy grain of sugar with one antenna tip; a round inset magnifies the antenna tip to show a taste hair with one pore at its tip beside a smell hair with many pores in its wall, and a second inset shows a sucrose molecule in ball-and-stick, each view with its own scale bar",
+  "kind": "still",
+  "id": "item24",
+  "frames": [
+   "item24_still.png"
+  ]
+ },
+ {
+  "step": "53",
+  "title": "A gold-plated padlock",
+  "file": "showcase/gold_lock.png",
+  "alt": "A gold-plated padlock lying on its back in a bright light tent, its faces mirroring white light and a few dark cards in gold; an inset cuts through the surface to show 0.5 \u00b5m of gold over 3 \u00b5m of nickel over brass, beside a dashed circle the width of a cotton fibre, and a chart shows gold's reflectance rising steeply above 500 nm while silver's stays flat",
+  "kind": "still",
+  "id": "item25",
+  "frames": [
+   "item25_still.png"
+  ]
+ },
+ {
+  "step": "56",
+  "title": "Seven ants on a pheromone trail",
+  "file": "showcase/ant_trail_7.gif",
+  "alt": "Looping animation of seven black garden ants walking in single file along a faint blue pheromone trail in a wide frame, legs in alternating tripods, each pausing in turn to lay pheromone",
+  "kind": "animation",
+  "id": "item26",
+  "frames": [
+   "item26_frame1.png",
+   "item26_frame2.png",
+   "item26_frame3.png",
+   "item26_frame4.png",
+   "item26_frame5.png",
+   "item26_frame6.png"
+  ]
+ },
+ {
+  "step": "27",
+  "title": "One neuron",
+  "file": "showcase/neuron.png",
+  "alt": "A single spinal motor neuron on a near-white background: a sea-green cell body with a blue nucleus and dark nucleolus showing through, twelve branching dendrites, one axon interrupted by a break mark and ending in four small knobs, and a 50 micrometre scale bar",
+  "kind": "still",
+  "id": "item27",
+  "frames": [
+   "item27_still.png"
+  ]
+ },
+ {
+  "step": "24",
+  "title": "Lactose intolerance (osmotic diarrhea)",
+  "file": "showcase/lactose.gif",
+  "alt": "Animated cutaway in two stacked panels after two glasses of milk: above, gold lactase on the villus tips splits lactose into glucose and galactose, which are absorbed, and the colon forms normal stool; below, lactase is missing, lactose passes the villi untouched while water moves into the gut, and in the colon bacteria take up the lactose and give off gas bubbles and fatty acids, leaving loose, bubbly stool",
+  "kind": "animation",
+  "id": "item28",
+  "frames": [
+   "item28_frame1.png",
+   "item28_frame2.png",
+   "item28_frame3.png",
+   "item28_frame4.png",
+   "item28_frame5.png",
+   "item28_frame6.png"
+  ]
+ },
+ {
+  "step": "22",
+  "title": "Brush meets tooth",
+  "file": "showcase/brush.png",
+  "alt": "The step 20 lower arch, same camera and light, with a round electric toothbrush head at the bottom of the frame pressing its dark-blue and light-blue tufts against the cheek side of a premolar where it meets the gum; the tufts pressed hardest are shorter and splay slightly",
+  "kind": "still",
+  "id": "item29",
+  "frames": [
+   "item29_still.png"
+  ]
+ },
+ {
+  "step": "2",
+  "title": "Gradient painted on the GPU",
+  "file": "showcase/gradient.png",
+  "alt": "A vertical gradient from sky blue at the top to deep navy at the bottom",
+  "kind": "still",
+  "id": "item30",
+  "frames": [
+   "item30_still.png"
+  ]
+ },
+ {
+  "step": "36",
+  "title": "An ant smells and tastes hard-boiled egg yolk",
+  "file": "showcase/ant_yolk.png",
+  "alt": "The black garden ant touching a small crumbly yellow crumb of hard-boiled egg yolk with one antenna tip; the insets show hexanal, a cooked-yolk odorant, in the air, the smell hair receiving odour while the taste hair touches the granular yolk surface, and an oleic acid molecule with water at the taste pore",
+  "kind": "still",
+  "id": "item31",
+  "frames": [
+   "item31_still.png"
+  ]
+ },
+ {
+  "step": "59",
+  "title": "The toy Stegosaurus comes to life",
+  "file": "showcase/toy_stegosaurus_alive.gif",
+  "alt": "Looping animation of the plastic toy Stegosaurus standing frozen, then coming to life, walking a small circle on the table with its rigid plastic legs in a four-beat walk, and settling back into its exact moulded pose; a footfall diagram shows the step order",
+  "kind": "animation",
+  "id": "item32",
+  "frames": [
+   "item32_frame1.png",
+   "item32_frame2.png",
+   "item32_frame3.png",
+   "item32_frame4.png",
+   "item32_frame5.png",
+   "item32_frame6.png"
+  ]
+ },
+ {
+  "step": "20",
+  "title": "Lower dental arch",
+  "file": "showcase/mouth.png",
+  "alt": "A still render of a lower dental arch seen from the front-right and above: ivory incisors turning away on the left, a yellower canine, premolars and a first molar across the frame, wet coral-pink gums scalloped between the teeth, and the tongue behind",
+  "kind": "still",
+  "id": "item33",
+  "frames": [
+   "item33_still.png"
+  ]
+ },
+ {
+  "step": "9",
+  "title": "The protein that makes its own light",
+  "file": "showcase/gfp.gif",
+  "alt": "Looping animation: green fluorescent protein drawn as overlapping van der Waals spheres turns about its axis; a round window opens in the front to reveal the chromophore in ball-and-stick inside, then closes",
+  "kind": "animation",
+  "id": "item34",
+  "frames": [
+   "item34_frame1.png",
+   "item34_frame2.png",
+   "item34_frame3.png",
+   "item34_frame4.png",
+   "item34_frame5.png",
+   "item34_frame6.png"
+  ]
+ },
+ {
+  "step": "66",
+  "title": "Upper dental arch",
+  "file": "showcase/upper_arch.png",
+  "alt": "A still render of an upper dental arch seen from below and in front: wide ivory central incisors, smaller laterals, yellower canines, premolars and molars back to both wisdom teeth, coral gums, and the pink vault of the hard palate with its transverse ridges behind the front teeth",
+  "kind": "still",
+  "id": "item35",
+  "frames": [
+   "item35_still.png"
+  ]
+ },
+ {
+  "step": "52",
+  "title": "A cotton sock, close up",
+  "file": "showcase/cotton_sock.png",
+  "alt": "A close-up of a cotton sock's plain jersey knit, rows of cream yarn loops with loose fibre ends standing up; insets show the yarn's twisted fibres with one fibre tinted, lifting away as a flat twisted ribbon labelled at its convolutions and a reversal, the fibre's kidney-shaped cut end with a slit lumen, and a chain of four glucose units joined into cellulose",
+  "kind": "still",
+  "id": "item36",
+  "frames": [
+   "item36_still.png"
+  ]
+ },
+ {
+  "step": "12",
+  "title": "Bacteriophage infecting E. coli",
+  "file": "showcase/phage.gif",
+  "alt": "Looping animation: a blue protein baseplate above a layered bacterial envelope flips from a compact hexagonal dome into a flat six-pointed star, orange fibres splay down onto the surface, and a violet needle drives down through the outer membrane, the peptidoglycan mesh and the inner membrane",
+  "kind": "animation",
+  "id": "item37",
+  "frames": [
+   "item37_frame1.png",
+   "item37_frame2.png",
+   "item37_frame3.png",
+   "item37_frame4.png",
+   "item37_frame5.png",
+   "item37_frame6.png"
+  ]
+ },
+ {
+  "step": "37",
+  "title": "The ant taps the egg yolk",
+  "file": "showcase/ant_yolk_tapping.gif",
+  "alt": "Looping animation of step 36's black garden ant tapping a crumbly crumb of hard-boiled egg yolk; insets show hexanal odour molecules arriving one per tap at the smell hair while the taste hair touches the granular yolk surface, and an oleic acid molecule with three waters",
+  "kind": "animation",
+  "id": "item38",
+  "frames": [
+   "item38_frame1.png",
+   "item38_frame2.png",
+   "item38_frame3.png",
+   "item38_frame4.png",
+   "item38_frame5.png",
+   "item38_frame6.png"
+  ]
+ },
+ {
+  "step": "11",
+  "title": "Arabinose, the sugar that switches on pGLO's gene in E. coli",
+  "file": "showcase/switch.gif",
+  "alt": "Looping animation: a loop of DNA held shut by a protein bridging two distant sites. A small sugar arrives and binds it, the grip moves along the DNA, the loop springs open, and a shape settles onto the newly exposed promoter \u2014 then the sugar leaves and the loop re-forms",
+  "kind": "animation",
+  "id": "item39",
+  "frames": [
+   "item39_frame1.png",
+   "item39_frame2.png",
+   "item39_frame3.png",
+   "item39_frame4.png",
+   "item39_frame5.png",
+   "item39_frame6.png"
+  ]
+ },
+ {
+  "step": "9a",
+  "title": "GFP compared with mCherry protein",
+  "file": "showcase/color.gif",
+  "alt": "Looping animation: two space-filling protein barrels side by side, GFP on the left and mCherry on the right, turning together. Part-way round a round porthole opens in each, showing a green chromophore inside the left barrel and a red one inside the right, then both close again",
+  "kind": "animation",
+  "id": "item40",
+  "frames": [
+   "item40_frame1.png",
+   "item40_frame2.png",
+   "item40_frame3.png",
+   "item40_frame4.png",
+   "item40_frame5.png",
+   "item40_frame6.png"
+  ]
+ },
+ {
+  "step": "19",
+  "title": "The neck of a tooth, and what stops a crack",
+  "file": "showcase/tooth.gif",
+  "alt": "Looping animation of a lower molar in cutaway section: the solved stress field builds on the cut face under an oblique grinding load, a crack runs from the cusp incline down through the enamel, and stops at the dentino-enamel junction",
+  "kind": "animation",
+  "id": "item41",
+  "frames": [
+   "item41_frame1.png",
+   "item41_frame2.png",
+   "item41_frame3.png",
+   "item41_frame4.png",
+   "item41_frame5.png",
+   "item41_frame6.png"
+  ]
+ },
+ {
+  "step": "16",
+  "title": "Inside a moving schoolbus",
+  "file": "showcase/schoolbus.gif",
+  "alt": "Looping animation from a camera fixed inside a school bus, looking down the aisle toward the rear door. The grey-blue seat backs, white ribbed ceiling and dark aisle runner never move. Through the window bays on both walls a roadside streams past \u2014 near fence posts smeared with motion blur, the distant treeline barely shifting \u2014 while a patch of sunlight sweeps across the seats",
+  "kind": "animation",
+  "id": "item42",
+  "frames": [
+   "item42_frame1.png",
+   "item42_frame2.png",
+   "item42_frame3.png",
+   "item42_frame4.png",
+   "item42_frame5.png",
+   "item42_frame6.png"
+  ]
+ },
+ {
+  "step": "35",
+  "title": "The ant taps the honey",
+  "file": "showcase/ant_honey_tapping.gif",
+  "alt": "Looping animation of step 34's black garden ant tapping a small golden drop of honey; insets show honey odour molecules arriving at the smell hair's wall pores while the taste hair touches the honey, and one sugar molecule with its waters entering the taste pore per touch",
+  "kind": "animation",
+  "id": "item43",
+  "frames": [
+   "item43_frame1.png",
+   "item43_frame2.png",
+   "item43_frame3.png",
+   "item43_frame4.png",
+   "item43_frame5.png",
+   "item43_frame6.png"
+  ]
+ },
+ {
+  "step": "38",
+  "title": "An ant touches a droplet of water",
+  "file": "showcase/ant_water.png",
+  "alt": "The black garden ant touching a clear, nearly colourless droplet of water with one antenna tip; the insets show the taste hair pressing a shallow dimple in the water surface while the smell hair has nothing to catch, a labelled humidity sensillum shaped as a knob in a pit, and five water molecules joined by four dashed hydrogen bonds",
+  "kind": "still",
+  "id": "item44",
+  "frames": [
+   "item44_still.png"
+  ]
+ },
+ {
+  "step": "28",
+  "title": "The brush head turning",
+  "file": "showcase/brush_oscillating.gif",
+  "alt": "Looping animation of step 22's round electric toothbrush head pressed against a premolar at the gumline, the disc of blue tufts swinging back and forth through 45 degrees while every tuft bends and straightens against the tooth",
+  "kind": "animation",
+  "id": "item45",
+  "frames": [
+   "item45_frame1.png",
+   "item45_frame2.png",
+   "item45_frame3.png",
+   "item45_frame4.png",
+   "item45_frame5.png",
+   "item45_frame6.png"
+  ]
+ },
+ {
+  "step": "13",
+  "title": "Rendered model of a brine shrimp swimming",
+  "file": "showcase/swim.gif",
+  "alt": "Looping animation: a brine shrimp seen from below against a bright cyan field, as a transmitted-light micrograph. Eleven pairs of leaf-shaped limbs fan out symmetrically either side of the gut line and beat in a wave running from tail to head, their feathery fringes overlapping. The gut shows as a soft olive line inside a translucent blue-grey body, the compound eyes are near-black, and specks of algae drift past and are drawn forward along the ventral food groove",
+  "kind": "animation",
+  "id": "item46",
+  "frames": [
+   "item46_frame1.png",
+   "item46_frame2.png",
+   "item46_frame3.png",
+   "item46_frame4.png",
+   "item46_frame5.png",
+   "item46_frame6.png"
+  ]
+ },
+ {
+  "step": "60",
+  "title": "A plastic toy pig",
+  "file": "showcase/toy_pig.png",
+  "alt": "A small pink plastic toy pig on a grey table, with erect ears, a flat snout disc, a curled tail and dark cloven hooves, its parting line labelled; an inset cuts across a foreleg to show solid painted PVC",
+  "kind": "still",
+  "id": "item47",
+  "frames": [
+   "item47_still.png"
+  ]
+ },
+ {
+  "step": "71",
+  "title": "The blue book turns its own pages",
+  "file": "showcase/blue_book_flipping.gif",
+  "alt": "Looping animation of the blue hardback opening on its own, its pages fanning and riffling across in smooth curves, then the back cover closing over them",
+  "kind": "animation",
+  "id": "item48",
+  "frames": [
+   "item48_frame1.png",
+   "item48_frame2.png",
+   "item48_frame3.png",
+   "item48_frame4.png",
+   "item48_frame5.png",
+   "item48_frame6.png"
+  ]
+ },
+ {
+  "step": "15",
+  "title": "A coconut sprouting",
+  "file": "showcase/coconut.gif",
+  "alt": "Looping animation in portrait: a vertical cutaway of a coconut half-buried in soil. The husk, shell, seed coat and white meat show as solid cut faces. A shoot pushes out through one of the three eyes and greens into a single lance-shaped leaf while a fan of roots spreads sideways below ground, and inside the sealed shell a white spongy ball swells to fill the cavity",
+  "kind": "animation",
+  "id": "item49",
+  "frames": [
+   "item49_frame1.png",
+   "item49_frame2.png",
+   "item49_frame3.png",
+   "item49_frame4.png",
+   "item49_frame5.png",
+   "item49_frame6.png"
+  ]
+ },
+ {
+  "step": "72",
+  "title": "HP LaserJet P1102w",
+  "file": "showcase/laserjet.png",
+  "alt": "A matte black HP LaserJet P1102w printer with its paper tray open and a sheet in it, lights on the control panel; an inset shows the edge of a printed letter A at true scale, a staircase of black toner dots on a blue 600-dpi grid over a mat of pale paper fibres",
+  "kind": "still",
+  "id": "item50",
+  "frames": [
+   "item50_still.png"
+  ]
+ },
+ {
+  "step": "6a",
+  "title": "One carbonic acid molecule splits",
+  "file": "showcase/molecule.gif",
+  "alt": "Ball-and-stick animation: carbonic acid loses a proton (gold, H\u207a) and becomes bicarbonate, whose two free oxygens end up with equal bonds and share the negative charge",
+  "kind": "animation",
+  "id": "item51",
+  "frames": [
+   "item51_frame1.png",
+   "item51_frame2.png",
+   "item51_frame3.png",
+   "item51_frame4.png",
+   "item51_frame5.png",
+   "item51_frame6.png"
+  ]
+ },
+ {
+  "step": "7a",
+  "title": "Glycolysis: spend two, earn four",
+  "file": "showcase/glycolysis_spend.gif",
+  "alt": "Looping ball-and-stick animation: glucose gets two phosphates from two ATP, then splits between carbons 3 and 4 into two glyceraldehyde-3-phosphates",
+  "kind": "animation",
+  "id": "item52",
+  "frames": [
+   "item52_frame1.png",
+   "item52_frame2.png",
+   "item52_frame3.png",
+   "item52_frame4.png",
+   "item52_frame5.png",
+   "item52_frame6.png"
+  ]
+ },
+ {
+  "step": "50",
+  "title": "The ant taps a kernel of sweet corn",
+  "file": "showcase/ant_corn_tapping.gif",
+  "alt": "Looping animation of a black garden ant tapping the juicy cut face of a large yellow sweet-corn kernel; insets show 1-octen-3-ol odour arriving at the smell hair while the taste hair touches the juice, and one sucrose molecule entering the taste pore per touch",
+  "kind": "animation",
+  "id": "item53",
+  "frames": [
+   "item53_frame1.png",
+   "item53_frame2.png",
+   "item53_frame3.png",
+   "item53_frame4.png",
+   "item53_frame5.png",
+   "item53_frame6.png"
+  ]
+ },
+ {
+  "step": "31",
+  "title": "One neuron fires",
+  "file": "showcase/neuron_firing.gif",
+  "alt": "The step 27 motor neuron, unchanged, with a soft gold glow starting where the axon leaves its cone, gliding out along the axon, vanishing into the break and reappearing beyond it, and brightening the four end knobs before the cell rests again; a caption notes it is slowed about 700,000 times",
+  "kind": "animation",
+  "id": "item54",
+  "frames": [
+   "item54_frame1.png",
+   "item54_frame2.png",
+   "item54_frame3.png",
+   "item54_frame4.png",
+   "item54_frame5.png",
+   "item54_frame6.png"
+  ]
+ },
+ {
+  "step": "49",
+  "title": "The ant taps a grain of rice",
+  "file": "showcase/ant_rice_tapping.gif",
+  "alt": "Looping animation of a black garden ant tapping one raw grain of long-grain white rice, nearly twice the ant's length; insets show a faint trace of hexanal reaching the smell hair while nothing enters the taste pore, and a short chain of amylose labelled \"starch is not a taste\"",
+  "kind": "animation",
+  "id": "item55",
+  "frames": [
+   "item55_frame1.png",
+   "item55_frame2.png",
+   "item55_frame3.png",
+   "item55_frame4.png",
+   "item55_frame5.png",
+   "item55_frame6.png"
+  ]
+ },
+ {
+  "step": "41",
+  "title": "The ant taps the banana leaf",
+  "file": "showcase/ant_banana_leaf_tapping.gif",
+  "alt": "Looping animation of step 40's black garden ant tapping its antenna tip on the waxy lower surface of a banana leaf; the insets show the taste hair touching the waxed, ridged surface beside a stoma, and a still hentriacontane wax molecule",
+  "kind": "animation",
+  "id": "item56",
+  "frames": [
+   "item56_frame1.png",
+   "item56_frame2.png",
+   "item56_frame3.png",
+   "item56_frame4.png",
+   "item56_frame5.png",
+   "item56_frame6.png"
+  ]
+ },
+ {
+  "step": "34",
+  "title": "An ant smells and tastes honey",
+  "file": "showcase/ant_honey.png",
+  "alt": "The black garden ant touching a small golden droplet of honey with one antenna tip; the insets show a honey odorant molecule in the air, the smell hair's wall pores receiving odour molecules while the taste hair touches the honey, and fructose and glucose molecules with water at the taste pore",
+  "kind": "still",
+  "id": "item57",
+  "frames": [
+   "item57_still.png"
+  ]
+ },
+ {
+  "step": "39",
+  "title": "The ant taps the water droplet",
+  "file": "showcase/ant_water_tapping.gif",
+  "alt": "Looping animation of step 38's black garden ant tapping a clear droplet of water; the insets show the water-repellent taste hair dimpling the water surface on each touch, the humidity sensillum unchanged, and five hydrogen-bonded water molecules",
+  "kind": "animation",
+  "id": "item58",
+  "frames": [
+   "item58_frame1.png",
+   "item58_frame2.png",
+   "item58_frame3.png",
+   "item58_frame4.png",
+   "item58_frame5.png",
+   "item58_frame6.png"
+  ]
+ },
+ {
+  "step": "65",
+  "title": "Bruxism, year by year",
+  "file": "showcase/bruxism_progression.gif",
+  "alt": "Looping animation of the lower dental arch with the camera held still while fifty years of grinding wear the teeth down; a year counter and bar run from 0 to 50, freshly worn surfaces glow blue, and labels for wear facets, exposed dentine and the flattened canine appear as each forms; an inset cut through the incisor wears with them",
+  "kind": "animation",
+  "id": "item59",
+  "frames": [
+   "item59_frame1.png",
+   "item59_frame2.png",
+   "item59_frame3.png",
+   "item59_frame4.png",
+   "item59_frame5.png",
+   "item59_frame6.png"
+  ]
+ },
+ {
+  "step": "42",
+  "title": "An ant touches a macaroni in cheese sauce",
+  "file": "showcase/ant_macaroni.png",
+  "alt": "The black garden ant, dwarfed by a single orange elbow macaroni coated in cheese sauce, touching the outer curve with one antenna tip; the insets show odour molecules arriving at the smell hair and the taste hair in the sauce, a butanoic acid molecule in the air, and norbixin with sodium and chloride ions in water",
+  "kind": "still",
+  "id": "item60",
+  "frames": [
+   "item60_still.png"
+  ]
+ },
+ {
+  "step": "64",
+  "title": "Bruxism",
+  "file": "showcase/bruxism.png",
+  "alt": "Step 20's lower dental arch after about fifty years of night-time grinding: every tooth ground flat on top, the canine tip flattened, yellow dentine exposed inside rims of enamel, with labels for the flattened canine, exposed dentine and wear facets; an inset shows a to-scale cut through the worn central incisor",
+  "kind": "still",
+  "id": "item61",
+  "frames": [
+   "item61_still.png"
+  ]
+ },
+ {
+  "step": "14",
+  "title": "Rendered model of a mysis shrimp swimming",
+  "file": "showcase/mysis.gif",
+  "alt": "Looping animation on a black field: a mysid shrimp lies diagonally, glowing where light scatters off its edges. Its outlines, segment joints and internal organs shine while the empty water stays dead black. Six pairs of limbs beat in a wave, a brood pouch hangs under the thorax, two hard bright beads sit in the tail fan, and flecks of marine snow drift steadily downward past a camera that never moves",
+  "kind": "animation",
+  "id": "item62",
+  "frames": [
+   "item62_frame1.png",
+   "item62_frame2.png",
+   "item62_frame3.png",
+   "item62_frame4.png",
+   "item62_frame5.png",
+   "item62_frame6.png"
+  ]
+ },
+ {
+  "step": "3",
+  "title": "Sine-wave ocean with sun",
+  "file": "showcase/water.png",
+  "alt": "Open sea under a pale sky, with a sun and a path of glints on the waves leading to the horizon",
+  "kind": "still",
+  "id": "item63",
+  "frames": [
+   "item63_still.png"
+  ]
+ },
+ {
+  "step": "57",
+  "title": "Three ants on a trail across a pine board",
+  "file": "showcase/ant_trail_wood.gif",
+  "alt": "Looping animation of three black garden ants walking in single file along a faint blue pheromone trail across a planed pine board, its pale earlywood and darker latewood bands running across the frame; a footfall diagram shows the alternating tripods",
+  "kind": "animation",
+  "id": "item64",
+  "frames": [
+   "item64_frame1.png",
+   "item64_frame2.png",
+   "item64_frame3.png",
+   "item64_frame4.png",
+   "item64_frame5.png",
+   "item64_frame6.png"
+  ]
+ },
+ {
+  "step": "70",
+  "title": "A blue clothbound hardback",
+  "file": "showcase/blue_book.png",
+  "alt": "A plain blue clothbound hardback lying closed on a grey table, its rounded spine and the pale edge of the page block showing under the overhanging covers; an inset cuts across the fore-edge to show the woven cloth, glue, greyboard, the cloth turned in round the edge, the pastedown, the thin leaves and the overhang",
+  "kind": "still",
+  "id": "item65",
+  "frames": [
+   "item65_still.png"
+  ]
+ },
+ {
+  "step": "63",
+  "title": "The toy cow comes to life",
+  "file": "showcase/toy_cow_alive.gif",
+  "alt": "Looping animation of the plastic toy cow waking, walking a small circle in a lateral-sequence walk on rigid legs, and settling back into its moulded pose; a footfall diagram shows the step order",
+  "kind": "animation",
+  "id": "item66",
+  "frames": [
+   "item66_frame1.png",
+   "item66_frame2.png",
+   "item66_frame3.png",
+   "item66_frame4.png",
+   "item66_frame5.png",
+   "item66_frame6.png"
+  ]
+ },
+ {
+  "step": "40",
+  "title": "An ant touches the surface of a banana leaf",
+  "file": "showcase/ant_banana_leaf.png",
+  "alt": "The black garden ant touching a pale green banana leaf, lower side up, with one antenna tip; the insets show the taste hair on the waxed, finely ridged surface beside a stoma with its two guard cells, and a long zig-zag hentriacontane molecule from the leaf wax",
+  "kind": "still",
+  "id": "item67",
+  "frames": [
+   "item67_still.png"
+  ]
+ },
+ {
+  "step": "23",
+  "title": "Secretory diarrhea (cholera-type)",
+  "file": "showcase/diarrhea.gif",
+  "alt": "Animated cutaway in two stacked panels, normal above and cholera below: the end of the small intestine with its villi opens through a valve into the flat-lined colon; in the lower panel the crypts pour out chloride, sodium and water, a squeezing wave pushes thin fluid along, and a close-up of one crypt wall shows chloride crossing through the cells and sodium between them",
+  "kind": "animation",
+  "id": "item68",
+  "frames": [
+   "item68_frame1.png",
+   "item68_frame2.png",
+   "item68_frame3.png",
+   "item68_frame4.png",
+   "item68_frame5.png",
+   "item68_frame6.png"
+  ]
+ },
+ {
+  "step": "43",
+  "title": "The ant taps the macaroni",
+  "file": "showcase/ant_macaroni_tapping.gif",
+  "alt": "Looping animation of step 42's black garden ant, dwarfed by an orange elbow macaroni, tapping its antenna tip on the cheese sauce; insets show odour molecules arriving one per tap at the smell hair's wall pores while the taste hair touches the sauce, butanoic acid, and norbixin with salt ions",
+  "kind": "animation",
+  "id": "item69",
+  "frames": [
+   "item69_frame1.png",
+   "item69_frame2.png",
+   "item69_frame3.png",
+   "item69_frame4.png",
+   "item69_frame5.png",
+   "item69_frame6.png"
+  ]
+ },
+ {
+  "step": "54",
+  "title": "The pole bean in flower, with ladybirds",
+  "file": "showcase/bean_ladybugs_pods.gif",
+  "alt": "Looping time-lapse of step 45's pole bean twining up its pole, now with small white flowers near the top and slender young pods lower down, while tiny seven-spot ladybirds climb the pole and walk out along the stem and leaves; a magnified inset follows one red ladybird with seven black spots",
+  "kind": "animation",
+  "id": "item70",
+  "frames": [
+   "item70_frame1.png",
+   "item70_frame2.png",
+   "item70_frame3.png",
+   "item70_frame4.png",
+   "item70_frame5.png",
+   "item70_frame6.png"
+  ]
+ },
+ {
+  "step": "10",
+  "title": "Getting a plasmid into a bacterium",
+  "file": "showcase/transformation_approach.gif",
+  "alt": "Looping animation: a supercoiled plasmid, drawn as a branched interwound coil with calcium ions around it, drifts down onto a cross-section of the E. coli envelope \u2014 an outer membrane of lipids, a peptidoglycan mesh, and an inner membrane below",
+  "kind": "animation",
+  "id": "item71",
+  "frames": [
+   "item71_frame1.png",
+   "item71_frame2.png",
+   "item71_frame3.png",
+   "item71_frame4.png",
+   "item71_frame5.png",
+   "item71_frame6.png"
+  ]
+ },
+ {
+  "step": "25",
+  "title": "A bean flower pollinates itself",
+  "file": "showcase/bean.png",
+  "alt": "A white common-bean flower bud cut open: the keel coils into a flat spiral with the style running inside it, the ovary below holds six ovules in a row, and a round inset magnifies the stigma ten times to show golden pollen grains on its brush of hairs and one grain sending a tube down into the style; a soft green pod lies blurred in the background, labelled as the same ovary about fourteen days later",
+  "kind": "still",
+  "id": "item72",
+  "frames": [
+   "item72_still.png"
+  ]
+ },
+ {
+  "step": "6b",
+  "title": "The carbonic acid journey",
+  "file": "showcase/journey.gif",
+  "alt": "Looping ball-and-stick animation: CO\u2082 and water become carbonic acid with a helper water relaying the proton, then bicarbonate and hydronium, while fresh molecules keep arriving",
+  "kind": "animation",
+  "id": "item73",
+  "frames": [
+   "item73_frame1.png",
+   "item73_frame2.png",
+   "item73_frame3.png",
+   "item73_frame4.png",
+   "item73_frame5.png",
+   "item73_frame6.png"
+  ]
+ },
+ {
+  "step": "33",
+  "title": "The ant taps the salt",
+  "file": "showcase/ant_salt_tapping.gif",
+  "alt": "Looping animation of step 32's black garden ant tapping a cubic salt grain with its antenna tip; the insets show the taste hair touching the moisture film while the smell hair has nothing to catch, and a sodium and a chloride ion leaving a kink on the crystal's surface step into the water with each touch",
+  "kind": "animation",
+  "id": "item74",
+  "frames": [
+   "item74_frame1.png",
+   "item74_frame2.png",
+   "item74_frame3.png",
+   "item74_frame4.png",
+   "item74_frame5.png",
+   "item74_frame6.png"
+  ]
+ },
+ {
+  "step": "68",
+  "title": "Three ants at a peeled apple",
+  "file": "showcase/ants_apple.gif",
+  "alt": "Looping animation of three black garden ants arriving at a cube of peeled Golden Delicious apple, the front ant tapping the wet cut flesh with its antennae; insets show 2-hexenal and butyl acetate odour molecules, odour reaching the smell hair while the taste hair touches the juice, and a fructose molecule entering the taste pore",
+  "kind": "animation",
+  "id": "item75",
+  "frames": [
+   "item75_frame1.png",
+   "item75_frame2.png",
+   "item75_frame3.png",
+   "item75_frame4.png",
+   "item75_frame5.png",
+   "item75_frame6.png"
+  ]
+ }
+]
